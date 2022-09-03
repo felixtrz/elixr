@@ -1,0 +1,40 @@
+{
+	"name": "elixr",
+	"version": "0.1.0",
+	"description": "",
+	"main": "build/elixr.module.js",
+	"module": "src/index.js",
+	"scripts": {
+		"build": "rollup -c",
+		"lint": "eslint ./src",
+		"format": "prettier --write ./src/**/*"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/felixtrz/elixr.git"
+	},
+	"author": "Felix Zhang <felixtrz96@gmail.com>",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/felixtrz/elixr/issues"
+	},
+	"homepage": "https://github.com/felixtrz/elixr#readme",
+	"dependencies": {
+		"ecsy": "^0.4.2"
+	},
+	"peerDependencies": {
+		"gamepad-wrapper": "^1.1.2",
+		"three": ">= 0.123.0"
+	},
+	"devDependencies": {
+		"@rollup/plugin-json": "^4.1.0",
+		"@rollup/plugin-node-resolve": "^13.3.0",
+		"@rollup/plugin-replace": "^4.0.0",
+		"eslint": "^8.23.0",
+		"eslint-config-prettier": "^8.5.0",
+		"prettier": "^2.7.1",
+		"rollup-plugin-json": "^4.0.0",
+		"rollup-plugin-peer-deps-external": "^2.2.4",
+		"rollup-plugin-terser": "^7.0.2"
+	}
+}
