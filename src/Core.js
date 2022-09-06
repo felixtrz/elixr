@@ -81,7 +81,8 @@ export class Core {
 			});
 
 			gripSpace.addEventListener('disconnected', (event) => {
-				delete this._controllers[event.data.handedness];
+				if (event.data?.handedness)
+					delete this._controllers[event.data.handedness];
 			});
 		}
 	}
@@ -91,6 +92,9 @@ export class Core {
 		const render = () => {
 			const delta = clock.getDelta();
 			const elapsedTime = clock.elapsedTime;
+			Object.values(this._controllers).forEach((controller) => {
+				controller.gamepad.update();
+			});
 			this._ecsyWorld.execute(delta, elapsedTime);
 			this._renderer.render(this._scene, this._camera);
 		};
@@ -114,16 +118,36 @@ export class Core {
 		return this._playerSpace;
 	}
 
+	get controllers() {
+		return this._controllers;
+	}
+
 	get isImmersive() {
 		return this._renderer.xr.isPresenting;
 	}
 
-	registerGameSystem(gameSystem) {
-		this._ecsyWorld.registerSystem(gameSystem);
+	registerGameSystem(GameSystem) {
+		this._ecsyWorld.registerSystem(GameSystem);
+	}
+
+	getGameSystem(GameSystem) {
+		return this._ecsyWorld.getSystem(GameSystem);
+	}
+
+	getGameSystems() {
+		return this._ecsyWorld.getSystems();
 	}
 
 	registerGameComponent(gameComponent) {
 		this._ecsyWorld.registerComponent(gameComponent);
+	}
+
+	hasRegisteredGameComponent(GameComponent) {
+		this._ecsyWorld.hasRegisteredComponent(GameComponent);
+	}
+
+	unregisterGameSystem(GameSystem) {
+		this._ecsyWorld.unregisterSystem(GameSystem);
 	}
 
 	createEmptyGameObject() {
@@ -136,11 +160,24 @@ export class Core {
 	createGameObject(object3D) {
 		const ecsyEntity = this._ecsyWorld.createEntity();
 		const gameObject = new GameObject();
+		this._scene.add(gameObject);
 		gameObject.init(ecsyEntity);
 		if (object3D) {
-			gameObject.add(object3D);
+			if (object3D.parent) {
+				object3D.parent.add(gameObject);
+				gameObject.position.copy(object3D.position);
+				gameObject.quaternion.copy(object3D.quaternion);
+			}
+			gameObject.attach(object3D);
 		}
-		this._scene.add(gameObject);
 		return gameObject;
+	}
+
+	play() {
+		this._ecsyWorld.play();
+	}
+
+	stop() {
+		this._ecsyWorld.stop();
 	}
 }

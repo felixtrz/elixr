@@ -6,6 +6,7 @@ const UNINITIALIZED_GAMEOBJECT_ERROR =
 export class GameObject extends THREE.Group {
 	init(ecsyEntity) {
 		this._ecsyEntity = ecsyEntity;
+		this._ecsyEntity.gameObject = this;
 	}
 
 	destroy() {
