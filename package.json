@@ -4,6 +4,7 @@
 	"description": "",
 	"main": "build/elixr.module.js",
 	"module": "src/index.js",
+	"types": "src/index.d.ts",
 	"scripts": {
 		"build": "rollup -c",
 		"lint": "eslint ./src",
@@ -14,7 +15,7 @@
 		"url": "git+https://github.com/felixtrz/elixr.git"
 	},
 	"author": "Felix Zhang <felixtrz96@gmail.com>",
-	"license": "MIT",
+	"license": "Apache-2.0",
 	"bugs": {
 		"url": "https://github.com/felixtrz/elixr/issues"
 	},
@@ -24,7 +25,7 @@
 	},
 	"peerDependencies": {
 		"gamepad-wrapper": "^1.1.2",
-		"three": ">= 0.123.0"
+		"three": ">= 0.134.0"
 	},
 	"devDependencies": {
 		"@rollup/plugin-json": "^4.1.0",

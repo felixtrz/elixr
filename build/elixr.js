@@ -1820,7 +1820,7 @@
 			if (this.parent) this.parent.remove(this);
 		}
 
-		clone() {
+		duplicate() {
 			if (!this._ecsyEntity) throw UNINITIALIZED_GAMEOBJECT_ERROR;
 			const newGameObject = super.clone(true);
 			const newEntity = this._ecsyEntity.clone();
@@ -1912,9 +1912,7 @@
 			this.update(delta, time);
 		}
 
-		update(_delta, _time) {}
-
-		queryEntities(queryId) {
+		queryGameObjects(queryId) {
 			if (!this.queries[queryId])
 				throw 'Query id does not exist in current game system';
 			return this.queries[queryId].results.map((entity) => entity.gameObject);
@@ -2077,12 +2075,12 @@
 			return this._ecsyWorld.getSystems();
 		}
 
-		registerGameComponent(gameComponent) {
-			this._ecsyWorld.registerComponent(gameComponent);
+		registerGameComponent(GameComponent) {
+			this._ecsyWorld.registerComponent(GameComponent);
 		}
 
 		hasRegisteredGameComponent(GameComponent) {
-			this._ecsyWorld.hasRegisteredComponent(GameComponent);
+			return this._ecsyWorld.hasRegisteredComponent(GameComponent);
 		}
 
 		unregisterGameSystem(GameSystem) {

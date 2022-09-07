@@ -14,7 +14,7 @@ export class GameObject extends THREE.Group {
 		if (this.parent) this.parent.remove(this);
 	}
 
-	clone() {
+	duplicate() {
 		if (!this._ecsyEntity) throw UNINITIALIZED_GAMEOBJECT_ERROR;
 		const newGameObject = super.clone(true);
 		const newEntity = this._ecsyEntity.clone();

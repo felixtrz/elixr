@@ -138,12 +138,12 @@ export class Core {
 		return this._ecsyWorld.getSystems();
 	}
 
-	registerGameComponent(gameComponent) {
-		this._ecsyWorld.registerComponent(gameComponent);
+	registerGameComponent(GameComponent) {
+		this._ecsyWorld.registerComponent(GameComponent);
 	}
 
 	hasRegisteredGameComponent(GameComponent) {
-		this._ecsyWorld.hasRegisteredComponent(GameComponent);
+		return this._ecsyWorld.hasRegisteredComponent(GameComponent);
 	}
 
 	unregisterGameSystem(GameSystem) {

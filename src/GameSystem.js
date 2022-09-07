@@ -10,9 +10,7 @@ export class GameSystem extends System {
 		this.update(delta, time);
 	}
 
-	update(_delta, _time) {}
-
-	queryEntities(queryId) {
+	queryGameObjects(queryId) {
 		if (!this.queries[queryId])
 			throw 'Query id does not exist in current game system';
 		return this.queries[queryId].results.map((entity) => entity.gameObject);
