@@ -8,7 +8,9 @@
 	"scripts": {
 		"build": "rollup -c",
 		"lint": "eslint ./src",
-		"format": "prettier --write ./src/**/*"
+		"docs": "typedoc --readme none --excludeExternals --plugin typedoc-plugin-markdown --hideBreadcrumbs --out docs/ src/index.d.ts;",
+		"format": "prettier --write ./src/**/*",
+		"dev:server": "http-server -c-1 -p 8080 --cors ./site"
 	},
 	"repository": {
 		"type": "git",
@@ -31,11 +33,16 @@
 		"@rollup/plugin-json": "^4.1.0",
 		"@rollup/plugin-node-resolve": "^13.3.0",
 		"@rollup/plugin-replace": "^4.0.0",
+		"@types/three": "^0.144.0",
 		"eslint": "^8.23.0",
 		"eslint-config-prettier": "^8.5.0",
+		"http-server": "^14.1.1",
 		"prettier": "^2.7.1",
 		"rollup-plugin-json": "^4.0.0",
 		"rollup-plugin-peer-deps-external": "^2.2.4",
-		"rollup-plugin-terser": "^7.0.2"
+		"rollup-plugin-terser": "^7.0.2",
+		"typedoc": "^0.23.14",
+		"typedoc-plugin-markdown": "^3.13.6",
+		"typescript": "^4.8.3"
 	}
 }
