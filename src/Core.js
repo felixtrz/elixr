@@ -1,8 +1,9 @@
 import * as THREE from 'three';
 
+import { ARButton } from './utils/ARButton';
 import { GameObject } from './GameObject';
 import { GamepadWrapper } from 'gamepad-wrapper';
-import { VRButton } from 'three/examples/jsm/webxr/VRButton.js';
+import { VRButton } from './utils/VRButton';
 import { World } from 'ecsy';
 import { XRControllerModelFactory } from 'three/examples/jsm/webxr/XRControllerModelFactory';
 
@@ -14,7 +15,9 @@ export class Core {
 		this._createThreeScene();
 
 		sceneContainer.appendChild(this._renderer.domElement);
-		document.body.appendChild(VRButton.createButton(this._renderer));
+
+		this._vrButton = VRButton.createButton(this._renderer);
+		this._arButton = ARButton.createButton(this._renderer);
 
 		this._playerSpace = new THREE.Group();
 		this._playerSpace.add(this._camera);
@@ -36,6 +39,7 @@ export class Core {
 		);
 		this._renderer = new THREE.WebGLRenderer({
 			antialias: true,
+			alpha: true,
 			multiviewStereo: true,
 		});
 		this._renderer.setPixelRatio(window.devicePixelRatio);
@@ -77,6 +81,7 @@ export class Core {
 					targetRaySpace,
 					gripSpace,
 					gamepad: new GamepadWrapper(event.data.gamepad),
+					model: controllerModel,
 				};
 			});
 
@@ -124,6 +129,14 @@ export class Core {
 
 	get isImmersive() {
 		return this._renderer.xr.isPresenting;
+	}
+
+	get arButton() {
+		return this._arButton;
+	}
+
+	get vrButton() {
+		return this._vrButton;
 	}
 
 	registerGameSystem(GameSystem) {

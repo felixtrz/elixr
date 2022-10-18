@@ -26,7 +26,7 @@
 		"ecsy": "^0.4.2"
 	},
 	"peerDependencies": {
-		"gamepad-wrapper": "^1.1.2",
+		"gamepad-wrapper": "^1.2.0",
 		"three": ">= 0.134.0"
 	},
 	"devDependencies": {

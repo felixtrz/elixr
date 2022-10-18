@@ -22,10 +22,15 @@ export class Core {
 			targetRaySpace: THREE.Object3D;
 			gripSpace: THREE.Object3D;
 			gamepad: GamepadWrapper;
+			model: THREE.Object3D;
 		};
 	};
 
 	get isImmersive(): boolean;
+
+	get arButton(): HTMLButtonElement;
+
+	get vrButton(): HTMLButtonElement;
 
 	registerGameSystem<T extends GameSystem>(
 		GameSystem: SystemConstructor<T>,
