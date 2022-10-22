@@ -1,6 +1,6 @@
 {
 	"name": "elixr",
-	"version": "0.3.1",
+	"version": "0.3.2",
 	"description": "",
 	"main": "build/elixr.module.js",
 	"module": "src/index.js",
