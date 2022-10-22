@@ -8,6 +8,8 @@ export class GameSystem extends System {
 	execute(delta: number, time: number): void;
 	update(delta: number, time: number): void;
 	queryGameObjects(queryId: string): GameObject[];
+	queryAddedGameObjects(queryId: string): GameObject[];
+	queryRemovedGameObjects(queryId: string): GameObject[];
 }
 
 export class XRGameSystem extends GameSystem {}

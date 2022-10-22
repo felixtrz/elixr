@@ -15,6 +15,24 @@ export class GameSystem extends System {
 			throw 'Query id does not exist in current game system';
 		return this.queries[queryId].results.map((entity) => entity.gameObject);
 	}
+
+	queryAddedGameObjects(queryId) {
+		if (!this.queries[queryId]) {
+			throw 'Query id does not exist in current game system';
+		} else if (!this.queries[queryId].added) {
+			throw 'This query does not listen to added events';
+		}
+		return this.queries[queryId].added?.map((entity) => entity.gameObject);
+	}
+
+	queryRemovedGameObjects(queryId) {
+		if (!this.queries[queryId]) {
+			throw 'Query id does not exist in current game system';
+		} else if (!this.queries[queryId].added) {
+			throw 'This query does not listen to removed events';
+		}
+		return this.queries[queryId].removed?.map((entity) => entity.gameObject);
+	}
 }
 
 export class XRGameSystem extends GameSystem {
