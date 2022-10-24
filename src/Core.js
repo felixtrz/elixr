@@ -1,9 +1,15 @@
 import * as THREE from 'three';
 
-import { ARButton } from './utils/ARButton';
+import {
+	PhysicsComponent,
+	RigidBodyComponent,
+} from './physics/PhysicsComponents';
+
+import { ARButton } from 'three/examples/jsm/webxr/ARButton';
 import { GameObject } from './GameObject';
 import { GamepadWrapper } from 'gamepad-wrapper';
-import { VRButton } from './utils/VRButton';
+import { RigidBodyPhysicsSystem } from './physics/RigidBodyPhysicsSystem';
+import { VRButton } from 'three/examples/jsm/webxr/VRButton';
 import { World } from 'ecsy';
 import { XRControllerModelFactory } from 'three/examples/jsm/webxr/XRControllerModelFactory';
 
@@ -23,6 +29,12 @@ export class Core {
 		this._playerSpace.add(this._camera);
 		this._scene.add(this._playerSpace);
 		this._controllers = {};
+
+		this.game = this.createEmptyGameObject();
+		this.registerGameComponent(PhysicsComponent);
+		this.game.addComponent(PhysicsComponent, {
+			gravity: new THREE.Vector3(0, -9.8, 0),
+		});
 
 		this._setupControllers();
 
@@ -123,12 +135,34 @@ export class Core {
 		return this._playerSpace;
 	}
 
+	/**
+	 * @type {Object<
+	 * 	string,
+	 * 	{
+	 * 		targetRaySpace: THREE.Object3D;
+	 * 		gripSpace: THREE.Object3D;
+	 * 		gamepad: GamepadWrapper;
+	 * 		model: THREE.Object3D;
+	 * 	}
+	 * >}
+	 */
 	get controllers() {
 		return this._controllers;
 	}
 
 	get isImmersive() {
 		return this._renderer.xr.isPresenting;
+	}
+
+	/**
+	 * @type {{
+	 * 	gravity: THREE.Vector3;
+	 * 	solverIterations: Number;
+	 * 	stepTime: Number;
+	 * }}
+	 */
+	get physics() {
+		return this.game.getMutableComponent(PhysicsComponent);
 	}
 
 	get arButton() {
@@ -139,26 +173,38 @@ export class Core {
 		return this._vrButton;
 	}
 
+	/** @param {import('ecsy').SystemConstructor} GameSystem */
 	registerGameSystem(GameSystem) {
 		this._ecsyWorld.registerSystem(GameSystem);
 	}
 
+	/**
+	 * @param {import('ecsy').SystemConstructor} GameSystem
+	 * @returns {import('./GameSystem').GameSystem}
+	 */
 	getGameSystem(GameSystem) {
 		return this._ecsyWorld.getSystem(GameSystem);
 	}
 
+	/** @returns {import('./GameSystem').GameSystem[]} */
 	getGameSystems() {
 		return this._ecsyWorld.getSystems();
 	}
 
+	/** @param {import('ecsy').ComponentConstructor} GameComponent */
 	registerGameComponent(GameComponent) {
 		this._ecsyWorld.registerComponent(GameComponent);
 	}
 
+	/**
+	 * @param {import('ecsy').ComponentConstructor} GameComponent
+	 * @returns {import('./GameComponent').GameComponent}
+	 */
 	hasRegisteredGameComponent(GameComponent) {
 		return this._ecsyWorld.hasRegisteredComponent(GameComponent);
 	}
 
+	/** @param {import('ecsy').SystemConstructor} GameSystem */
 	unregisterGameSystem(GameSystem) {
 		this._ecsyWorld.unregisterSystem(GameSystem);
 	}
@@ -166,15 +212,19 @@ export class Core {
 	createEmptyGameObject() {
 		const ecsyEntity = this._ecsyWorld.createEntity();
 		const gameObject = new GameObject();
-		gameObject.init(ecsyEntity);
+		gameObject._init(ecsyEntity);
 		return gameObject;
 	}
 
+	/**
+	 * @param {THREE.Vector3} object3D
+	 * @returns {GameObject}
+	 */
 	createGameObject(object3D) {
 		const ecsyEntity = this._ecsyWorld.createEntity();
 		const gameObject = new GameObject();
 		this._scene.add(gameObject);
-		gameObject.init(ecsyEntity);
+		gameObject._init(ecsyEntity);
 		if (object3D) {
 			if (object3D.parent) {
 				object3D.parent.add(gameObject);
@@ -192,5 +242,12 @@ export class Core {
 
 	stop() {
 		this._ecsyWorld.stop();
+	}
+
+	enablePhysics() {
+		this._ecsyWorld.registerComponent(RigidBodyComponent);
+		this._ecsyWorld.registerSystem(RigidBodyPhysicsSystem, {
+			priority: Infinity,
+		});
 	}
 }

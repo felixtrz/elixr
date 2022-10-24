@@ -2,13 +2,12 @@
 	"name": "elixr",
 	"version": "0.3.2",
 	"description": "",
-	"main": "build/elixr.module.js",
-	"module": "src/index.js",
-	"types": "src/index.d.ts",
+	"main": "lib/index.js",
+	"types": "lib/index.d.ts",
 	"scripts": {
 		"build": "rollup -c",
 		"lint": "eslint ./src",
-		"docs": "typedoc --readme none --excludeExternals --plugin typedoc-plugin-markdown --hideBreadcrumbs --out docs/ src/index.d.ts;",
+		"docs": "typedoc --readme none --excludeExternals --plugin typedoc-plugin-markdown --hideBreadcrumbs --out docs/ types/index.d.ts;",
 		"format": "prettier --write ./src/**/*",
 		"dev:server": "http-server -c-1 -p 8080 --cors ./site"
 	},
@@ -23,13 +22,15 @@
 	},
 	"homepage": "https://github.com/felixtrz/elixr#readme",
 	"dependencies": {
-		"ecsy": "^0.4.2"
+		"cannon-es": "^0.20.0",
+		"ecsy": "^0.4.2",
+		"gamepad-wrapper": "^1.2.0"
 	},
 	"peerDependencies": {
-		"gamepad-wrapper": "^1.2.0",
 		"three": ">= 0.134.0"
 	},
 	"devDependencies": {
+		"@rollup/plugin-commonjs": "^23.0.2",
 		"@rollup/plugin-json": "^4.1.0",
 		"@rollup/plugin-node-resolve": "^13.3.0",
 		"@rollup/plugin-replace": "^4.0.0",
@@ -38,6 +39,7 @@
 		"eslint-config-prettier": "^8.5.0",
 		"http-server": "^14.1.1",
 		"prettier": "^2.7.1",
+		"prettier-plugin-jsdoc": "^0.4.2",
 		"rollup-plugin-json": "^4.0.0",
 		"rollup-plugin-peer-deps-external": "^2.2.4",
 		"rollup-plugin-terser": "^7.0.2",

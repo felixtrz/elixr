@@ -1,3 +1,4 @@
+import commonjs from '@rollup/plugin-commonjs';
 import json from '@rollup/plugin-json';
 import { nodeResolve } from '@rollup/plugin-node-resolve';
 import peerDepsExternal from 'rollup-plugin-peer-deps-external';
@@ -15,6 +16,7 @@ export default [
 			}),
 			json({ exclude: ['node_modules/**'] }),
 			nodeResolve(),
+			commonjs(),
 		],
 		output: [
 			{
@@ -44,6 +46,7 @@ export default [
 			json({ exclude: ['node_modules/**'] }),
 			nodeResolve(),
 			terser(),
+			commonjs(),
 		],
 		output: [
 			{

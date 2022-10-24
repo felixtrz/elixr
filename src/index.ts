@@ -13,11 +13,11 @@ export {
 
 export { BUTTONS, AXES, GamepadWrapper } from 'gamepad-wrapper';
 
-export * as Physics from 'cannon-es';
-
 export {
 	PhysicsComponent,
 	RigidBodyComponent,
 } from './physics/PhysicsComponents';
+
+export * as Physics from 'cannon-es';
 
 export { Core } from './Core';
