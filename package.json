@@ -1,15 +1,19 @@
 {
 	"name": "elixr",
 	"version": "0.3.2",
-	"description": "",
-	"main": "lib/index.js",
-	"types": "lib/index.d.ts",
+	"description": "WebXR Game Engine",
+	"main": "dist/index.js",
+	"types": "dist/index.d.ts",
+	"files": [
+		"dist"
+	],
 	"scripts": {
-		"build": "rollup -c",
+		"build": "tsc && rollup -c",
+		"docs": "typedoc",
 		"lint": "eslint ./src",
-		"docs": "typedoc --readme none --excludeExternals --plugin typedoc-plugin-markdown --hideBreadcrumbs --out docs/ types/index.d.ts;",
 		"format": "prettier --write ./src/**/*",
-		"dev:server": "http-server -c-1 -p 8080 --cors ./site"
+		"dev:server": "http-server -c-1 -p 8080 --cors ./site",
+		"prepublishOnly": "npm run build && npm run docs"
 	},
 	"repository": {
 		"type": "git",
@@ -45,6 +49,7 @@
 		"rollup-plugin-terser": "^7.0.2",
 		"typedoc": "^0.23.14",
 		"typedoc-plugin-markdown": "^3.13.6",
+		"typedoc-theme-hierarchy": "^3.0.0",
 		"typescript": "^4.8.3"
 	}
 }

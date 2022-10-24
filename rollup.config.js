@@ -7,7 +7,7 @@ import { terser } from 'rollup-plugin-terser';
 
 export default [
 	{
-		input: 'src/index.js',
+		input: 'dist/index.js',
 		plugins: [
 			peerDepsExternal(),
 			replace({
@@ -23,20 +23,20 @@ export default [
 				format: 'umd',
 				name: 'ELIXR',
 				noConflict: true,
-				file: 'build/elixr.js',
+				file: 'dist/elixr.js',
 				indent: '\t',
 				sourcemap: true,
 			},
 			{
 				format: 'es',
-				file: 'build/elixr.module.js',
+				file: 'dist/elixr.module.js',
 				indent: '\t',
 				sourcemap: true,
 			},
 		],
 	},
 	{
-		input: 'src/index.js',
+		input: 'dist/index.js',
 		plugins: [
 			peerDepsExternal(),
 			replace({
@@ -53,13 +53,13 @@ export default [
 				format: 'umd',
 				name: 'ELIXR',
 				noConflict: true,
-				file: 'build/elixr.min.js',
+				file: 'dist/elixr.min.js',
 				indent: '\t',
 				sourcemap: true,
 			},
 			{
 				format: 'es',
-				file: 'build/elixr.module.min.js',
+				file: 'dist/elixr.module.min.js',
 				indent: '\t',
 				sourcemap: true,
 			},

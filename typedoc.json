@@ -1,5 +1,11 @@
 {
-	"$schema": "https://typedoc.org/schema.json",
-	"entryPoints": ["./src/index.d.ts"],
-	"out": "doc"
+  "entryPoints": ["src/index.ts"],
+  "entryPointStrategy": "expand",
+  "out": "docs",
+  "plugin": ["typedoc-theme-hierarchy"],
+  "theme": "hierarchy",
+  "tsconfig": "./tsconfig.json",
+  "name": "Elixr",
+	"excludeExternals": true,
+	"hideGenerator": true,
 }
