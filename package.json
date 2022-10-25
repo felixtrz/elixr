@@ -35,9 +35,9 @@
 	},
 	"devDependencies": {
 		"@rollup/plugin-commonjs": "^23.0.2",
-		"@rollup/plugin-json": "^4.1.0",
-		"@rollup/plugin-node-resolve": "^13.3.0",
-		"@rollup/plugin-replace": "^4.0.0",
+		"@rollup/plugin-json": "^5.0.1",
+		"@rollup/plugin-node-resolve": "^15.0.1",
+		"@rollup/plugin-replace": "^5.0.1",
 		"@types/three": "^0.144.0",
 		"eslint": "^8.23.0",
 		"eslint-config-prettier": "^8.5.0",

@@ -1,11 +1,13 @@
 {
   "entryPoints": ["src/index.ts"],
-  "entryPointStrategy": "expand",
+  "entryPointStrategy": "resolve",
   "out": "docs",
-  "plugin": ["typedoc-theme-hierarchy"],
-  "theme": "hierarchy",
+  // "plugin": ["typedoc-theme-hierarchy"],
+  // "theme": "hierarchy",
   "tsconfig": "./tsconfig.json",
   "name": "Elixr",
 	"excludeExternals": true,
 	"hideGenerator": true,
+	"excludePrivate": true,
+	"readme": "none",
 }

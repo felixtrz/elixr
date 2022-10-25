@@ -11,6 +11,7 @@ export default [
 		plugins: [
 			peerDepsExternal(),
 			replace({
+				preventAssignment: true,
 				'process.env.NODE_ENV': JSON.stringify('development'),
 				delimiters: ['', ''],
 			}),
@@ -40,6 +41,7 @@ export default [
 		plugins: [
 			peerDepsExternal(),
 			replace({
+				preventAssignment: true,
 				'process.env.NODE_ENV': JSON.stringify('production'),
 				delimiters: ['', ''],
 			}),
