@@ -13,13 +13,12 @@ const calculateRotationVector = (quat: THREE.Quaternion) => {
 	} else {
 		s = Math.sqrt(1 - quat.w * quat.w);
 	}
-	vec3.set(quat.x / s, quat.y / s, quat.z / s);
-	if (vec3.length() < 1e-6) {
-		vec3.set(0, 0, 0);
-	} else {
-		vec3.normalize().multiplyScalar(angle);
-	}
-	return vec3;
+	vec3
+		.set(quat.x / s, quat.y / s, quat.z / s)
+		.normalize()
+		.multiplyScalar(angle);
+
+	return isNaN(vec3.length()) ? new THREE.Vector3() : vec3;
 };
 
 const threeVec3toCannonVec3 = (vec3: THREE.Vector3) => {
@@ -127,7 +126,7 @@ export class RigidBodyPhysicsSystem extends GameSystem {
 				);
 				rigidBody._quaternionUpdate = null;
 			}
-			if (rigidBody._body.type == CANNON.BODY_TYPES.KINEMATIC) {
+			if (rigidBody._body.type === CANNON.BODY_TYPES.KINEMATIC) {
 				const deltaPosVec3 = gameObject
 					.getWorldPosition(new THREE.Vector3())
 					.sub(rigidBody.position);
