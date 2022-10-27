@@ -6,14 +6,23 @@ import {
 	RigidBodyComponent,
 } from './physics/PhysicsComponents';
 import { World, WorldOptions } from 'ecsy';
+import {
+	acceleratedRaycast,
+	computeBoundsTree,
+	disposeBoundsTree,
+} from 'three-mesh-bvh';
 
-import { ARButton } from 'three/examples/jsm/webxr/ARButton';
+import { ARButton } from 'three/examples/jsm/webxr/ARButton.js';
 import { GameComponentConstructor } from './GameComponent';
 import { GameSystemConstructor } from './GameSystem';
 import { GamepadWrapper } from 'gamepad-wrapper';
 import { RigidBodyPhysicsSystem } from './physics/RigidBodyPhysicsSystem';
-import { VRButton } from 'three/examples/jsm/webxr/VRButton';
-import { XRControllerModelFactory } from 'three/examples/jsm/webxr/XRControllerModelFactory';
+import { VRButton } from 'three/examples/jsm/webxr/VRButton.js';
+import { XRControllerModelFactory } from 'three/examples/jsm/webxr/XRControllerModelFactory.js';
+
+THREE.BufferGeometry.prototype.computeBoundsTree = computeBoundsTree;
+THREE.BufferGeometry.prototype.disposeBoundsTree = disposeBoundsTree;
+THREE.Mesh.prototype.raycast = acceleratedRaycast;
 
 export type ExtendedWorld = World & {
 	core: Core;

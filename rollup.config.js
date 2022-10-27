@@ -1,7 +1,6 @@
 import commonjs from '@rollup/plugin-commonjs';
 import json from '@rollup/plugin-json';
 import { nodeResolve } from '@rollup/plugin-node-resolve';
-import peerDepsExternal from 'rollup-plugin-peer-deps-external';
 import replace from '@rollup/plugin-replace';
 import { terser } from 'rollup-plugin-terser';
 
@@ -9,7 +8,6 @@ export default [
 	{
 		input: 'dist/index.js',
 		plugins: [
-			peerDepsExternal(),
 			replace({
 				preventAssignment: true,
 				'process.env.NODE_ENV': JSON.stringify('development'),
@@ -39,7 +37,6 @@ export default [
 	{
 		input: 'dist/index.js',
 		plugins: [
-			peerDepsExternal(),
 			replace({
 				preventAssignment: true,
 				'process.env.NODE_ENV': JSON.stringify('production'),

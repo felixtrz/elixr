@@ -20,4 +20,6 @@ export {
 
 export * as Physics from 'cannon-es';
 
+export * as THREE from 'three';
+
 export { Core } from './Core';
