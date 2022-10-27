@@ -15,6 +15,10 @@
 		"dev:server": "http-server -c-1 -p 8080 --cors ./site",
 		"prepublishOnly": "npm run build && npm run docs"
 	},
+	"pre-commit": [
+		"build",
+		"docs"
+	],
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/felixtrz/elixr.git"
@@ -41,6 +45,7 @@
 		"eslint": "^8.23.0",
 		"eslint-config-prettier": "^8.5.0",
 		"http-server": "^14.1.1",
+		"pre-commit": "^1.2.2",
 		"prettier": "^2.7.1",
 		"prettier-plugin-jsdoc": "^0.4.2",
 		"rollup-plugin-json": "^4.0.0",
