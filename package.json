@@ -13,11 +13,12 @@
 		"lint": "eslint ./src",
 		"format": "prettier --write ./src/**/*",
 		"dev:server": "http-server -c-1 -p 8080 --cors ./site",
-		"prepublishOnly": "npm run build && npm run docs"
+		"prepublishOnly": "npm run build && npm run docs",
+		"includedocs": "git add ./docs/*"
 	},
 	"pre-commit": [
-		"build",
-		"docs"
+		"prepublishOnly",
+		"includedocs"
 	],
 	"repository": {
 		"type": "git",
