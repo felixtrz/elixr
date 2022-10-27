@@ -1,8 +1,8 @@
 import * as CANNON from 'cannon-es';
-import * as THREE from 'three';
 
 import { ExtendedBody } from './RigidBodyPhysicsSystem';
 import { GameComponent } from '../GameComponent';
+import { THREE } from 'src';
 import { Types } from 'ecsy';
 
 export class PhysicsComponent extends GameComponent<any> {

@@ -1,8 +1,7 @@
-import * as THREE from 'three';
-
 import { GameComponent, GameComponentConstructor } from './GameComponent';
 
 import { Entity } from 'ecsy';
+import { THREE } from 'src';
 
 export type ExtendedEntity = Entity & {
 	gameObject: GameObject;
@@ -11,7 +10,12 @@ export type ExtendedEntity = Entity & {
 const UNINITIALIZED_GAMEOBJECT_ERROR =
 	'Cannot perform action on uninitialized GameObject';
 
-export class GameObject extends THREE.Group {
+/**
+ * This class extends THREE.Object3D
+ *
+ * @see https://threejs.org/docs/#api/en/core/Object3D
+ */
+export class GameObject extends THREE.Object3D {
 	private ecsyEntity: ExtendedEntity;
 
 	_init(ecsyEntity: ExtendedEntity): void {
