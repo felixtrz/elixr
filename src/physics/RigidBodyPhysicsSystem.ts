@@ -2,7 +2,7 @@ import * as CANNON from 'cannon-es';
 
 import { GameSystem } from '../GameSystem';
 import { RigidBodyComponent } from './PhysicsComponents';
-import { THREE } from 'src';
+import { THREE } from '../index';
 
 const calculateRotationVector = (quat: THREE.Quaternion) => {
 	const vec3 = new THREE.Vector3();

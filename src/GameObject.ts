@@ -1,14 +1,11 @@
 import { GameComponent, GameComponentConstructor } from './GameComponent';
 
 import { Entity } from 'ecsy';
-import { THREE } from 'src';
+import { THREE } from './index';
 
 export type ExtendedEntity = Entity & {
 	gameObject: GameObject;
 };
-
-const UNINITIALIZED_GAMEOBJECT_ERROR =
-	'Cannot perform action on uninitialized GameObject';
 
 /**
  * This class extends THREE.Object3D
@@ -16,17 +13,26 @@ const UNINITIALIZED_GAMEOBJECT_ERROR =
  * @see https://threejs.org/docs/#api/en/core/Object3D
  */
 export class GameObject extends THREE.Object3D {
-	private ecsyEntity: ExtendedEntity;
+	static UNINITIALIZED_GAMEOBJECT_ERROR =
+		'Cannot perform action on uninitialized GameObject';
+
+	private _ecsyEntity: ExtendedEntity;
+	protected _onInit() {}
 
 	_init(ecsyEntity: ExtendedEntity): void {
-		this.ecsyEntity = ecsyEntity;
-		this.ecsyEntity.gameObject = this;
+		this._ecsyEntity = ecsyEntity;
+		this._ecsyEntity.gameObject = this;
+		this._onInit();
+	}
+
+	get isInitialized() {
+		return this._ecsyEntity != null;
 	}
 
 	duplicate(): GameObject {
-		if (!this.ecsyEntity) throw UNINITIALIZED_GAMEOBJECT_ERROR;
+		if (!this.isInitialized) throw GameObject.UNINITIALIZED_GAMEOBJECT_ERROR;
 		const newGameObject = super.clone(true);
-		const newEntity = this.ecsyEntity.clone();
+		const newEntity = this._ecsyEntity.clone();
 		newGameObject._init(newEntity);
 		return newGameObject;
 	}
@@ -35,8 +41,8 @@ export class GameObject extends THREE.Object3D {
 		GameComponent: GameComponentConstructor<GameComponent<any>>,
 		values?: Partial<Omit<GameComponent<any>, keyof GameComponent<any>>>,
 	): GameComponent<any> {
-		if (!this.ecsyEntity) throw UNINITIALIZED_GAMEOBJECT_ERROR;
-		this.ecsyEntity.addComponent(GameComponent, values);
+		if (!this.isInitialized) throw GameObject.UNINITIALIZED_GAMEOBJECT_ERROR;
+		this._ecsyEntity.addComponent(GameComponent, values);
 		const newComponent = this.getMutableComponent(GameComponent);
 		newComponent.gameObject = this;
 		return newComponent;
@@ -46,66 +52,66 @@ export class GameObject extends THREE.Object3D {
 		GameComponent: GameComponentConstructor<GameComponent<any>>,
 		includeRemoved?: boolean,
 	): Readonly<GameComponent<any>> {
-		if (!this.ecsyEntity) throw UNINITIALIZED_GAMEOBJECT_ERROR;
-		return this.ecsyEntity.getComponent(GameComponent, includeRemoved);
+		if (!this.isInitialized) throw GameObject.UNINITIALIZED_GAMEOBJECT_ERROR;
+		return this._ecsyEntity.getComponent(GameComponent, includeRemoved);
 	}
 
 	getMutableComponent(
 		GameComponent: GameComponentConstructor<GameComponent<any>>,
 	): GameComponent<any> {
-		if (!this.ecsyEntity) throw UNINITIALIZED_GAMEOBJECT_ERROR;
-		return this.ecsyEntity.getMutableComponent(GameComponent);
+		if (!this.isInitialized) throw GameObject.UNINITIALIZED_GAMEOBJECT_ERROR;
+		return this._ecsyEntity.getMutableComponent(GameComponent);
 	}
 
 	getComponentTypes() {
-		if (!this.ecsyEntity) throw UNINITIALIZED_GAMEOBJECT_ERROR;
-		return this.ecsyEntity.getComponentTypes();
+		if (!this.isInitialized) throw GameObject.UNINITIALIZED_GAMEOBJECT_ERROR;
+		return this._ecsyEntity.getComponentTypes();
 	}
 
 	getComponents() {
-		if (!this.ecsyEntity) throw UNINITIALIZED_GAMEOBJECT_ERROR;
-		return this.ecsyEntity.getComponents();
+		if (!this.isInitialized) throw GameObject.UNINITIALIZED_GAMEOBJECT_ERROR;
+		return this._ecsyEntity.getComponents();
 	}
 
 	getComponentsToRemove() {
-		if (!this.ecsyEntity) throw UNINITIALIZED_GAMEOBJECT_ERROR;
-		return this.ecsyEntity.getComponentsToRemove();
+		if (!this.isInitialized) throw GameObject.UNINITIALIZED_GAMEOBJECT_ERROR;
+		return this._ecsyEntity.getComponentsToRemove();
 	}
 
 	getRemovedComponent(
 		GameComponent: GameComponentConstructor<GameComponent<any>>,
 	): Readonly<GameComponent<any>> {
-		if (!this.ecsyEntity) throw UNINITIALIZED_GAMEOBJECT_ERROR;
-		return this.ecsyEntity.getRemovedComponent(GameComponent);
+		if (!this.isInitialized) throw GameObject.UNINITIALIZED_GAMEOBJECT_ERROR;
+		return this._ecsyEntity.getRemovedComponent(GameComponent);
 	}
 
 	hasAllComponents(GameComponents: GameComponentConstructor<any>[]): boolean {
-		if (!this.ecsyEntity) throw UNINITIALIZED_GAMEOBJECT_ERROR;
-		return this.ecsyEntity.hasAllComponents(GameComponents);
+		if (!this.isInitialized) throw GameObject.UNINITIALIZED_GAMEOBJECT_ERROR;
+		return this._ecsyEntity.hasAllComponents(GameComponents);
 	}
 
 	hasAnyComponents(GameComponents: GameComponentConstructor<any>[]): boolean {
-		if (!this.ecsyEntity) throw UNINITIALIZED_GAMEOBJECT_ERROR;
-		return this.ecsyEntity.hasAnyComponents(GameComponents);
+		if (!this.isInitialized) throw GameObject.UNINITIALIZED_GAMEOBJECT_ERROR;
+		return this._ecsyEntity.hasAnyComponents(GameComponents);
 	}
 
 	hasComponent(GameComponent: GameComponentConstructor<any>): boolean {
-		if (!this.ecsyEntity) throw UNINITIALIZED_GAMEOBJECT_ERROR;
-		return this.ecsyEntity.hasComponent(GameComponent);
+		if (!this.isInitialized) throw GameObject.UNINITIALIZED_GAMEOBJECT_ERROR;
+		return this._ecsyEntity.hasComponent(GameComponent);
 	}
 
 	removeAllComponents(forceImmediate: boolean): void {
-		if (!this.ecsyEntity) throw UNINITIALIZED_GAMEOBJECT_ERROR;
-		this.ecsyEntity.removeAllComponents(forceImmediate);
+		if (!this.isInitialized) throw GameObject.UNINITIALIZED_GAMEOBJECT_ERROR;
+		this._ecsyEntity.removeAllComponents(forceImmediate);
 	}
 
 	removeComponent(
 		GameComponent: GameComponentConstructor<any>,
 		forceImmediate: boolean,
 	): void {
-		if (!this.ecsyEntity) throw UNINITIALIZED_GAMEOBJECT_ERROR;
-		const component = this.ecsyEntity.getMutableComponent(GameComponent);
+		if (!this.isInitialized) throw GameObject.UNINITIALIZED_GAMEOBJECT_ERROR;
+		const component = this._ecsyEntity.getMutableComponent(GameComponent);
 		if (component.onRemove) component.onRemove();
-		this.ecsyEntity.removeComponent(GameComponent, forceImmediate);
+		this._ecsyEntity.removeComponent(GameComponent, forceImmediate);
 	}
 }

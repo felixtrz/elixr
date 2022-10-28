@@ -1,4 +1,4 @@
-import { THREE } from 'src';
+import { THREE } from '../index';
 
 /**
  * This class extends THREE.Color

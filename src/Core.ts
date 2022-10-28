@@ -10,7 +10,7 @@ import { GameComponentConstructor } from './GameComponent';
 import { GameSystemConstructor } from './GameSystem';
 import { GamepadWrapper } from 'gamepad-wrapper';
 import { RigidBodyPhysicsSystem } from './physics/RigidBodyPhysicsSystem';
-import { THREE } from 'src';
+import { THREE } from './index';
 import { VRButton } from 'three/examples/jsm/webxr/VRButton.js';
 import { XRControllerModelFactory } from 'three/examples/jsm/webxr/XRControllerModelFactory.js';
 
@@ -54,6 +54,7 @@ export class Core {
 
 		this.game = this.createEmptyGameObject();
 		this.registerGameComponent(PhysicsComponent);
+		this.registerGameComponent(RigidBodyComponent);
 		this.game.addComponent(PhysicsComponent, {
 			gravity: new THREE.Vector3(0, -9.8, 0),
 		});
@@ -196,6 +197,14 @@ export class Core {
 		return gameObject;
 	}
 
+	addGameObject(gameObject: GameObject) {
+		if (!gameObject.isInitialized) {
+			const ecsyEntity = this._ecsyWorld.createEntity();
+			this.scene.add(gameObject);
+			gameObject._init(ecsyEntity as ExtendedEntity);
+		}
+	}
+
 	play() {
 		this._ecsyWorld.play();
 	}
@@ -205,7 +214,6 @@ export class Core {
 	}
 
 	enablePhysics() {
-		this._ecsyWorld.registerComponent(RigidBodyComponent);
 		this._ecsyWorld.registerSystem(RigidBodyPhysicsSystem, {
 			priority: Infinity,
 		});

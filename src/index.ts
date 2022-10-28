@@ -51,3 +51,12 @@ export { Matrix3, Matrix4 } from './math/Matrices';
 export { Box2, Box3 } from './math/Boxes';
 export { Color } from './math/Color';
 export { Euler } from './math/Euler';
+
+/* -------------------------------------------------------------------------- */
+/*                              Prototype Objects                             */
+/* -------------------------------------------------------------------------- */
+export { PrimitiveObject, BODY_TYPES } from './prototypes/PrimitiveObject';
+export { CubeObject } from './prototypes/CubeObject';
+export { SphereObject } from './prototypes/SphereObject';
+export { CylinderObject } from './prototypes/CylinderObject';
+export { ConeObject } from './prototypes/ConeObject';

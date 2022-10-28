@@ -1,4 +1,4 @@
-import { THREE } from 'src';
+import { THREE } from '../index';
 import { Vector3 } from './Vectors';
 
 export class Quaternion extends THREE.Quaternion {
