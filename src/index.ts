@@ -55,8 +55,10 @@ export { Euler } from './math/Euler';
 /* -------------------------------------------------------------------------- */
 /*                              Prototype Objects                             */
 /* -------------------------------------------------------------------------- */
-export { PrimitiveObject, BODY_TYPES } from './prototypes/PrimitiveObject';
-export { CubeObject } from './prototypes/CubeObject';
-export { SphereObject } from './prototypes/SphereObject';
-export { CylinderObject } from './prototypes/CylinderObject';
-export { ConeObject } from './prototypes/ConeObject';
+export { BODY_TYPES, PhysicsObject } from './objects/PhysicsObject';
+export { PrimitiveObject } from './objects/PrimitiveObject';
+export { CubeObject } from './objects/CubeObject';
+export { SphereObject } from './objects/SphereObject';
+export { CylinderObject } from './objects/CylinderObject';
+export { ConeObject } from './objects/ConeObject';
+export { ComplexObject } from './objects/ComplexObject';

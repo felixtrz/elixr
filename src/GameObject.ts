@@ -17,12 +17,18 @@ export class GameObject extends THREE.Object3D {
 		'Cannot perform action on uninitialized GameObject';
 
 	private _ecsyEntity: ExtendedEntity;
-	protected _onInit() {}
+	private _componentsToAdd: {
+		constructor: GameComponentConstructor<GameComponent<any>>;
+		values: Partial<Omit<GameComponent<any>, keyof GameComponent<any>>>;
+	}[] = [];
 
 	_init(ecsyEntity: ExtendedEntity): void {
 		this._ecsyEntity = ecsyEntity;
 		this._ecsyEntity.gameObject = this;
-		this._onInit();
+		this._componentsToAdd.forEach((component) => {
+			this._ecsyEntity.addComponent(component.constructor, component.values);
+		});
+		this._componentsToAdd = null;
 	}
 
 	get isInitialized() {
@@ -40,12 +46,17 @@ export class GameObject extends THREE.Object3D {
 	addComponent(
 		GameComponent: GameComponentConstructor<GameComponent<any>>,
 		values?: Partial<Omit<GameComponent<any>, keyof GameComponent<any>>>,
-	): GameComponent<any> {
-		if (!this.isInitialized) throw GameObject.UNINITIALIZED_GAMEOBJECT_ERROR;
-		this._ecsyEntity.addComponent(GameComponent, values);
-		const newComponent = this.getMutableComponent(GameComponent);
-		newComponent.gameObject = this;
-		return newComponent;
+	) {
+		if (!this.isInitialized) {
+			this._componentsToAdd.push({
+				constructor: GameComponent,
+				values: values,
+			});
+		} else {
+			this._ecsyEntity.addComponent(GameComponent, values);
+			const newComponent = this.getMutableComponent(GameComponent);
+			newComponent.gameObject = this;
+		}
 	}
 
 	getComponent(
@@ -86,17 +97,17 @@ export class GameObject extends THREE.Object3D {
 	}
 
 	hasAllComponents(GameComponents: GameComponentConstructor<any>[]): boolean {
-		if (!this.isInitialized) throw GameObject.UNINITIALIZED_GAMEOBJECT_ERROR;
+		if (!this.isInitialized) return false;
 		return this._ecsyEntity.hasAllComponents(GameComponents);
 	}
 
 	hasAnyComponents(GameComponents: GameComponentConstructor<any>[]): boolean {
-		if (!this.isInitialized) throw GameObject.UNINITIALIZED_GAMEOBJECT_ERROR;
+		if (!this.isInitialized) return false;
 		return this._ecsyEntity.hasAnyComponents(GameComponents);
 	}
 
 	hasComponent(GameComponent: GameComponentConstructor<any>): boolean {
-		if (!this.isInitialized) throw GameObject.UNINITIALIZED_GAMEOBJECT_ERROR;
+		if (!this.isInitialized) return false;
 		return this._ecsyEntity.hasComponent(GameComponent);
 	}
 

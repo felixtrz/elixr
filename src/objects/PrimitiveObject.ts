@@ -1,10 +1,5 @@
-import {
-	Color,
-	GameObject,
-	Physics,
-	RigidBodyComponent,
-	THREE,
-} from '../index';
+import { Color, THREE } from '../index';
+import { PhysicsObject, PhysicsOptions } from './PhysicsObject';
 
 export type PrimitiveMaterialOptions = {
 	color?: number | string;
@@ -12,32 +7,16 @@ export type PrimitiveMaterialOptions = {
 	opacity?: number;
 };
 
-export type PrimitivePhysicsOptions = {
-	hasPhysics?: boolean;
-	mass?: number;
-	type?: BODY_TYPES;
-};
-
-export enum BODY_TYPES {
-	STATIC = Physics.BODY_TYPES.STATIC,
-	DYNAMIC = Physics.BODY_TYPES.DYNAMIC,
-	KINEMATIC = Physics.BODY_TYPES.KINEMATIC,
-}
-
-export class PrimitiveObject extends GameObject {
+export class PrimitiveObject extends PhysicsObject {
 	protected _mesh: THREE.Mesh;
 	protected _material: THREE.MeshStandardMaterial | THREE.MeshBasicMaterial;
 	protected _geometry: THREE.BufferGeometry;
-	protected _hasPhysics: boolean;
-	protected _mass: number;
-	protected _type: BODY_TYPES;
-	protected _rigidBody?: RigidBodyComponent;
 
 	constructor(
 		materialOptions: PrimitiveMaterialOptions = {},
-		physicsOptions: PrimitivePhysicsOptions = {},
+		physicsOptions: PhysicsOptions = {},
 	) {
-		super();
+		super(physicsOptions);
 		const threeMatOptions = {
 			color: materialOptions.color ?? 0xffffff,
 			transparent: materialOptions.opacity < 1,
@@ -46,10 +25,6 @@ export class PrimitiveObject extends GameObject {
 		this._material = materialOptions.useBasicMaterial
 			? new THREE.MeshBasicMaterial(threeMatOptions)
 			: new THREE.MeshStandardMaterial(threeMatOptions);
-
-		this._hasPhysics = Boolean(physicsOptions.hasPhysics);
-		this._mass = physicsOptions.mass ?? 1;
-		this._type = physicsOptions.type ?? BODY_TYPES.DYNAMIC;
 	}
 
 	get color() {

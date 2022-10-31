@@ -1,4 +1,4 @@
-<!DOCTYPE html><html class="default" lang="en"><head><meta charSet="utf-8"/><meta http-equiv="x-ua-compatible" content="IE=edge"/><title>CubeObject | Elixr</title><meta name="description" content="Documentation for Elixr"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="../assets/style.css"/><link rel="stylesheet" href="../assets/highlight.css"/><script async src="../assets/search.js" id="search-script"></script></head><body><script>document.documentElement.dataset.theme = localStorage.getItem("tsd-theme") || "os"</script><header class="tsd-page-toolbar">
+<!DOCTYPE html><html class="default" lang="en"><head><meta charSet="utf-8"/><meta http-equiv="x-ua-compatible" content="IE=edge"/><title>PhysicsObject | Elixr</title><meta name="description" content="Documentation for Elixr"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="../assets/style.css"/><link rel="stylesheet" href="../assets/highlight.css"/><script async src="../assets/search.js" id="search-script"></script></head><body><script>document.documentElement.dataset.theme = localStorage.getItem("tsd-theme") || "os"</script><header class="tsd-page-toolbar">
 <div class="tsd-toolbar-contents container">
 <div class="table-cell" id="tsd-search" data-base="..">
 <div class="field"><label for="tsd-search-field" class="tsd-widget search no-caption"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M15.7824 13.833L12.6666 10.7177C12.5259 10.5771 12.3353 10.499 12.1353 10.499H11.6259C12.4884 9.39596 13.001 8.00859 13.001 6.49937C13.001 2.90909 10.0914 0 6.50048 0C2.90959 0 0 2.90909 0 6.49937C0 10.0896 2.90959 12.9987 6.50048 12.9987C8.00996 12.9987 9.39756 12.4863 10.5008 11.6239V12.1332C10.5008 12.3332 10.5789 12.5238 10.7195 12.6644L13.8354 15.7797C14.1292 16.0734 14.6042 16.0734 14.8948 15.7797L15.7793 14.8954C16.0731 14.6017 16.0731 14.1267 15.7824 13.833ZM6.50048 10.499C4.29094 10.499 2.50018 8.71165 2.50018 6.49937C2.50018 4.29021 4.28781 2.49976 6.50048 2.49976C8.71001 2.49976 10.5008 4.28708 10.5008 6.49937C10.5008 8.70852 8.71314 10.499 6.50048 10.499Z" fill="var(--color-text)"></path></svg></label><input type="text" id="tsd-search-field" aria-label="Search"/></div>
@@ -11,8 +11,8 @@
 <div class="tsd-page-title">
 <ul class="tsd-breadcrumb">
 <li><a href="../index.html">Elixr</a></li>
-<li><a href="CubeObject.html">CubeObject</a></li></ul>
-<h1>Class CubeObject</h1></div>
+<li><a href="PhysicsObject.html">PhysicsObject</a></li></ul>
+<h1>Class PhysicsObject</h1></div>
 <section class="tsd-panel tsd-comment">
 <div class="tsd-comment tsd-typography"><p>This class extends THREE.Object3D</p>
 
@@ -21,13 +21,18 @@
 <section class="tsd-panel tsd-hierarchy">
 <h4>Hierarchy</h4>
 <ul class="tsd-hierarchy">
-<li><a href="PrimitiveObject.html" class="tsd-signature-type" data-tsd-kind="Class">PrimitiveObject</a>
+<li><a href="GameObject.html" class="tsd-signature-type" data-tsd-kind="Class">GameObject</a>
 <section class="tsd-panel tsd-hierarchy">
 <h4>Hierarchy</h4>
 <ul class="tsd-hierarchy">
-<li><span class="target">CubeObject</span></li></ul></section></li></ul></section><aside class="tsd-sources">
+<li><span class="target">PhysicsObject</span>
+<section class="tsd-panel tsd-hierarchy">
+<h4>Hierarchy</h4>
+<ul class="tsd-hierarchy">
+<li><a href="PrimitiveObject.html" class="tsd-signature-type" data-tsd-kind="Class">PrimitiveObject</a></li>
+<li><a href="ComplexObject.html" class="tsd-signature-type" data-tsd-kind="Class">ComplexObject</a></li></ul></section></li></ul></section></li></ul></section><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/felixtrz/elixr/blob/f174f15/src/objects/CubeObject.ts#L5">src/objects/CubeObject.ts:5</a></li></ul></aside>
+<li>Defined in <a href="https://github.com/felixtrz/elixr/blob/f174f15/src/objects/PhysicsObject.ts#L17">src/objects/PhysicsObject.ts:17</a></li></ul></aside>
 <section class="tsd-panel-group tsd-index-group">
 <section class="tsd-panel tsd-index-panel">
 <details class="tsd-index-content tsd-index-accordion" open><summary class="tsd-accordion-summary tsd-index-summary">
@@ -35,119 +40,69 @@
 <div class="tsd-accordion-details">
 <section class="tsd-index-section">
 <h3 class="tsd-index-heading">Constructors</h3>
-<div class="tsd-index-list"><a href="CubeObject.html#constructor" class="tsd-index-link tsd-kind-constructor tsd-parent-kind-class"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><rect fill="var(--color-icon-background)" stroke="#4D7FFF" stroke-width="1.5" x="1" y="1" width="22" height="22" rx="12" id="icon-512-path"></rect><path d="M11.898 16.1201C11.098 16.1201 10.466 15.8961 10.002 15.4481C9.53803 15.0001 9.30603 14.3841 9.30603 13.6001V9.64012C9.30603 8.85612 9.53803 8.24012 10.002 7.79212C10.466 7.34412 11.098 7.12012 11.898 7.12012C12.682 7.12012 13.306 7.34812 13.77 7.80412C14.234 8.25212 14.466 8.86412 14.466 9.64012H13.386C13.386 9.14412 13.254 8.76412 12.99 8.50012C12.734 8.22812 12.37 8.09212 11.898 8.09212C11.426 8.09212 11.054 8.22412 10.782 8.48812C10.518 8.75212 10.386 9.13212 10.386 9.62812V13.6001C10.386 14.0961 10.518 14.4801 10.782 14.7521C11.054 15.0161 11.426 15.1481 11.898 15.1481C12.37 15.1481 12.734 15.0161 12.99 14.7521C13.254 14.4801 13.386 14.0961 13.386 13.6001H14.466C14.466 14.3761 14.234 14.9921 13.77 15.4481C13.306 15.8961 12.682 16.1201 11.898 16.1201Z" fill="var(--color-text)" id="icon-512-text"></path></svg><span>constructor</span></a>
+<div class="tsd-index-list"><a href="PhysicsObject.html#constructor" class="tsd-index-link tsd-kind-constructor tsd-parent-kind-class"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><rect fill="var(--color-icon-background)" stroke="#4D7FFF" stroke-width="1.5" x="1" y="1" width="22" height="22" rx="12" id="icon-512-path"></rect><path d="M11.898 16.1201C11.098 16.1201 10.466 15.8961 10.002 15.4481C9.53803 15.0001 9.30603 14.3841 9.30603 13.6001V9.64012C9.30603 8.85612 9.53803 8.24012 10.002 7.79212C10.466 7.34412 11.098 7.12012 11.898 7.12012C12.682 7.12012 13.306 7.34812 13.77 7.80412C14.234 8.25212 14.466 8.86412 14.466 9.64012H13.386C13.386 9.14412 13.254 8.76412 12.99 8.50012C12.734 8.22812 12.37 8.09212 11.898 8.09212C11.426 8.09212 11.054 8.22412 10.782 8.48812C10.518 8.75212 10.386 9.13212 10.386 9.62812V13.6001C10.386 14.0961 10.518 14.4801 10.782 14.7521C11.054 15.0161 11.426 15.1481 11.898 15.1481C12.37 15.1481 12.734 15.0161 12.99 14.7521C13.254 14.4801 13.386 14.0961 13.386 13.6001H14.466C14.466 14.3761 14.234 14.9921 13.77 15.4481C13.306 15.8961 12.682 16.1201 11.898 16.1201Z" fill="var(--color-text)" id="icon-512-text"></path></svg><span>constructor</span></a>
 </div></section>
 <section class="tsd-index-section">
 <h3 class="tsd-index-heading">Properties</h3>
-<div class="tsd-index-list"><a href="CubeObject.html#UNINITIALIZED_GAMEOBJECT_ERROR" class="tsd-index-link tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><rect fill="var(--color-icon-background)" stroke="#FF984D" stroke-width="1.5" x="1" y="1" width="22" height="22" rx="12" id="icon-1024-path"></rect><path d="M9.354 16V7.24H12.174C12.99 7.24 13.638 7.476 14.118 7.948C14.606 8.412 14.85 9.036 14.85 9.82C14.85 10.604 14.606 11.232 14.118 11.704C13.638 12.168 12.99 12.4 12.174 12.4H10.434V16H9.354ZM10.434 11.428H12.174C12.646 11.428 13.022 11.284 13.302 10.996C13.59 10.7 13.734 10.308 13.734 9.82C13.734 9.324 13.59 8.932 13.302 8.644C13.022 8.356 12.646 8.212 12.174 8.212H10.434V11.428Z" fill="var(--color-text)" id="icon-1024-text"></path></svg><span>UNINITIALIZED_<wbr/>GAMEOBJECT_<wbr/>ERROR</span></a>
+<div class="tsd-index-list"><a href="PhysicsObject.html#UNINITIALIZED_GAMEOBJECT_ERROR" class="tsd-index-link tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><rect fill="var(--color-icon-background)" stroke="#FF984D" stroke-width="1.5" x="1" y="1" width="22" height="22" rx="12" id="icon-1024-path"></rect><path d="M9.354 16V7.24H12.174C12.99 7.24 13.638 7.476 14.118 7.948C14.606 8.412 14.85 9.036 14.85 9.82C14.85 10.604 14.606 11.232 14.118 11.704C13.638 12.168 12.99 12.4 12.174 12.4H10.434V16H9.354ZM10.434 11.428H12.174C12.646 11.428 13.022 11.284 13.302 10.996C13.59 10.7 13.734 10.308 13.734 9.82C13.734 9.324 13.59 8.932 13.302 8.644C13.022 8.356 12.646 8.212 12.174 8.212H10.434V11.428Z" fill="var(--color-text)" id="icon-1024-text"></path></svg><span>UNINITIALIZED_<wbr/>GAMEOBJECT_<wbr/>ERROR</span></a>
 </div></section>
 <section class="tsd-index-section">
 <h3 class="tsd-index-heading">Accessors</h3>
-<div class="tsd-index-list"><a href="CubeObject.html#color" class="tsd-index-link tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><rect fill="var(--color-icon-background)" stroke="#FF4D4D" stroke-width="1.5" x="1" y="1" width="22" height="22" rx="12" id="icon-262144-path"></rect><path d="M8.85 16L11.13 7.24H12.582L14.85 16H13.758L13.182 13.672H10.53L9.954 16H8.85ZM10.746 12.76H12.954L12.282 10.06C12.154 9.548 12.054 9.12 11.982 8.776C11.91 8.432 11.866 8.208 11.85 8.104C11.834 8.208 11.79 8.432 11.718 8.776C11.646 9.12 11.546 9.544 11.418 10.048L10.746 12.76Z" fill="var(--color-text)" id="icon-262144-text"></path></svg><span>color</span></a>
-<a href="CubeObject.html#isInitialized" class="tsd-index-link tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-262144-path"></use><use href="#icon-262144-text"></use></svg><span>is<wbr/>Initialized</span></a>
-<a href="CubeObject.html#opacity" class="tsd-index-link tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-262144-path"></use><use href="#icon-262144-text"></use></svg><span>opacity</span></a>
+<div class="tsd-index-list"><a href="PhysicsObject.html#isInitialized" class="tsd-index-link tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><rect fill="var(--color-icon-background)" stroke="#FF4D4D" stroke-width="1.5" x="1" y="1" width="22" height="22" rx="12" id="icon-262144-path"></rect><path d="M8.85 16L11.13 7.24H12.582L14.85 16H13.758L13.182 13.672H10.53L9.954 16H8.85ZM10.746 12.76H12.954L12.282 10.06C12.154 9.548 12.054 9.12 11.982 8.776C11.91 8.432 11.866 8.208 11.85 8.104C11.834 8.208 11.79 8.432 11.718 8.776C11.646 9.12 11.546 9.544 11.418 10.048L10.746 12.76Z" fill="var(--color-text)" id="icon-262144-text"></path></svg><span>is<wbr/>Initialized</span></a>
 </div></section>
 <section class="tsd-index-section">
 <h3 class="tsd-index-heading">Methods</h3>
-<div class="tsd-index-list"><a href="CubeObject.html#_init" class="tsd-index-link tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><rect fill="var(--color-icon-background)" stroke="#FF4DB8" stroke-width="1.5" x="1" y="1" width="22" height="22" rx="12" id="icon-2048-path"></rect><path d="M9.162 16V7.24H10.578L11.514 10.072C11.602 10.328 11.674 10.584 11.73 10.84C11.794 11.088 11.842 11.28 11.874 11.416C11.906 11.28 11.954 11.088 12.018 10.84C12.082 10.584 12.154 10.324 12.234 10.06L13.122 7.24H14.538V16H13.482V12.82C13.482 12.468 13.49 12.068 13.506 11.62C13.53 11.172 13.558 10.716 13.59 10.252C13.622 9.78 13.654 9.332 13.686 8.908C13.726 8.476 13.762 8.1 13.794 7.78L12.366 12.16H11.334L9.894 7.78C9.934 8.092 9.97 8.456 10.002 8.872C10.042 9.28 10.078 9.716 10.11 10.18C10.142 10.636 10.166 11.092 10.182 11.548C10.206 12.004 10.218 12.428 10.218 12.82V16H9.162Z" fill="var(--color-text)" id="icon-2048-text"></path></svg><span>_init</span></a>
-<a href="CubeObject.html#addComponent" class="tsd-index-link tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>add<wbr/>Component</span></a>
-<a href="CubeObject.html#duplicate" class="tsd-index-link tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>duplicate</span></a>
-<a href="CubeObject.html#generateConvexBodyFromGeometry" class="tsd-index-link tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>generate<wbr/>Convex<wbr/>Body<wbr/>From<wbr/>Geometry</span></a>
-<a href="CubeObject.html#getComponent" class="tsd-index-link tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>get<wbr/>Component</span></a>
-<a href="CubeObject.html#getComponentTypes" class="tsd-index-link tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>get<wbr/>Component<wbr/>Types</span></a>
-<a href="CubeObject.html#getComponents" class="tsd-index-link tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>get<wbr/>Components</span></a>
-<a href="CubeObject.html#getComponentsToRemove" class="tsd-index-link tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>get<wbr/>Components<wbr/>To<wbr/>Remove</span></a>
-<a href="CubeObject.html#getMutableComponent" class="tsd-index-link tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>get<wbr/>Mutable<wbr/>Component</span></a>
-<a href="CubeObject.html#getRemovedComponent" class="tsd-index-link tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>get<wbr/>Removed<wbr/>Component</span></a>
-<a href="CubeObject.html#hasAllComponents" class="tsd-index-link tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>has<wbr/>All<wbr/>Components</span></a>
-<a href="CubeObject.html#hasAnyComponents" class="tsd-index-link tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>has<wbr/>Any<wbr/>Components</span></a>
-<a href="CubeObject.html#hasComponent" class="tsd-index-link tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>has<wbr/>Component</span></a>
-<a href="CubeObject.html#removeAllComponents" class="tsd-index-link tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>remove<wbr/>All<wbr/>Components</span></a>
-<a href="CubeObject.html#removeComponent" class="tsd-index-link tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>remove<wbr/>Component</span></a>
+<div class="tsd-index-list"><a href="PhysicsObject.html#_init" class="tsd-index-link tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><rect fill="var(--color-icon-background)" stroke="#FF4DB8" stroke-width="1.5" x="1" y="1" width="22" height="22" rx="12" id="icon-2048-path"></rect><path d="M9.162 16V7.24H10.578L11.514 10.072C11.602 10.328 11.674 10.584 11.73 10.84C11.794 11.088 11.842 11.28 11.874 11.416C11.906 11.28 11.954 11.088 12.018 10.84C12.082 10.584 12.154 10.324 12.234 10.06L13.122 7.24H14.538V16H13.482V12.82C13.482 12.468 13.49 12.068 13.506 11.62C13.53 11.172 13.558 10.716 13.59 10.252C13.622 9.78 13.654 9.332 13.686 8.908C13.726 8.476 13.762 8.1 13.794 7.78L12.366 12.16H11.334L9.894 7.78C9.934 8.092 9.97 8.456 10.002 8.872C10.042 9.28 10.078 9.716 10.11 10.18C10.142 10.636 10.166 11.092 10.182 11.548C10.206 12.004 10.218 12.428 10.218 12.82V16H9.162Z" fill="var(--color-text)" id="icon-2048-text"></path></svg><span>_init</span></a>
+<a href="PhysicsObject.html#addComponent" class="tsd-index-link tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>add<wbr/>Component</span></a>
+<a href="PhysicsObject.html#duplicate" class="tsd-index-link tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>duplicate</span></a>
+<a href="PhysicsObject.html#generateConvexBodyFromGeometry" class="tsd-index-link tsd-kind-method tsd-parent-kind-class"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>generate<wbr/>Convex<wbr/>Body<wbr/>From<wbr/>Geometry</span></a>
+<a href="PhysicsObject.html#getComponent" class="tsd-index-link tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>get<wbr/>Component</span></a>
+<a href="PhysicsObject.html#getComponentTypes" class="tsd-index-link tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>get<wbr/>Component<wbr/>Types</span></a>
+<a href="PhysicsObject.html#getComponents" class="tsd-index-link tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>get<wbr/>Components</span></a>
+<a href="PhysicsObject.html#getComponentsToRemove" class="tsd-index-link tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>get<wbr/>Components<wbr/>To<wbr/>Remove</span></a>
+<a href="PhysicsObject.html#getMutableComponent" class="tsd-index-link tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>get<wbr/>Mutable<wbr/>Component</span></a>
+<a href="PhysicsObject.html#getRemovedComponent" class="tsd-index-link tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>get<wbr/>Removed<wbr/>Component</span></a>
+<a href="PhysicsObject.html#hasAllComponents" class="tsd-index-link tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>has<wbr/>All<wbr/>Components</span></a>
+<a href="PhysicsObject.html#hasAnyComponents" class="tsd-index-link tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>has<wbr/>Any<wbr/>Components</span></a>
+<a href="PhysicsObject.html#hasComponent" class="tsd-index-link tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>has<wbr/>Component</span></a>
+<a href="PhysicsObject.html#removeAllComponents" class="tsd-index-link tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>remove<wbr/>All<wbr/>Components</span></a>
+<a href="PhysicsObject.html#removeComponent" class="tsd-index-link tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>remove<wbr/>Component</span></a>
 </div></section></div></details></section></section>
 <section class="tsd-panel-group tsd-member-group">
 <h2>Constructors</h2>
 <section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class"><a id="constructor" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>constructor</span><a href="#constructor" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" id="icon-anchor-a"></path><path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" id="icon-anchor-b"></path><path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" id="icon-anchor-c"></path></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
-<li class="tsd-signature tsd-anchor-link" id="constructor.new_CubeObject">new <wbr/>Cube<wbr/>Object<span class="tsd-signature-symbol">(</span>width<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, height<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, depth<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, materialOptions<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">PrimitiveMaterialOptions</span>, physicsOptions<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">PhysicsOptions</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="CubeObject.html" class="tsd-signature-type" data-tsd-kind="Class">CubeObject</a><a href="#constructor.new_CubeObject" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
+<li class="tsd-signature tsd-anchor-link" id="constructor.new_PhysicsObject">new <wbr/>Physics<wbr/>Object<span class="tsd-signature-symbol">(</span>physicsOptions<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">PhysicsOptions</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="PhysicsObject.html" class="tsd-signature-type" data-tsd-kind="Class">PhysicsObject</a><a href="#constructor.new_PhysicsObject" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
 <li class="tsd-description">
 <div class="tsd-parameters">
 <h4 class="tsd-parameters-title">Parameters</h4>
 <ul class="tsd-parameter-list">
 <li>
-<h5>width: <span class="tsd-signature-type">number</span></h5></li>
-<li>
-<h5>height: <span class="tsd-signature-type">number</span></h5></li>
-<li>
-<h5>depth: <span class="tsd-signature-type">number</span></h5></li>
-<li>
-<h5>materialOptions: <span class="tsd-signature-type">PrimitiveMaterialOptions</span><span class="tsd-signature-symbol"> = {}</span></h5></li>
-<li>
 <h5>physicsOptions: <span class="tsd-signature-type">PhysicsOptions</span><span class="tsd-signature-symbol"> = {}</span></h5></li></ul></div>
-<h4 class="tsd-returns-title">Returns <a href="CubeObject.html" class="tsd-signature-type" data-tsd-kind="Class">CubeObject</a></h4><aside class="tsd-sources">
-<p>Overrides <a href="PrimitiveObject.html">PrimitiveObject</a>.<a href="PrimitiveObject.html#constructor">constructor</a></p>
+<h4 class="tsd-returns-title">Returns <a href="PhysicsObject.html" class="tsd-signature-type" data-tsd-kind="Class">PhysicsObject</a></h4><aside class="tsd-sources">
+<p>Overrides <a href="GameObject.html">GameObject</a>.<a href="GameObject.html#constructor">constructor</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/felixtrz/elixr/blob/f174f15/src/objects/CubeObject.ts#L10">src/objects/CubeObject.ts:10</a></li></ul></aside></li></ul></section></section>
+<li>Defined in <a href="https://github.com/felixtrz/elixr/blob/f174f15/src/objects/PhysicsObject.ts#L22">src/objects/PhysicsObject.ts:22</a></li></ul></aside></li></ul></section></section>
 <section class="tsd-panel-group tsd-member-group">
 <h2>Properties</h2>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a id="UNINITIALIZED_GAMEOBJECT_ERROR" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagStatic">Static</code> <span>UNINITIALIZED_<wbr/>GAMEOBJECT_<wbr/>ERROR</span><a href="#UNINITIALIZED_GAMEOBJECT_ERROR" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <div class="tsd-signature">UNINITIALIZED_<wbr/>GAMEOBJECT_<wbr/>ERROR<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &#39;Cannot perform action on uninitialized GameObject&#39;</span></div><aside class="tsd-sources">
-<p>Inherited from <a href="PrimitiveObject.html">PrimitiveObject</a>.<a href="PrimitiveObject.html#UNINITIALIZED_GAMEOBJECT_ERROR">UNINITIALIZED_GAMEOBJECT_ERROR</a></p>
+<p>Inherited from <a href="GameObject.html">GameObject</a>.<a href="GameObject.html#UNINITIALIZED_GAMEOBJECT_ERROR">UNINITIALIZED_GAMEOBJECT_ERROR</a></p>
 <ul>
 <li>Defined in <a href="https://github.com/felixtrz/elixr/blob/f174f15/src/GameObject.ts#L16">src/GameObject.ts:16</a></li></ul></aside></section></section>
 <section class="tsd-panel-group tsd-member-group">
 <h2>Accessors</h2>
-<section class="tsd-panel tsd-member tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><a id="color" class="tsd-anchor"></a>
-<h3 class="tsd-anchor-link"><span>color</span><a href="#color" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
-<ul class="tsd-signatures tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited">
-<li class="tsd-signature" id="color.color-1"><span class="tsd-signature-symbol">get</span> color<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="Color.html" class="tsd-signature-type" data-tsd-kind="Class">Color</a></li>
-<li class="tsd-description">
-<h4 class="tsd-returns-title">Returns <a href="Color.html" class="tsd-signature-type" data-tsd-kind="Class">Color</a></h4><aside class="tsd-sources">
-<p>Inherited from PrimitiveObject.color</p>
-<ul>
-<li>Defined in <a href="https://github.com/felixtrz/elixr/blob/f174f15/src/objects/PrimitiveObject.ts#L30">src/objects/PrimitiveObject.ts:30</a></li></ul></aside></li>
-<li class="tsd-signature" id="color.color-2"><span class="tsd-signature-symbol">set</span> color<span class="tsd-signature-symbol">(</span>color<span class="tsd-signature-symbol">: </span><a href="Color.html" class="tsd-signature-type" data-tsd-kind="Class">Color</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-<li class="tsd-description">
-<div class="tsd-parameters">
-<h4 class="tsd-parameters-title">Parameters</h4>
-<ul class="tsd-parameter-list">
-<li>
-<h5>color: <a href="Color.html" class="tsd-signature-type" data-tsd-kind="Class">Color</a></h5></li></ul></div>
-<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
-<p>Inherited from PrimitiveObject.color</p>
-<ul>
-<li>Defined in <a href="https://github.com/felixtrz/elixr/blob/f174f15/src/objects/PrimitiveObject.ts#L34">src/objects/PrimitiveObject.ts:34</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><a id="isInitialized" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>is<wbr/>Initialized</span><a href="#isInitialized" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited">
 <li class="tsd-signature" id="isInitialized.isInitialized-1"><span class="tsd-signature-symbol">get</span> isInitialized<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
 <li class="tsd-description">
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4><aside class="tsd-sources">
-<p>Inherited from PrimitiveObject.isInitialized</p>
+<p>Inherited from GameObject.isInitialized</p>
 <ul>
-<li>Defined in <a href="https://github.com/felixtrz/elixr/blob/f174f15/src/GameObject.ts#L34">src/GameObject.ts:34</a></li></ul></aside></li></ul></section>
-<section class="tsd-panel tsd-member tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><a id="opacity" class="tsd-anchor"></a>
-<h3 class="tsd-anchor-link"><span>opacity</span><a href="#opacity" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
-<ul class="tsd-signatures tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited">
-<li class="tsd-signature" id="opacity.opacity-1"><span class="tsd-signature-symbol">get</span> opacity<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
-<li class="tsd-description">
-<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4><aside class="tsd-sources">
-<p>Inherited from PrimitiveObject.opacity</p>
-<ul>
-<li>Defined in <a href="https://github.com/felixtrz/elixr/blob/f174f15/src/objects/PrimitiveObject.ts#L38">src/objects/PrimitiveObject.ts:38</a></li></ul></aside></li>
-<li class="tsd-signature" id="opacity.opacity-2"><span class="tsd-signature-symbol">set</span> opacity<span class="tsd-signature-symbol">(</span>opacity<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-<li class="tsd-description">
-<div class="tsd-parameters">
-<h4 class="tsd-parameters-title">Parameters</h4>
-<ul class="tsd-parameter-list">
-<li>
-<h5>opacity: <span class="tsd-signature-type">number</span></h5></li></ul></div>
-<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
-<p>Inherited from PrimitiveObject.opacity</p>
-<ul>
-<li>Defined in <a href="https://github.com/felixtrz/elixr/blob/f174f15/src/objects/PrimitiveObject.ts#L42">src/objects/PrimitiveObject.ts:42</a></li></ul></aside></li></ul></section></section>
+<li>Defined in <a href="https://github.com/felixtrz/elixr/blob/f174f15/src/GameObject.ts#L34">src/GameObject.ts:34</a></li></ul></aside></li></ul></section></section>
 <section class="tsd-panel-group tsd-member-group">
 <h2>Methods</h2>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a id="_init" class="tsd-anchor"></a>
@@ -161,7 +116,7 @@
 <li>
 <h5>ecsyEntity: <span class="tsd-signature-type">ExtendedEntity</span></h5></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
-<p>Inherited from <a href="PrimitiveObject.html">PrimitiveObject</a>.<a href="PrimitiveObject.html#_init">_init</a></p>
+<p>Inherited from <a href="GameObject.html">GameObject</a>.<a href="GameObject.html#_init">_init</a></p>
 <ul>
 <li>Defined in <a href="https://github.com/felixtrz/elixr/blob/f174f15/src/GameObject.ts#L25">src/GameObject.ts:25</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a id="addComponent" class="tsd-anchor"></a>
@@ -177,7 +132,7 @@
 <li>
 <h5><code class="tsd-tag ts-flagOptional">Optional</code> values: <span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Omit</span><span class="tsd-signature-symbol">&lt;</span><a href="GameComponent.html" class="tsd-signature-type" data-tsd-kind="Class">GameComponent</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-symbol">keyof </span><a href="GameComponent.html" class="tsd-signature-type" data-tsd-kind="Class">GameComponent</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></h5></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
-<p>Inherited from <a href="PrimitiveObject.html">PrimitiveObject</a>.<a href="PrimitiveObject.html#addComponent">addComponent</a></p>
+<p>Inherited from <a href="GameObject.html">GameObject</a>.<a href="GameObject.html#addComponent">addComponent</a></p>
 <ul>
 <li>Defined in <a href="https://github.com/felixtrz/elixr/blob/f174f15/src/GameObject.ts#L46">src/GameObject.ts:46</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a id="duplicate" class="tsd-anchor"></a>
@@ -186,12 +141,12 @@
 <li class="tsd-signature tsd-anchor-link" id="duplicate.duplicate-1">duplicate<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="GameObject.html" class="tsd-signature-type" data-tsd-kind="Class">GameObject</a><a href="#duplicate.duplicate-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
 <li class="tsd-description">
 <h4 class="tsd-returns-title">Returns <a href="GameObject.html" class="tsd-signature-type" data-tsd-kind="Class">GameObject</a></h4><aside class="tsd-sources">
-<p>Inherited from <a href="PrimitiveObject.html">PrimitiveObject</a>.<a href="PrimitiveObject.html#duplicate">duplicate</a></p>
+<p>Inherited from <a href="GameObject.html">GameObject</a>.<a href="GameObject.html#duplicate">duplicate</a></p>
 <ul>
 <li>Defined in <a href="https://github.com/felixtrz/elixr/blob/f174f15/src/GameObject.ts#L38">src/GameObject.ts:38</a></li></ul></aside></li></ul></section>
-<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a id="generateConvexBodyFromGeometry" class="tsd-anchor"></a>
+<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="generateConvexBodyFromGeometry" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>generate<wbr/>Convex<wbr/>Body<wbr/>From<wbr/>Geometry</span><a href="#generateConvexBodyFromGeometry" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
-<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
 <li class="tsd-signature tsd-anchor-link" id="generateConvexBodyFromGeometry.generateConvexBodyFromGeometry-1">generate<wbr/>Convex<wbr/>Body<wbr/>From<wbr/>Geometry<span class="tsd-signature-symbol">(</span>geometry<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">BufferGeometry</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span><a href="#generateConvexBodyFromGeometry.generateConvexBodyFromGeometry-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
 <li class="tsd-description">
 <div class="tsd-parameters">
@@ -200,7 +155,6 @@
 <li>
 <h5>geometry: <span class="tsd-signature-type">BufferGeometry</span></h5></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
-<p>Inherited from <a href="PrimitiveObject.html">PrimitiveObject</a>.<a href="PrimitiveObject.html#generateConvexBodyFromGeometry">generateConvexBodyFromGeometry</a></p>
 <ul>
 <li>Defined in <a href="https://github.com/felixtrz/elixr/blob/f174f15/src/objects/PhysicsObject.ts#L30">src/objects/PhysicsObject.ts:30</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a id="getComponent" class="tsd-anchor"></a>
@@ -216,7 +170,7 @@
 <li>
 <h5><code class="tsd-tag ts-flagOptional">Optional</code> includeRemoved: <span class="tsd-signature-type">boolean</span></h5></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Readonly</span><span class="tsd-signature-symbol">&lt;</span><a href="GameComponent.html" class="tsd-signature-type" data-tsd-kind="Class">GameComponent</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
-<p>Inherited from <a href="PrimitiveObject.html">PrimitiveObject</a>.<a href="PrimitiveObject.html#getComponent">getComponent</a></p>
+<p>Inherited from <a href="GameObject.html">GameObject</a>.<a href="GameObject.html#getComponent">getComponent</a></p>
 <ul>
 <li>Defined in <a href="https://github.com/felixtrz/elixr/blob/f174f15/src/GameObject.ts#L62">src/GameObject.ts:62</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a id="getComponentTypes" class="tsd-anchor"></a>
@@ -225,7 +179,7 @@
 <li class="tsd-signature tsd-anchor-link" id="getComponentTypes.getComponentTypes-1">get<wbr/>Component<wbr/>Types<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Component</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">[]</span><a href="#getComponentTypes.getComponentTypes-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
 <li class="tsd-description">
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Component</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">[]</span></h4><aside class="tsd-sources">
-<p>Inherited from <a href="PrimitiveObject.html">PrimitiveObject</a>.<a href="PrimitiveObject.html#getComponentTypes">getComponentTypes</a></p>
+<p>Inherited from <a href="GameObject.html">GameObject</a>.<a href="GameObject.html#getComponentTypes">getComponentTypes</a></p>
 <ul>
 <li>Defined in <a href="https://github.com/felixtrz/elixr/blob/f174f15/src/GameObject.ts#L77">src/GameObject.ts:77</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a id="getComponents" class="tsd-anchor"></a>
@@ -237,7 +191,7 @@
 <ul class="tsd-parameters">
 <li class="tsd-parameter-index-signature">
 <h5><span class="tsd-signature-symbol">[</span>componentName: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]: </span><span class="tsd-signature-type">Component</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></h5></li></ul><aside class="tsd-sources">
-<p>Inherited from <a href="PrimitiveObject.html">PrimitiveObject</a>.<a href="PrimitiveObject.html#getComponents">getComponents</a></p>
+<p>Inherited from <a href="GameObject.html">GameObject</a>.<a href="GameObject.html#getComponents">getComponents</a></p>
 <ul>
 <li>Defined in <a href="https://github.com/felixtrz/elixr/blob/f174f15/src/GameObject.ts#L82">src/GameObject.ts:82</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a id="getComponentsToRemove" class="tsd-anchor"></a>
@@ -249,7 +203,7 @@
 <ul class="tsd-parameters">
 <li class="tsd-parameter-index-signature">
 <h5><span class="tsd-signature-symbol">[</span>componentName: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]: </span><span class="tsd-signature-type">Component</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></h5></li></ul><aside class="tsd-sources">
-<p>Inherited from <a href="PrimitiveObject.html">PrimitiveObject</a>.<a href="PrimitiveObject.html#getComponentsToRemove">getComponentsToRemove</a></p>
+<p>Inherited from <a href="GameObject.html">GameObject</a>.<a href="GameObject.html#getComponentsToRemove">getComponentsToRemove</a></p>
 <ul>
 <li>Defined in <a href="https://github.com/felixtrz/elixr/blob/f174f15/src/GameObject.ts#L87">src/GameObject.ts:87</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a id="getMutableComponent" class="tsd-anchor"></a>
@@ -263,7 +217,7 @@
 <li>
 <h5>GameComponent: <span class="tsd-signature-type">GameComponentConstructor</span><span class="tsd-signature-symbol">&lt;</span><a href="GameComponent.html" class="tsd-signature-type" data-tsd-kind="Class">GameComponent</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></h5></li></ul></div>
 <h4 class="tsd-returns-title">Returns <a href="GameComponent.html" class="tsd-signature-type" data-tsd-kind="Class">GameComponent</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
-<p>Inherited from <a href="PrimitiveObject.html">PrimitiveObject</a>.<a href="PrimitiveObject.html#getMutableComponent">getMutableComponent</a></p>
+<p>Inherited from <a href="GameObject.html">GameObject</a>.<a href="GameObject.html#getMutableComponent">getMutableComponent</a></p>
 <ul>
 <li>Defined in <a href="https://github.com/felixtrz/elixr/blob/f174f15/src/GameObject.ts#L70">src/GameObject.ts:70</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a id="getRemovedComponent" class="tsd-anchor"></a>
@@ -277,7 +231,7 @@
 <li>
 <h5>GameComponent: <span class="tsd-signature-type">GameComponentConstructor</span><span class="tsd-signature-symbol">&lt;</span><a href="GameComponent.html" class="tsd-signature-type" data-tsd-kind="Class">GameComponent</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></h5></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Readonly</span><span class="tsd-signature-symbol">&lt;</span><a href="GameComponent.html" class="tsd-signature-type" data-tsd-kind="Class">GameComponent</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
-<p>Inherited from <a href="PrimitiveObject.html">PrimitiveObject</a>.<a href="PrimitiveObject.html#getRemovedComponent">getRemovedComponent</a></p>
+<p>Inherited from <a href="GameObject.html">GameObject</a>.<a href="GameObject.html#getRemovedComponent">getRemovedComponent</a></p>
 <ul>
 <li>Defined in <a href="https://github.com/felixtrz/elixr/blob/f174f15/src/GameObject.ts#L92">src/GameObject.ts:92</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a id="hasAllComponents" class="tsd-anchor"></a>
@@ -291,7 +245,7 @@
 <li>
 <h5>GameComponents: <span class="tsd-signature-type">GameComponentConstructor</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">[]</span></h5></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4><aside class="tsd-sources">
-<p>Inherited from <a href="PrimitiveObject.html">PrimitiveObject</a>.<a href="PrimitiveObject.html#hasAllComponents">hasAllComponents</a></p>
+<p>Inherited from <a href="GameObject.html">GameObject</a>.<a href="GameObject.html#hasAllComponents">hasAllComponents</a></p>
 <ul>
 <li>Defined in <a href="https://github.com/felixtrz/elixr/blob/f174f15/src/GameObject.ts#L99">src/GameObject.ts:99</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a id="hasAnyComponents" class="tsd-anchor"></a>
@@ -305,7 +259,7 @@
 <li>
 <h5>GameComponents: <span class="tsd-signature-type">GameComponentConstructor</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">[]</span></h5></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4><aside class="tsd-sources">
-<p>Inherited from <a href="PrimitiveObject.html">PrimitiveObject</a>.<a href="PrimitiveObject.html#hasAnyComponents">hasAnyComponents</a></p>
+<p>Inherited from <a href="GameObject.html">GameObject</a>.<a href="GameObject.html#hasAnyComponents">hasAnyComponents</a></p>
 <ul>
 <li>Defined in <a href="https://github.com/felixtrz/elixr/blob/f174f15/src/GameObject.ts#L104">src/GameObject.ts:104</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a id="hasComponent" class="tsd-anchor"></a>
@@ -319,7 +273,7 @@
 <li>
 <h5>GameComponent: <span class="tsd-signature-type">GameComponentConstructor</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></h5></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4><aside class="tsd-sources">
-<p>Inherited from <a href="PrimitiveObject.html">PrimitiveObject</a>.<a href="PrimitiveObject.html#hasComponent">hasComponent</a></p>
+<p>Inherited from <a href="GameObject.html">GameObject</a>.<a href="GameObject.html#hasComponent">hasComponent</a></p>
 <ul>
 <li>Defined in <a href="https://github.com/felixtrz/elixr/blob/f174f15/src/GameObject.ts#L109">src/GameObject.ts:109</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a id="removeAllComponents" class="tsd-anchor"></a>
@@ -333,7 +287,7 @@
 <li>
 <h5>forceImmediate: <span class="tsd-signature-type">boolean</span></h5></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
-<p>Inherited from <a href="PrimitiveObject.html">PrimitiveObject</a>.<a href="PrimitiveObject.html#removeAllComponents">removeAllComponents</a></p>
+<p>Inherited from <a href="GameObject.html">GameObject</a>.<a href="GameObject.html#removeAllComponents">removeAllComponents</a></p>
 <ul>
 <li>Defined in <a href="https://github.com/felixtrz/elixr/blob/f174f15/src/GameObject.ts#L114">src/GameObject.ts:114</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a id="removeComponent" class="tsd-anchor"></a>
@@ -349,7 +303,7 @@
 <li>
 <h5>forceImmediate: <span class="tsd-signature-type">boolean</span></h5></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
-<p>Inherited from <a href="PrimitiveObject.html">PrimitiveObject</a>.<a href="PrimitiveObject.html#removeComponent">removeComponent</a></p>
+<p>Inherited from <a href="GameObject.html">GameObject</a>.<a href="GameObject.html#removeComponent">removeComponent</a></p>
 <ul>
 <li>Defined in <a href="https://github.com/felixtrz/elixr/blob/f174f15/src/GameObject.ts#L119">src/GameObject.ts:119</a></li></ul></aside></li></ul></section></section></div>
 <div class="col-4 col-menu menu-sticky-wrap menu-highlight">
@@ -372,26 +326,24 @@
 <ul></ul></li></ul></div></details></nav>
 <nav class="tsd-navigation secondary menu-sticky">
 <ul>
-<li class="current tsd-kind-class"><a href="CubeObject.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><rect fill="var(--color-icon-background)" stroke="var(--color-ts-class)" stroke-width="1.5" x="1" y="1" width="22" height="22" rx="6" id="icon-128-path"></rect><path d="M11.898 16.1201C11.098 16.1201 10.466 15.8961 10.002 15.4481C9.53803 15.0001 9.30603 14.3841 9.30603 13.6001V9.64012C9.30603 8.85612 9.53803 8.24012 10.002 7.79212C10.466 7.34412 11.098 7.12012 11.898 7.12012C12.682 7.12012 13.306 7.34812 13.77 7.80412C14.234 8.25212 14.466 8.86412 14.466 9.64012H13.386C13.386 9.14412 13.254 8.76412 12.99 8.50012C12.734 8.22812 12.37 8.09212 11.898 8.09212C11.426 8.09212 11.054 8.22412 10.782 8.48812C10.518 8.75212 10.386 9.13212 10.386 9.62812V13.6001C10.386 14.0961 10.518 14.4801 10.782 14.7521C11.054 15.0161 11.426 15.1481 11.898 15.1481C12.37 15.1481 12.734 15.0161 12.99 14.7521C13.254 14.4801 13.386 14.0961 13.386 13.6001H14.466C14.466 14.3761 14.234 14.9921 13.77 15.4481C13.306 15.8961 12.682 16.1201 11.898 16.1201Z" fill="var(--color-text)" id="icon-128-text"></path></svg><span>Cube<wbr/>Object</span></a>
+<li class="current tsd-kind-class"><a href="PhysicsObject.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><rect fill="var(--color-icon-background)" stroke="var(--color-ts-class)" stroke-width="1.5" x="1" y="1" width="22" height="22" rx="6" id="icon-128-path"></rect><path d="M11.898 16.1201C11.098 16.1201 10.466 15.8961 10.002 15.4481C9.53803 15.0001 9.30603 14.3841 9.30603 13.6001V9.64012C9.30603 8.85612 9.53803 8.24012 10.002 7.79212C10.466 7.34412 11.098 7.12012 11.898 7.12012C12.682 7.12012 13.306 7.34812 13.77 7.80412C14.234 8.25212 14.466 8.86412 14.466 9.64012H13.386C13.386 9.14412 13.254 8.76412 12.99 8.50012C12.734 8.22812 12.37 8.09212 11.898 8.09212C11.426 8.09212 11.054 8.22412 10.782 8.48812C10.518 8.75212 10.386 9.13212 10.386 9.62812V13.6001C10.386 14.0961 10.518 14.4801 10.782 14.7521C11.054 15.0161 11.426 15.1481 11.898 15.1481C12.37 15.1481 12.734 15.0161 12.99 14.7521C13.254 14.4801 13.386 14.0961 13.386 13.6001H14.466C14.466 14.3761 14.234 14.9921 13.77 15.4481C13.306 15.8961 12.682 16.1201 11.898 16.1201Z" fill="var(--color-text)" id="icon-128-text"></path></svg><span>Physics<wbr/>Object</span></a>
 <ul>
-<li class="tsd-kind-constructor tsd-parent-kind-class"><a href="CubeObject.html#constructor" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-512-path"></use><use href="#icon-512-text"></use></svg>constructor</a></li>
-<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="CubeObject.html#UNINITIALIZED_GAMEOBJECT_ERROR" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-1024-path"></use><use href="#icon-1024-text"></use></svg>UNINITIALIZED_<wbr/>GAMEOBJECT_<wbr/>ERROR</a></li>
-<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><a href="CubeObject.html#color" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-262144-path"></use><use href="#icon-262144-text"></use></svg>color</a></li>
-<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><a href="CubeObject.html#isInitialized" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-262144-path"></use><use href="#icon-262144-text"></use></svg>is<wbr/>Initialized</a></li>
-<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><a href="CubeObject.html#opacity" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-262144-path"></use><use href="#icon-262144-text"></use></svg>opacity</a></li>
-<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="CubeObject.html#_init" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>_init</a></li>
-<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="CubeObject.html#addComponent" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>add<wbr/>Component</a></li>
-<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="CubeObject.html#duplicate" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>duplicate</a></li>
-<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="CubeObject.html#generateConvexBodyFromGeometry" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>generate<wbr/>Convex<wbr/>Body<wbr/>From<wbr/>Geometry</a></li>
-<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="CubeObject.html#getComponent" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>get<wbr/>Component</a></li>
-<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="CubeObject.html#getComponentTypes" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>get<wbr/>Component<wbr/>Types</a></li>
-<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="CubeObject.html#getComponents" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>get<wbr/>Components</a></li>
-<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="CubeObject.html#getComponentsToRemove" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>get<wbr/>Components<wbr/>To<wbr/>Remove</a></li>
-<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="CubeObject.html#getMutableComponent" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>get<wbr/>Mutable<wbr/>Component</a></li>
-<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="CubeObject.html#getRemovedComponent" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>get<wbr/>Removed<wbr/>Component</a></li>
-<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="CubeObject.html#hasAllComponents" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>has<wbr/>All<wbr/>Components</a></li>
-<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="CubeObject.html#hasAnyComponents" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>has<wbr/>Any<wbr/>Components</a></li>
-<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="CubeObject.html#hasComponent" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>has<wbr/>Component</a></li>
-<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="CubeObject.html#removeAllComponents" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>remove<wbr/>All<wbr/>Components</a></li>
-<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="CubeObject.html#removeComponent" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>remove<wbr/>Component</a></li></ul></li></ul></nav></div></div>
+<li class="tsd-kind-constructor tsd-parent-kind-class"><a href="PhysicsObject.html#constructor" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-512-path"></use><use href="#icon-512-text"></use></svg>constructor</a></li>
+<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="PhysicsObject.html#UNINITIALIZED_GAMEOBJECT_ERROR" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-1024-path"></use><use href="#icon-1024-text"></use></svg>UNINITIALIZED_<wbr/>GAMEOBJECT_<wbr/>ERROR</a></li>
+<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><a href="PhysicsObject.html#isInitialized" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-262144-path"></use><use href="#icon-262144-text"></use></svg>is<wbr/>Initialized</a></li>
+<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="PhysicsObject.html#_init" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>_init</a></li>
+<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="PhysicsObject.html#addComponent" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>add<wbr/>Component</a></li>
+<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="PhysicsObject.html#duplicate" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>duplicate</a></li>
+<li class="tsd-kind-method tsd-parent-kind-class"><a href="PhysicsObject.html#generateConvexBodyFromGeometry" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>generate<wbr/>Convex<wbr/>Body<wbr/>From<wbr/>Geometry</a></li>
+<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="PhysicsObject.html#getComponent" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>get<wbr/>Component</a></li>
+<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="PhysicsObject.html#getComponentTypes" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>get<wbr/>Component<wbr/>Types</a></li>
+<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="PhysicsObject.html#getComponents" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>get<wbr/>Components</a></li>
+<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="PhysicsObject.html#getComponentsToRemove" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>get<wbr/>Components<wbr/>To<wbr/>Remove</a></li>
+<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="PhysicsObject.html#getMutableComponent" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>get<wbr/>Mutable<wbr/>Component</a></li>
+<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="PhysicsObject.html#getRemovedComponent" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>get<wbr/>Removed<wbr/>Component</a></li>
+<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="PhysicsObject.html#hasAllComponents" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>has<wbr/>All<wbr/>Components</a></li>
+<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="PhysicsObject.html#hasAnyComponents" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>has<wbr/>Any<wbr/>Components</a></li>
+<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="PhysicsObject.html#hasComponent" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>has<wbr/>Component</a></li>
+<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="PhysicsObject.html#removeAllComponents" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>remove<wbr/>All<wbr/>Components</a></li>
+<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="PhysicsObject.html#removeComponent" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>remove<wbr/>Component</a></li></ul></li></ul></nav></div></div>
 <div class="overlay"></div><script src="../assets/main.js"></script></body></html>
