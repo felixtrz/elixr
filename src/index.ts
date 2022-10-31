@@ -62,3 +62,4 @@ export { SphereObject } from './objects/SphereObject';
 export { CylinderObject } from './objects/CylinderObject';
 export { ConeObject } from './objects/ConeObject';
 export { ComplexObject } from './objects/ComplexObject';
+export { GLTFObject, GLTFModelLoader } from './objects/GLTFObject';

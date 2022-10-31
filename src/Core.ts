@@ -6,6 +6,7 @@ import {
 import { World, WorldOptions } from 'ecsy';
 
 import { ARButton } from 'three/examples/jsm/webxr/ARButton.js';
+import { GLTFModelLoader } from './objects/GLTFObject';
 import { GameComponentConstructor } from './GameComponent';
 import { GameSystemConstructor } from './GameSystem';
 import { GamepadWrapper } from 'gamepad-wrapper';
@@ -58,6 +59,8 @@ export class Core {
 		this.game.addComponent(PhysicsComponent, {
 			gravity: new THREE.Vector3(0, -9.8, 0),
 		});
+
+		GLTFModelLoader.init(this.renderer);
 
 		this.setupControllers();
 

@@ -1,4 +1,6 @@
-import { GameObject, Physics, RigidBodyComponent, THREE } from '../index';
+import * as CANNON from 'cannon-es';
+
+import { GameObject, RigidBodyComponent, THREE } from '../index';
 
 import { createConvexPolyhedron } from '../physics/utils';
 
@@ -9,9 +11,9 @@ export type PhysicsOptions = {
 };
 
 export enum BODY_TYPES {
-	STATIC = Physics.BODY_TYPES.STATIC,
-	DYNAMIC = Physics.BODY_TYPES.DYNAMIC,
-	KINEMATIC = Physics.BODY_TYPES.KINEMATIC,
+	STATIC = CANNON.BODY_TYPES.STATIC,
+	DYNAMIC = CANNON.BODY_TYPES.DYNAMIC,
+	KINEMATIC = CANNON.BODY_TYPES.KINEMATIC,
 }
 
 export class PhysicsObject extends GameObject {
