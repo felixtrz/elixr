@@ -15,11 +15,16 @@ export class SphereObject extends PrimitiveObject {
 		this._geometry = new THREE.SphereGeometry(radius);
 		const cube = new THREE.Mesh(this._geometry, this._material);
 		this.add(cube);
-		this._mesh = cube;
 		this.addComponent(RigidBodyComponent, {
 			mass: this._type == BODY_TYPES.DYNAMIC ? this._mass : 0,
 			shape: new Physics.Sphere(this._radius),
 			type: this._type,
 		});
+	}
+
+	copy(source: SphereObject, recursive?: boolean): this {
+		super.copy(source as this, recursive);
+		this._radius = source._radius;
+		return this;
 	}
 }

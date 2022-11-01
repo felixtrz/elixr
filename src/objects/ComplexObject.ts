@@ -25,23 +25,35 @@ export class ComplexObject extends PhysicsObject {
 				}
 			}
 		});
-		const convexGeometry = new ConvexGeometry(points);
-		const convexHull = new THREE.Mesh(
-			convexGeometry,
-			new THREE.MeshBasicMaterial({
-				color: 0x00ff00,
-				wireframe: true,
-			}),
-		);
+		if (points.length > 0) {
+			if (this._convexHull) {
+				this.remove(this._convexHull);
+			}
+			const convexGeometry = new ConvexGeometry(points);
+			const convexHull = new THREE.Mesh(
+				convexGeometry,
+				new THREE.MeshBasicMaterial({
+					color: 0x00ff00,
+					wireframe: true,
+				}),
+			);
 
-		this.add(convexHull);
-		convexHull.visible = false;
-		this._convexHull = convexHull;
+			this.add(convexHull);
+			convexHull.visible = false;
+			convexHull.name = 'convexHull';
+			this._convexHull = convexHull;
 
-		this.generateConvexBodyFromGeometry(convexGeometry);
+			this.generateConvexBodyFromGeometry(convexGeometry);
+		}
 	}
 
 	set colliderVisible(visible: boolean) {
 		this._convexHull.visible = visible;
+	}
+
+	copy(source: this, recursive?: boolean): this {
+		super.copy(source, recursive);
+		this._convexHull = this.getObjectByName('convexHull') as THREE.Mesh;
+		return this;
 	}
 }

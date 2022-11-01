@@ -58,6 +58,8 @@ export class RigidBodyPhysicsSystem extends GameSystem {
 			this.core.physics.gravity.y,
 			this.core.physics.gravity.z,
 		);
+		(this.core.physics.world.solver as CANNON.GSSolver).iterations =
+			this.core.physics.solverIterations;
 		this.queryAddedGameObjects('rigidBodies').forEach((gameObject) => {
 			const rigidBody = gameObject.getMutableComponent(
 				RigidBodyComponent,

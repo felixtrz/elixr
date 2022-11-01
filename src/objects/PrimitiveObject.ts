@@ -8,7 +8,6 @@ export type PrimitiveMaterialOptions = {
 };
 
 export class PrimitiveObject extends PhysicsObject {
-	protected _mesh: THREE.Mesh;
 	protected _material: THREE.MeshStandardMaterial | THREE.MeshBasicMaterial;
 	protected _geometry: THREE.BufferGeometry;
 
@@ -47,5 +46,14 @@ export class PrimitiveObject extends PhysicsObject {
 			this._material.transparent = true;
 			this._material.opacity = opacity;
 		}
+	}
+
+	copy(source: this, recursive?: boolean): this {
+		super.copy(source, recursive);
+
+		this._material = source._material;
+		this._geometry = source._geometry;
+
+		return this;
 	}
 }

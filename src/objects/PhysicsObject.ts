@@ -39,4 +39,14 @@ export class PhysicsObject extends GameObject {
 			type: this._type,
 		});
 	}
+
+	copy(source: this, recursive?: boolean): this {
+		super.copy(source, recursive);
+
+		this._hasPhysics = source._hasPhysics;
+		this._mass = source._mass;
+		this._type = source._type;
+
+		return this;
+	}
 }

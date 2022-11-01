@@ -26,7 +26,6 @@ export class CylinderObject extends PrimitiveObject {
 		);
 		const cube = new THREE.Mesh(this._geometry, this._material);
 		this.add(cube);
-		this._mesh = cube;
 		this.addComponent(RigidBodyComponent, {
 			mass: this._type == BODY_TYPES.DYNAMIC ? this._mass : 0,
 			shape: new Physics.Cylinder(
@@ -37,5 +36,13 @@ export class CylinderObject extends PrimitiveObject {
 			),
 			type: this._type,
 		});
+	}
+
+	copy(source: CylinderObject, recursive?: boolean): this {
+		super.copy(source as this, recursive);
+		this._radiusTop = source._radiusTop;
+		this._radiusBottom = source._radiusBottom;
+		this._height = source._height;
+		return this;
 	}
 }

@@ -18,11 +18,17 @@ export class ConeObject extends PrimitiveObject {
 		this._geometry = new THREE.ConeGeometry(radius, height, 32);
 		const cube = new THREE.Mesh(this._geometry, this._material);
 		this.add(cube);
-		this._mesh = cube;
 		this.addComponent(RigidBodyComponent, {
 			mass: this._type == BODY_TYPES.DYNAMIC ? this._mass : 0,
 			shape: new Physics.Cylinder(0.001, this._radius, this._height, 16),
 			type: this._type,
 		});
+	}
+
+	copy(source: ConeObject, recursive?: boolean): this {
+		super.copy(source as this, recursive);
+		this._radius = source._radius;
+		this._height = source._height;
+		return this;
 	}
 }

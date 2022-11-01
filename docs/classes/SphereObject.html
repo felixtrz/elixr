@@ -27,7 +27,7 @@
 <ul class="tsd-hierarchy">
 <li><span class="target">SphereObject</span></li></ul></section></li></ul></section><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/felixtrz/elixr/blob/ce45d46/src/objects/SphereObject.ts#L5">src/objects/SphereObject.ts:5</a></li></ul></aside>
+<li>Defined in <a href="https://github.com/felixtrz/elixr/blob/2e31d0e/src/objects/SphereObject.ts#L5">src/objects/SphereObject.ts:5</a></li></ul></aside>
 <section class="tsd-panel-group tsd-index-group">
 <section class="tsd-panel tsd-index-panel">
 <details class="tsd-index-content tsd-index-accordion" open><summary class="tsd-accordion-summary tsd-index-summary">
@@ -51,6 +51,8 @@
 <h3 class="tsd-index-heading">Methods</h3>
 <div class="tsd-index-list"><a href="SphereObject.html#_init" class="tsd-index-link tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><rect fill="var(--color-icon-background)" stroke="#FF4DB8" stroke-width="1.5" x="1" y="1" width="22" height="22" rx="12" id="icon-2048-path"></rect><path d="M9.162 16V7.24H10.578L11.514 10.072C11.602 10.328 11.674 10.584 11.73 10.84C11.794 11.088 11.842 11.28 11.874 11.416C11.906 11.28 11.954 11.088 12.018 10.84C12.082 10.584 12.154 10.324 12.234 10.06L13.122 7.24H14.538V16H13.482V12.82C13.482 12.468 13.49 12.068 13.506 11.62C13.53 11.172 13.558 10.716 13.59 10.252C13.622 9.78 13.654 9.332 13.686 8.908C13.726 8.476 13.762 8.1 13.794 7.78L12.366 12.16H11.334L9.894 7.78C9.934 8.092 9.97 8.456 10.002 8.872C10.042 9.28 10.078 9.716 10.11 10.18C10.142 10.636 10.166 11.092 10.182 11.548C10.206 12.004 10.218 12.428 10.218 12.82V16H9.162Z" fill="var(--color-text)" id="icon-2048-text"></path></svg><span>_init</span></a>
 <a href="SphereObject.html#addComponent" class="tsd-index-link tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>add<wbr/>Component</span></a>
+<a href="SphereObject.html#copy" class="tsd-index-link tsd-kind-method tsd-parent-kind-class"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>copy</span></a>
+<a href="SphereObject.html#copyAllComponentsFrom" class="tsd-index-link tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>copy<wbr/>All<wbr/>Components<wbr/>From</span></a>
 <a href="SphereObject.html#duplicate" class="tsd-index-link tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>duplicate</span></a>
 <a href="SphereObject.html#generateConvexBodyFromGeometry" class="tsd-index-link tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>generate<wbr/>Convex<wbr/>Body<wbr/>From<wbr/>Geometry</span></a>
 <a href="SphereObject.html#getComponent" class="tsd-index-link tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>get<wbr/>Component</span></a>
@@ -84,7 +86,7 @@
 <h4 class="tsd-returns-title">Returns <a href="SphereObject.html" class="tsd-signature-type" data-tsd-kind="Class">SphereObject</a></h4><aside class="tsd-sources">
 <p>Overrides <a href="PrimitiveObject.html">PrimitiveObject</a>.<a href="PrimitiveObject.html#constructor">constructor</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/felixtrz/elixr/blob/ce45d46/src/objects/SphereObject.ts#L8">src/objects/SphereObject.ts:8</a></li></ul></aside></li></ul></section></section>
+<li>Defined in <a href="https://github.com/felixtrz/elixr/blob/2e31d0e/src/objects/SphereObject.ts#L8">src/objects/SphereObject.ts:8</a></li></ul></aside></li></ul></section></section>
 <section class="tsd-panel-group tsd-member-group">
 <h2>Properties</h2>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a id="UNINITIALIZED_GAMEOBJECT_ERROR" class="tsd-anchor"></a>
@@ -92,7 +94,7 @@
 <div class="tsd-signature">UNINITIALIZED_<wbr/>GAMEOBJECT_<wbr/>ERROR<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &#39;Cannot perform action on uninitialized GameObject&#39;</span></div><aside class="tsd-sources">
 <p>Inherited from <a href="PrimitiveObject.html">PrimitiveObject</a>.<a href="PrimitiveObject.html#UNINITIALIZED_GAMEOBJECT_ERROR">UNINITIALIZED_GAMEOBJECT_ERROR</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/felixtrz/elixr/blob/ce45d46/src/GameObject.ts#L16">src/GameObject.ts:16</a></li></ul></aside></section></section>
+<li>Defined in <a href="https://github.com/felixtrz/elixr/blob/2e31d0e/src/GameObject.ts#L16">src/GameObject.ts:16</a></li></ul></aside></section></section>
 <section class="tsd-panel-group tsd-member-group">
 <h2>Accessors</h2>
 <section class="tsd-panel tsd-member tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><a id="color" class="tsd-anchor"></a>
@@ -103,7 +105,7 @@
 <h4 class="tsd-returns-title">Returns <a href="Color.html" class="tsd-signature-type" data-tsd-kind="Class">Color</a></h4><aside class="tsd-sources">
 <p>Inherited from PrimitiveObject.color</p>
 <ul>
-<li>Defined in <a href="https://github.com/felixtrz/elixr/blob/ce45d46/src/objects/PrimitiveObject.ts#L30">src/objects/PrimitiveObject.ts:30</a></li></ul></aside></li>
+<li>Defined in <a href="https://github.com/felixtrz/elixr/blob/2e31d0e/src/objects/PrimitiveObject.ts#L29">src/objects/PrimitiveObject.ts:29</a></li></ul></aside></li>
 <li class="tsd-signature" id="color.color-2"><span class="tsd-signature-symbol">set</span> color<span class="tsd-signature-symbol">(</span>color<span class="tsd-signature-symbol">: </span><a href="Color.html" class="tsd-signature-type" data-tsd-kind="Class">Color</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 <li class="tsd-description">
 <div class="tsd-parameters">
@@ -114,7 +116,7 @@
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <p>Inherited from PrimitiveObject.color</p>
 <ul>
-<li>Defined in <a href="https://github.com/felixtrz/elixr/blob/ce45d46/src/objects/PrimitiveObject.ts#L34">src/objects/PrimitiveObject.ts:34</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/felixtrz/elixr/blob/2e31d0e/src/objects/PrimitiveObject.ts#L33">src/objects/PrimitiveObject.ts:33</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><a id="isInitialized" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>is<wbr/>Initialized</span><a href="#isInitialized" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited">
@@ -123,7 +125,7 @@
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4><aside class="tsd-sources">
 <p>Inherited from PrimitiveObject.isInitialized</p>
 <ul>
-<li>Defined in <a href="https://github.com/felixtrz/elixr/blob/ce45d46/src/GameObject.ts#L34">src/GameObject.ts:34</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/felixtrz/elixr/blob/2e31d0e/src/GameObject.ts#L34">src/GameObject.ts:34</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><a id="opacity" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>opacity</span><a href="#opacity" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited">
@@ -132,7 +134,7 @@
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4><aside class="tsd-sources">
 <p>Inherited from PrimitiveObject.opacity</p>
 <ul>
-<li>Defined in <a href="https://github.com/felixtrz/elixr/blob/ce45d46/src/objects/PrimitiveObject.ts#L38">src/objects/PrimitiveObject.ts:38</a></li></ul></aside></li>
+<li>Defined in <a href="https://github.com/felixtrz/elixr/blob/2e31d0e/src/objects/PrimitiveObject.ts#L37">src/objects/PrimitiveObject.ts:37</a></li></ul></aside></li>
 <li class="tsd-signature" id="opacity.opacity-2"><span class="tsd-signature-symbol">set</span> opacity<span class="tsd-signature-symbol">(</span>opacity<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 <li class="tsd-description">
 <div class="tsd-parameters">
@@ -143,7 +145,7 @@
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <p>Inherited from PrimitiveObject.opacity</p>
 <ul>
-<li>Defined in <a href="https://github.com/felixtrz/elixr/blob/ce45d46/src/objects/PrimitiveObject.ts#L42">src/objects/PrimitiveObject.ts:42</a></li></ul></aside></li></ul></section></section>
+<li>Defined in <a href="https://github.com/felixtrz/elixr/blob/2e31d0e/src/objects/PrimitiveObject.ts#L41">src/objects/PrimitiveObject.ts:41</a></li></ul></aside></li></ul></section></section>
 <section class="tsd-panel-group tsd-member-group">
 <h2>Methods</h2>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a id="_init" class="tsd-anchor"></a>
@@ -159,7 +161,7 @@
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <p>Inherited from <a href="PrimitiveObject.html">PrimitiveObject</a>.<a href="PrimitiveObject.html#_init">_init</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/felixtrz/elixr/blob/ce45d46/src/GameObject.ts#L25">src/GameObject.ts:25</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/felixtrz/elixr/blob/2e31d0e/src/GameObject.ts#L25">src/GameObject.ts:25</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a id="addComponent" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>add<wbr/>Component</span><a href="#addComponent" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
@@ -175,7 +177,37 @@
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <p>Inherited from <a href="PrimitiveObject.html">PrimitiveObject</a>.<a href="PrimitiveObject.html#addComponent">addComponent</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/felixtrz/elixr/blob/ce45d46/src/GameObject.ts#L46">src/GameObject.ts:46</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/felixtrz/elixr/blob/2e31d0e/src/GameObject.ts#L79">src/GameObject.ts:79</a></li></ul></aside></li></ul></section>
+<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="copy" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><span>copy</span><a href="#copy" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
+<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+<li class="tsd-signature tsd-anchor-link" id="copy.copy-1">copy<span class="tsd-signature-symbol">(</span>source<span class="tsd-signature-symbol">: </span><a href="SphereObject.html" class="tsd-signature-type" data-tsd-kind="Class">SphereObject</a>, recursive<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="SphereObject.html" class="tsd-signature-type" data-tsd-kind="Class">SphereObject</a><a href="#copy.copy-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
+<li class="tsd-description">
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li>
+<h5>source: <a href="SphereObject.html" class="tsd-signature-type" data-tsd-kind="Class">SphereObject</a></h5></li>
+<li>
+<h5><code class="tsd-tag ts-flagOptional">Optional</code> recursive: <span class="tsd-signature-type">boolean</span></h5></li></ul></div>
+<h4 class="tsd-returns-title">Returns <a href="SphereObject.html" class="tsd-signature-type" data-tsd-kind="Class">SphereObject</a></h4><aside class="tsd-sources">
+<p>Overrides <a href="PrimitiveObject.html">PrimitiveObject</a>.<a href="PrimitiveObject.html#copy">copy</a></p>
+<ul>
+<li>Defined in <a href="https://github.com/felixtrz/elixr/blob/2e31d0e/src/objects/SphereObject.ts#L25">src/objects/SphereObject.ts:25</a></li></ul></aside></li></ul></section>
+<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a id="copyAllComponentsFrom" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><span>copy<wbr/>All<wbr/>Components<wbr/>From</span><a href="#copyAllComponentsFrom" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
+<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
+<li class="tsd-signature tsd-anchor-link" id="copyAllComponentsFrom.copyAllComponentsFrom-1">copy<wbr/>All<wbr/>Components<wbr/>From<span class="tsd-signature-symbol">(</span>gameObject<span class="tsd-signature-symbol">: </span><a href="GameObject.html" class="tsd-signature-type" data-tsd-kind="Class">GameObject</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span><a href="#copyAllComponentsFrom.copyAllComponentsFrom-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
+<li class="tsd-description">
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li>
+<h5>gameObject: <a href="GameObject.html" class="tsd-signature-type" data-tsd-kind="Class">GameObject</a></h5></li></ul></div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
+<p>Inherited from <a href="PrimitiveObject.html">PrimitiveObject</a>.<a href="PrimitiveObject.html#copyAllComponentsFrom">copyAllComponentsFrom</a></p>
+<ul>
+<li>Defined in <a href="https://github.com/felixtrz/elixr/blob/2e31d0e/src/GameObject.ts#L52">src/GameObject.ts:52</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a id="duplicate" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>duplicate</span><a href="#duplicate" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
@@ -184,7 +216,7 @@
 <h4 class="tsd-returns-title">Returns <a href="GameObject.html" class="tsd-signature-type" data-tsd-kind="Class">GameObject</a></h4><aside class="tsd-sources">
 <p>Inherited from <a href="PrimitiveObject.html">PrimitiveObject</a>.<a href="PrimitiveObject.html#duplicate">duplicate</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/felixtrz/elixr/blob/ce45d46/src/GameObject.ts#L38">src/GameObject.ts:38</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/felixtrz/elixr/blob/2e31d0e/src/GameObject.ts#L38">src/GameObject.ts:38</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a id="generateConvexBodyFromGeometry" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>generate<wbr/>Convex<wbr/>Body<wbr/>From<wbr/>Geometry</span><a href="#generateConvexBodyFromGeometry" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
@@ -198,7 +230,7 @@
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <p>Inherited from <a href="PrimitiveObject.html">PrimitiveObject</a>.<a href="PrimitiveObject.html#generateConvexBodyFromGeometry">generateConvexBodyFromGeometry</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/felixtrz/elixr/blob/ce45d46/src/objects/PhysicsObject.ts#L32">src/objects/PhysicsObject.ts:32</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/felixtrz/elixr/blob/2e31d0e/src/objects/PhysicsObject.ts#L32">src/objects/PhysicsObject.ts:32</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a id="getComponent" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>get<wbr/>Component</span><a href="#getComponent" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
@@ -214,7 +246,7 @@
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Readonly</span><span class="tsd-signature-symbol">&lt;</span><a href="GameComponent.html" class="tsd-signature-type" data-tsd-kind="Class">GameComponent</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
 <p>Inherited from <a href="PrimitiveObject.html">PrimitiveObject</a>.<a href="PrimitiveObject.html#getComponent">getComponent</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/felixtrz/elixr/blob/ce45d46/src/GameObject.ts#L62">src/GameObject.ts:62</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/felixtrz/elixr/blob/2e31d0e/src/GameObject.ts#L95">src/GameObject.ts:95</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a id="getComponentTypes" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>get<wbr/>Component<wbr/>Types</span><a href="#getComponentTypes" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
@@ -223,7 +255,7 @@
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Component</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">[]</span></h4><aside class="tsd-sources">
 <p>Inherited from <a href="PrimitiveObject.html">PrimitiveObject</a>.<a href="PrimitiveObject.html#getComponentTypes">getComponentTypes</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/felixtrz/elixr/blob/ce45d46/src/GameObject.ts#L77">src/GameObject.ts:77</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/felixtrz/elixr/blob/2e31d0e/src/GameObject.ts#L110">src/GameObject.ts:110</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a id="getComponents" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>get<wbr/>Components</span><a href="#getComponents" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
@@ -235,7 +267,7 @@
 <h5><span class="tsd-signature-symbol">[</span>componentName: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]: </span><span class="tsd-signature-type">Component</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></h5></li></ul><aside class="tsd-sources">
 <p>Inherited from <a href="PrimitiveObject.html">PrimitiveObject</a>.<a href="PrimitiveObject.html#getComponents">getComponents</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/felixtrz/elixr/blob/ce45d46/src/GameObject.ts#L82">src/GameObject.ts:82</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/felixtrz/elixr/blob/2e31d0e/src/GameObject.ts#L115">src/GameObject.ts:115</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a id="getComponentsToRemove" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>get<wbr/>Components<wbr/>To<wbr/>Remove</span><a href="#getComponentsToRemove" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
@@ -247,7 +279,7 @@
 <h5><span class="tsd-signature-symbol">[</span>componentName: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]: </span><span class="tsd-signature-type">Component</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></h5></li></ul><aside class="tsd-sources">
 <p>Inherited from <a href="PrimitiveObject.html">PrimitiveObject</a>.<a href="PrimitiveObject.html#getComponentsToRemove">getComponentsToRemove</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/felixtrz/elixr/blob/ce45d46/src/GameObject.ts#L87">src/GameObject.ts:87</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/felixtrz/elixr/blob/2e31d0e/src/GameObject.ts#L120">src/GameObject.ts:120</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a id="getMutableComponent" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>get<wbr/>Mutable<wbr/>Component</span><a href="#getMutableComponent" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
@@ -261,7 +293,7 @@
 <h4 class="tsd-returns-title">Returns <a href="GameComponent.html" class="tsd-signature-type" data-tsd-kind="Class">GameComponent</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
 <p>Inherited from <a href="PrimitiveObject.html">PrimitiveObject</a>.<a href="PrimitiveObject.html#getMutableComponent">getMutableComponent</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/felixtrz/elixr/blob/ce45d46/src/GameObject.ts#L70">src/GameObject.ts:70</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/felixtrz/elixr/blob/2e31d0e/src/GameObject.ts#L103">src/GameObject.ts:103</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a id="getRemovedComponent" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>get<wbr/>Removed<wbr/>Component</span><a href="#getRemovedComponent" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
@@ -275,7 +307,7 @@
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Readonly</span><span class="tsd-signature-symbol">&lt;</span><a href="GameComponent.html" class="tsd-signature-type" data-tsd-kind="Class">GameComponent</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
 <p>Inherited from <a href="PrimitiveObject.html">PrimitiveObject</a>.<a href="PrimitiveObject.html#getRemovedComponent">getRemovedComponent</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/felixtrz/elixr/blob/ce45d46/src/GameObject.ts#L92">src/GameObject.ts:92</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/felixtrz/elixr/blob/2e31d0e/src/GameObject.ts#L125">src/GameObject.ts:125</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a id="hasAllComponents" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>has<wbr/>All<wbr/>Components</span><a href="#hasAllComponents" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
@@ -289,7 +321,7 @@
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4><aside class="tsd-sources">
 <p>Inherited from <a href="PrimitiveObject.html">PrimitiveObject</a>.<a href="PrimitiveObject.html#hasAllComponents">hasAllComponents</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/felixtrz/elixr/blob/ce45d46/src/GameObject.ts#L99">src/GameObject.ts:99</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/felixtrz/elixr/blob/2e31d0e/src/GameObject.ts#L132">src/GameObject.ts:132</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a id="hasAnyComponents" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>has<wbr/>Any<wbr/>Components</span><a href="#hasAnyComponents" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
@@ -303,7 +335,7 @@
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4><aside class="tsd-sources">
 <p>Inherited from <a href="PrimitiveObject.html">PrimitiveObject</a>.<a href="PrimitiveObject.html#hasAnyComponents">hasAnyComponents</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/felixtrz/elixr/blob/ce45d46/src/GameObject.ts#L104">src/GameObject.ts:104</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/felixtrz/elixr/blob/2e31d0e/src/GameObject.ts#L137">src/GameObject.ts:137</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a id="hasComponent" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>has<wbr/>Component</span><a href="#hasComponent" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
@@ -317,7 +349,7 @@
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4><aside class="tsd-sources">
 <p>Inherited from <a href="PrimitiveObject.html">PrimitiveObject</a>.<a href="PrimitiveObject.html#hasComponent">hasComponent</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/felixtrz/elixr/blob/ce45d46/src/GameObject.ts#L109">src/GameObject.ts:109</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/felixtrz/elixr/blob/2e31d0e/src/GameObject.ts#L142">src/GameObject.ts:142</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a id="removeAllComponents" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>remove<wbr/>All<wbr/>Components</span><a href="#removeAllComponents" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
@@ -331,7 +363,7 @@
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <p>Inherited from <a href="PrimitiveObject.html">PrimitiveObject</a>.<a href="PrimitiveObject.html#removeAllComponents">removeAllComponents</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/felixtrz/elixr/blob/ce45d46/src/GameObject.ts#L114">src/GameObject.ts:114</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/felixtrz/elixr/blob/2e31d0e/src/GameObject.ts#L147">src/GameObject.ts:147</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a id="removeComponent" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>remove<wbr/>Component</span><a href="#removeComponent" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited">
@@ -347,7 +379,7 @@
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <p>Inherited from <a href="PrimitiveObject.html">PrimitiveObject</a>.<a href="PrimitiveObject.html#removeComponent">removeComponent</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/felixtrz/elixr/blob/ce45d46/src/GameObject.ts#L119">src/GameObject.ts:119</a></li></ul></aside></li></ul></section></section></div>
+<li>Defined in <a href="https://github.com/felixtrz/elixr/blob/2e31d0e/src/GameObject.ts#L152">src/GameObject.ts:152</a></li></ul></aside></li></ul></section></section></div>
 <div class="col-4 col-menu menu-sticky-wrap menu-highlight">
 <div class="tsd-navigation settings">
 <details class="tsd-index-accordion"><summary class="tsd-accordion-summary">
@@ -377,6 +409,8 @@
 <li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><a href="SphereObject.html#opacity" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-262144-path"></use><use href="#icon-262144-text"></use></svg>opacity</a></li>
 <li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="SphereObject.html#_init" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>_init</a></li>
 <li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="SphereObject.html#addComponent" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>add<wbr/>Component</a></li>
+<li class="tsd-kind-method tsd-parent-kind-class"><a href="SphereObject.html#copy" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>copy</a></li>
+<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="SphereObject.html#copyAllComponentsFrom" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>copy<wbr/>All<wbr/>Components<wbr/>From</a></li>
 <li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="SphereObject.html#duplicate" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>duplicate</a></li>
 <li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="SphereObject.html#generateConvexBodyFromGeometry" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>generate<wbr/>Convex<wbr/>Body<wbr/>From<wbr/>Geometry</a></li>
 <li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><a href="SphereObject.html#getComponent" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>get<wbr/>Component</a></li>

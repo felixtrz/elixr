@@ -32,31 +32,36 @@ export class GLTFModelLoader {
 }
 
 export class GLTFObject extends ComplexObject {
-	private _placeHolderObject: THREE.Object3D;
 	private _colliderVisible: boolean = false;
+	private _modelURL: string = '';
 	private _onLoad?: (model: THREE.Object3D) => void;
+	private _generateBody: boolean;
 
 	constructor(
-		modelURL: string,
+		modelURL: string = '',
 		physicsOptions: PhysicsOptions = {},
 		generateBody = true,
 	) {
 		super(physicsOptions);
-		this._placeHolderObject = new THREE.Object3D();
-		this.add(this._placeHolderObject);
+		this._modelURL = modelURL;
+		this._generateBody = generateBody;
+		const placeHolderObject = new THREE.Object3D();
+		this.add(placeHolderObject);
+		if (!this._modelURL) {
+			return;
+		}
 		const loader = GLTFModelLoader.getInstance();
-		loader.load(modelURL, (gltf) => {
+		loader.load(this._modelURL, (gltf) => {
 			const model = gltf.scene;
 			if (this._onLoad) {
 				this._onLoad(model);
 			}
-			model.position.copy(this._placeHolderObject.position);
-			model.quaternion.copy(this._placeHolderObject.quaternion);
-			model.visible = this._placeHolderObject.visible;
+			model.position.copy(placeHolderObject.position);
+			model.quaternion.copy(placeHolderObject.quaternion);
+			model.visible = placeHolderObject.visible;
 			this.add(model);
-			this.remove(this._placeHolderObject);
-			this._placeHolderObject = model;
-			if (generateBody) {
+			this.remove(placeHolderObject);
+			if (this._generateBody) {
 				this.generateConvexBody();
 				this._convexHull.visible = this._colliderVisible;
 			}
@@ -69,5 +74,20 @@ export class GLTFObject extends ComplexObject {
 
 	set colliderVisible(visible: boolean) {
 		this._colliderVisible = visible;
+	}
+
+	copy(source: this, recursive?: boolean): this {
+		super.copy(source, recursive);
+		this._modelURL = source._modelURL;
+		this._onLoad = source._onLoad;
+		this._colliderVisible = source._colliderVisible;
+		return this;
+	}
+
+	clone(recursive?: boolean): this {
+		return new GLTFObject(this._modelURL, {}, this._generateBody).copy(
+			this,
+			recursive,
+		) as this;
 	}
 }

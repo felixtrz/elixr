@@ -32,7 +32,7 @@
 	"homepage": "https://github.com/felixtrz/elixr#readme",
 	"dependencies": {
 		"cannon-es": "^0.20.0",
-		"ecsy": "^0.4.2",
+		"ecsy": "github:felixtrz/felicsy",
 		"gamepad-wrapper": "^1.2.0",
 		"three": "github:snagy/three.js-1#d982fc9",
 		"three-mesh-bvh": "^0.5.17"

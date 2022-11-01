@@ -43,6 +43,39 @@ export class GameObject extends THREE.Object3D {
 		return newGameObject;
 	}
 
+	copy(source: this, recursive?: boolean): this {
+		super.copy(source, recursive);
+		this.copyAllComponentsFrom(source);
+		return this;
+	}
+
+	copyAllComponentsFrom(gameObject: GameObject) {
+		const components = gameObject.getComponents();
+
+		if (!this.isInitialized) {
+			this._componentsToAdd = [];
+		} else {
+			this.removeAllComponents(true);
+		}
+
+		for (const component of Object.values(components)) {
+			const constructor =
+				component.constructor as GameComponentConstructor<any>;
+			const values = {};
+			for (const key of Object.keys(constructor.schema)) {
+				// @ts-ignore
+				values[key] = component[key];
+			}
+			if (!this.isInitialized) {
+				this._componentsToAdd.push({ constructor, values });
+			} else {
+				this._ecsyEntity.addComponent(constructor, values);
+				const newComponent = this.getMutableComponent(constructor);
+				newComponent.gameObject = this;
+			}
+		}
+	}
+
 	addComponent(
 		GameComponent: GameComponentConstructor<GameComponent<any>>,
 		values?: Partial<Omit<GameComponent<any>, keyof GameComponent<any>>>,
