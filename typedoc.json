@@ -10,5 +10,6 @@
   "excludeProtected": true,
 	"excludePrivate": true,
 	"hideGenerator": true,
-	"readme": "none",
+  "favicon": "assets/favicon/favicon.ico",
+	"readme": "README.md",
 }
