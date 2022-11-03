@@ -178,4 +178,4 @@ export class JoystickMovementSystem extends XRGameSystem {
 
 ## License
 
-[MIT License](/LICENSE.md) © Felix Zhang
+[Apache-2.0 License](/LICENSE.md) © 2022 Felix Zhang
