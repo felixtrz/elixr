@@ -1,4 +1,4 @@
-<img alt="elixr" src="assets/images/elixr.png" width="300">
+<img alt="elixr" src="assets/images/elixr.png" width="400">
 
 [![npm version](https://badge.fury.io/js/elixr.svg)](https://badge.fury.io/js/elixr)
 [![language](https://badgen.net/badge/icon/typescript?icon=typescript&label)](https://www.typescriptlang.org/)
@@ -39,7 +39,7 @@ $ yarn add elixr
 To use without a bundler:
 
 ```html
-<script src="https://unpkg.com/elixr@0.4.4/dist/elixr.min.js"></script>
+<script src="https://unpkg.com/elixr/dist/elixr.min.js"></script>
 ```
 
 ## Usage
@@ -146,35 +146,40 @@ export class JoystickMovementSystem extends XRGameSystem {
 
 ### Entity-Component-System
 
-- [Core](https://elixrjs.io/classes/Core.html): functions like world in most ECS implementations
-- [GameObject](https://elixrjs.io/classes/GameObject.html): entity, but also extends THREE.Object3D
-- [GameComponent](https://elixrjs.io/classes/GameComponent.html)
-- [GameSystem](https://elixrjs.io/classes/GameSystem.html)
-
-### Common Math Classes
-
-- [Vector2](https://elixrjs.io/classes/Vector2.html)
-- [Vector3](https://elixrjs.io/classes/Vector3.html)
-- [Vector4](https://elixrjs.io/classes/Vector4.html)
-- [Quaternion](https://elixrjs.io/classes/Quaternion.html)
-- [Box2](https://elixrjs.io/classes/Box2.html)
-- [Box3](https://elixrjs.io/classes/Box3.html)
+| Class                                                          | Description                        |
+| -------------------------------------------------------------- | ---------------------------------- |
+| [Core](https://elixrjs.io/classes/Core.html)                   | World in traditional ECS           |
+| [GameObject](https://elixrjs.io/classes/GameObject.html)       | Combination of entity and Object3D |
+| [GameComponent](https://elixrjs.io/classes/GameComponent.html) | Component in traditional ECS       |
+| [GameSystem](https://elixrjs.io/classes/GameSystem.html)       | System in traditional ECS          |
 
 ### GameObject Prototypes
 
-- [PhysicsObject](https://elixrjs.io/classes/PhysicsObject.html)
-  - [PrimitiveObject](https://elixrjs.io/classes/PrimitiveObject.html)
-    - [CubeObject](https://elixrjs.io/classes/CubeObject.html)
-    - [ConeObject](https://elixrjs.io/classes/ConeObject.html)
-    - [SphereObject](https://elixrjs.io/classes/SphereObject.html)
-    - [CylinderObject](https://elixrjs.io/classes/CylinderObject.html)
-  - [ComplexObject](https://elixrjs.io/classes/ComplexObject.html)
-    - [GLTFObject](https://elixrjs.io/classes/GLTFObject.html)
+| Class                                                            | Description                                                                                              |
+| ---------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| [CubeObject](https://elixrjs.io/classes/CubeObject.html)         | Physics-enabled cube, extends [PrimitiveObject](https://elixrjs.io/classes/PrimitiveObject.html)         |
+| [ConeObject](https://elixrjs.io/classes/ConeObject.html)         | Physics-enabled cone, extends [PrimitiveObject](https://elixrjs.io/classes/PrimitiveObject.html)         |
+| [SphereObject](https://elixrjs.io/classes/SphereObject.html)     | Physics-enabled sphere, extends [PrimitiveObject](https://elixrjs.io/classes/PrimitiveObject.html)       |
+| [CylinderObject](https://elixrjs.io/classes/CylinderObject.html) | Physics-enabled cylinder, extends [PrimitiveObject](https://elixrjs.io/classes/PrimitiveObject.html)     |
+| [GLTFObject](https://elixrjs.io/classes/GLTFObject.html)         | Physics-enabled object from gltf, extends [ComplexObject](https://elixrjs.io/classes/ComplexObject.html) |
 
 ### Physics Engine Bindings
 
-- [PhysicsComponent](https://elixrjs.io/classes/PhysicsComponent.html)
-- [RigidBodyComponent](https://elixrjs.io/classes/RigidBodyComponent.html)
+| Class                                                                    | Description                   |
+| ------------------------------------------------------------------------ | ----------------------------- |
+| [PhysicsComponent](https://elixrjs.io/classes/PhysicsComponent.html)     | Global physics settings       |
+| [RigidBodyComponent](https://elixrjs.io/classes/RigidBodyComponent.html) | Object-level physics settings |
+
+### Common Math Classes
+
+| Class                                                    | Description                                     |
+| -------------------------------------------------------- | ----------------------------------------------- |
+| [Vector2](https://elixrjs.io/classes/Vector2.html)       | Extends THREE.Vector2                           |
+| [Vector3](https://elixrjs.io/classes/Vector3.html)       | Combines THREE.Vector3 and CANNON.Vec3          |
+| [Vector4](https://elixrjs.io/classes/Vector4.html)       | Extends THREE.Vector4                           |
+| [Quaternion](https://elixrjs.io/classes/Quaternion.html) | Combines THREE.Quaternion and CANNON.Quaternion |
+| [Box2](https://elixrjs.io/classes/Box2.html)             | Alias for THREE.Box2                            |
+| [Box3](https://elixrjs.io/classes/Box3.html)             | Alias for THREE.Box3                            |
 
 ## License
 
