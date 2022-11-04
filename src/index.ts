@@ -63,3 +63,16 @@ export { CylinderObject } from './objects/CylinderObject';
 export { ConeObject } from './objects/ConeObject';
 export { ComplexObject } from './objects/ComplexObject';
 export { GLTFObject, GLTFModelLoader } from './objects/GLTFObject';
+
+/* -------------------------------------------------------------------------- */
+/*                                Locomotion                                  */
+/* -------------------------------------------------------------------------- */
+export {
+	XRSnapTurnComponent,
+	XRSnapTurnSystem,
+} from './locomotion/XRSnapTurnSystem';
+
+/* -------------------------------------------------------------------------- */
+/*                                    Enums                                   */
+/* -------------------------------------------------------------------------- */
+export { JOYSTICK_STATES, HANDEDNESS } from './enums';
