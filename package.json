@@ -1,6 +1,6 @@
 {
 	"name": "elixr",
-	"version": "0.4.5",
+	"version": "0.4.6",
 	"description": "WebXR Game Engine",
 	"main": "dist/index.js",
 	"types": "dist/index.d.ts",
@@ -14,10 +14,12 @@
 		"format": "prettier --write ./src/**/*",
 		"dev:server": "http-server -c-1 -p 8080 --cors ./site",
 		"includedocs": "git add ./docs/*",
-		"prepublishOnly": "npm run build && npm run docs && npm run includedocs"
+		"prepublishOnly": "npm run build"
 	},
 	"pre-commit": [
-		"prepublishOnly"
+		"build",
+		"docs",
+		"includedocs"
 	],
 	"repository": {
 		"type": "git",
