@@ -51,6 +51,7 @@ export { Matrix3, Matrix4 } from './math/Matrices';
 export { Box2, Box3 } from './math/Boxes';
 export { Color } from './math/Color';
 export { Euler } from './math/Euler';
+export { CurvedRaycaster } from './math/CurvedRaycaster';
 
 /* -------------------------------------------------------------------------- */
 /*                              Prototype Objects                             */
@@ -71,8 +72,25 @@ export {
 	XRSnapTurnComponent,
 	XRSnapTurnSystem,
 } from './locomotion/XRSnapTurnSystem';
+export {
+	XRSmoothTurnComponent,
+	XRSmoothTurnSystem,
+} from './locomotion/XRSmoothTurnSystem';
+export {
+	XRTeleportComponent,
+	XRTeleportSystem,
+} from './locomotion/XRTeleportSystem';
+export {
+	MovementSurface,
+	MovementObstacle,
+} from './locomotion/MovementComponents';
 
 /* -------------------------------------------------------------------------- */
 /*                                    Enums                                   */
 /* -------------------------------------------------------------------------- */
 export { JOYSTICK_STATES, HANDEDNESS } from './enums';
+
+/* -------------------------------------------------------------------------- */
+/*                                 Geometries                                 */
+/* -------------------------------------------------------------------------- */
+export { CurveTubeGeometry } from './geometries/CurveTubeGeometry';

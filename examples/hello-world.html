@@ -7,12 +7,6 @@
 			content="width=device-width, initial-scale=1, shrink-to-fit=no"
 		/>
 		<title>Hello XR</title>
-		<script
-			src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.145.0/three.min.js"
-			integrity="sha512-mElAVmOZp/n8OKao194p++kIARCbLKnf/pdVTVI+ZkxL0Rmyw6p5C4kcLd67l2WdvfyBqFe6dI4lR3m++xhdnA=="
-			crossorigin="anonymous"
-			referrerpolicy="no-referrer"
-		></script>
 		<script src="../dist/elixr.min.js"></script>
 	</head>
 	<body style="margin: 0">
@@ -21,61 +15,31 @@
 			const core = new ELIXR.Core(document.getElementById('scene-container'));
 			console.log(core);
 
-			const floorGeometry = new THREE.PlaneGeometry(4, 4);
-			const floorMaterial = new THREE.MeshStandardMaterial({
+			const floorGeometry = new ELIXR.THREE.PlaneGeometry(10, 10);
+			const floorMaterial = new ELIXR.THREE.MeshStandardMaterial({
 				color: 0xeeeeee,
 				roughness: 1.0,
 				metalness: 0.0,
 			});
-			const floor = new THREE.Mesh(floorGeometry, floorMaterial);
+			const floor = new ELIXR.THREE.Mesh(floorGeometry, floorMaterial);
 			floor.rotation.x = -Math.PI / 2;
 			core.scene.add(floor);
 
-			core.scene.background = new THREE.Color(0x808080);
+			core.scene.background = new ELIXR.THREE.Color(0x808080);
 
-			core.scene.add(new THREE.HemisphereLight(0x808080, 0x606060));
+			core.scene.add(new ELIXR.THREE.HemisphereLight(0x808080, 0x606060));
 
-			const light = new THREE.DirectionalLight(0xffffff);
+			core.registerGameSystem(ELIXR.XRSmoothTurnSystem);
+
+			const light = new ELIXR.THREE.DirectionalLight(0xffffff);
 			light.position.set(0, 6, 0);
 			core.scene.add(light);
 
-			group = new THREE.Group();
-			core.scene.add(group);
-
-			const geometries = [
-				new THREE.BoxGeometry(0.2, 0.2, 0.2),
-				new THREE.ConeGeometry(0.2, 0.2, 64),
-				new THREE.CylinderGeometry(0.2, 0.2, 0.2, 64),
-				new THREE.IcosahedronGeometry(0.2, 8),
-				new THREE.TorusGeometry(0.2, 0.04, 64, 32),
-			];
-
-			for (let i = 0; i < 50; i++) {
-				const geometry =
-					geometries[Math.floor(Math.random() * geometries.length)];
-				const material = new THREE.MeshStandardMaterial({
-					color: Math.random() * 0xffffff,
-					roughness: 0.7,
-					metalness: 0.0,
-				});
-
-				const object = new THREE.Mesh(geometry, material);
-
-				object.position.x = Math.random() * 4 - 2;
-				object.position.y = Math.random() * 2;
-				object.position.z = Math.random() * 4 - 2;
-
-				object.rotation.x = Math.random() * 2 * Math.PI;
-				object.rotation.y = Math.random() * 2 * Math.PI;
-				object.rotation.z = Math.random() * 2 * Math.PI;
-
-				object.scale.setScalar(Math.random() + 0.5);
-
-				object.castShadow = true;
-				object.receiveShadow = true;
-
-				group.add(object);
-			}
+			const origin = new ELIXR.Vector3(0, 1, -1);
+			const direction = new ELIXR.Vector3(0, 0, -1).normalize();
+			const raycaster = new ELIXR.CurvedRaycaster(origin, direction);
+			// const raycaster = new ELIXR.THREE.Raycaster(origin, direction);
+			console.log(raycaster.intersectObject(floor, true, []));
 
 			document.body.append(core.vrButton);
 		</script>

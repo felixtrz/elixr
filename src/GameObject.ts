@@ -21,6 +21,7 @@ export class GameObject extends THREE.Object3D {
 		constructor: GameComponentConstructor<GameComponent<any>>;
 		values: Partial<Omit<GameComponent<any>, keyof GameComponent<any>>>;
 	}[] = [];
+	isGameObject: boolean = true;
 
 	_init(ecsyEntity: ExtendedEntity): void {
 		this._ecsyEntity = ecsyEntity;
