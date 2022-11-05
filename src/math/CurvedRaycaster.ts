@@ -5,7 +5,6 @@ export class CurvedRaycaster extends THREE.Raycaster {
 	shootingSpeed: number;
 	minY: number;
 	private _points: Vector3[];
-	private _curve: THREE.CatmullRomCurve3;
 
 	constructor(
 		origin: Vector3,
@@ -24,13 +23,11 @@ export class CurvedRaycaster extends THREE.Raycaster {
 			() => new Vector3(),
 		);
 
-		this._curve = new THREE.CatmullRomCurve3(this._points);
-
 		this._calculatePoints();
 	}
 
-	get curve(): Readonly<THREE.CatmullRomCurve3> {
-		return this._curve;
+	get points(): Readonly<Vector3[]> {
+		return this._points;
 	}
 
 	private _calculatePoints() {

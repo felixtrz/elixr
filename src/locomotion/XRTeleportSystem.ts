@@ -33,10 +33,13 @@ export class XRTeleportSystem extends XRGameSystem {
 	private _config: XRTeleportConfig;
 	private _raycaster: CurvedRaycaster;
 	private _rayMesh: THREE.Mesh;
+	private _rayPath: THREE.CatmullRomCurve3;
+	private _teleortMarker: THREE.Mesh;
 
 	init() {
 		this._prevState = JOYSTICK_STATES.DISENGAGED;
 		this._raycaster = new CurvedRaycaster(new Vector3(), new Vector3());
+		this._rayPath = new THREE.CatmullRomCurve3();
 
 		if (!this.core.hasRegisteredGameComponent(XRTeleportComponent)) {
 			this.core.registerGameComponent(XRTeleportComponent);
@@ -58,6 +61,12 @@ export class XRTeleportSystem extends XRGameSystem {
 			this._rayMesh.frustumCulled = false;
 			this._rayMesh.renderOrder = 999;
 		}
+		if (!this._teleortMarker) {
+			this._teleortMarker = new THREE.Mesh(
+				new THREE.SphereGeometry(0.1, 32, 32),
+			);
+			this.core.scene.add(this._teleortMarker);
+		}
 
 		const controller =
 			this.core.controllers[this._config.CONTROLLER_HANDEDNESS];
@@ -69,10 +78,6 @@ export class XRTeleportSystem extends XRGameSystem {
 			controller.targetRaySpace
 				.getWorldDirection(new THREE.Vector3())
 				.multiplyScalar(-1) as Vector3,
-		);
-
-		(this._rayMesh.geometry as CurveTubeGeometry).setFromPath(
-			this._raycaster.curve,
 		);
 
 		const gamepad = controller.gamepad;
@@ -87,17 +92,44 @@ export class XRTeleportSystem extends XRGameSystem {
 		) {
 			curState = JOYSTICK_STATES.BACK;
 		}
-		if (this._prevState == JOYSTICK_STATES.DISENGAGED) {
-			if (curState == JOYSTICK_STATES.BACK) {
-				const objects = this.queryGameObjects('obstacles').concat(
-					this.queryGameObjects('surfaces'),
-				);
-				const intersects = this._raycaster.intersectObjects(objects, true);
-				if (intersects[0]) {
-					console.log(findRootGameObject(intersects[0].object));
-				}
+
+		if (
+			curState !== JOYSTICK_STATES.BACK &&
+			this._prevState === JOYSTICK_STATES.BACK
+		) {
+			if (this._teleortMarker.visible && this._teleortMarker.userData.valid) {
+				this.core.playerSpace.position.copy(this._teleortMarker.position);
 			}
 		}
+
+		this._rayMesh.visible = curState === JOYSTICK_STATES.BACK;
+		this._teleortMarker.visible = false;
+		if (curState == JOYSTICK_STATES.BACK) {
+			const objects = this.queryGameObjects('obstacles').concat(
+				this.queryGameObjects('surfaces'),
+			);
+			const intersect = this._raycaster.intersectObjects(objects, true)[0];
+
+			if (intersect) {
+				this._teleortMarker.position.copy(intersect.point);
+				this._teleortMarker.visible = true;
+				this._rayPath.points = calculateCulledRayPoints(
+					this._raycaster.points as Vector3[],
+					intersect.point as Vector3,
+				);
+
+				const object = findRootGameObject(intersect.object);
+				if (object.hasComponent(MovementSurface)) {
+					this._teleortMarker.userData.valid = true;
+				} else {
+					this._teleortMarker.userData.valid = false;
+				}
+			} else {
+				this._rayPath.points = this._raycaster.points as Vector3[];
+			}
+			(this._rayMesh.geometry as CurveTubeGeometry).setFromPath(this._rayPath);
+		}
+
 		this._prevState = curState;
 	}
 }
@@ -115,4 +147,28 @@ const findRootGameObject = (obj: THREE.Object3D): GameObject | null => {
 	} else {
 		return findRootGameObject(obj.parent);
 	}
+};
+
+const calculateCulledRayPoints = (
+	segmentPoints: Vector3[],
+	intersectPoint: Vector3,
+) => {
+	const culledPoints = [];
+
+	for (let i = 0; i < segmentPoints.length - 1; i++) {
+		const p1 = segmentPoints[i];
+		const p2 = segmentPoints[i + 1];
+		if (
+			(p1.x - intersectPoint.x) * (intersectPoint.x - p2.x) >= 0 &&
+			(p1.y - intersectPoint.y) * (intersectPoint.y - p2.y) >= 0 &&
+			(p1.z - intersectPoint.z) * (intersectPoint.z - p2.z) >= 0
+		) {
+			culledPoints.push(p1);
+			culledPoints.push(intersectPoint);
+			return culledPoints;
+		} else {
+			culledPoints.push(p1);
+		}
+	}
+	return segmentPoints;
 };
