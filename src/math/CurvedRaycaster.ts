@@ -1,7 +1,7 @@
 import { THREE, Vector3 } from '../index';
 
 export class CurvedRaycaster extends THREE.Raycaster {
-	numSegments: number;
+	private _numSegments: number;
 	shootingSpeed: number;
 	minY: number;
 	private _points: Vector3[];
@@ -15,14 +15,23 @@ export class CurvedRaycaster extends THREE.Raycaster {
 	) {
 		super(origin, direction);
 
-		this.numSegments = numSegments;
+		this._numSegments = numSegments;
 		this.shootingSpeed = shootingSpeed;
 		this.minY = minY;
 		this._points = Array.from(
-			{ length: this.numSegments + 1 },
+			{ length: this._numSegments + 1 },
 			() => new Vector3(),
 		);
 
+		this._calculatePoints();
+	}
+
+	set numSegments(numSegments: number) {
+		this._numSegments = numSegments;
+		this._points = Array.from(
+			{ length: this._numSegments + 1 },
+			() => new Vector3(),
+		);
 		this._calculatePoints();
 	}
 
@@ -36,9 +45,9 @@ export class CurvedRaycaster extends THREE.Raycaster {
 		let v0 = new Vector3();
 		v0.copy(this.ray.direction).multiplyScalar(this.shootingSpeed);
 		let max_t = calculateMaxTime(this.ray.origin as Vector3, v0, a, this.minY);
-		let dt = max_t / this.numSegments;
+		let dt = max_t / this._numSegments;
 		let newPos = new Vector3();
-		for (var i = 0; i < this.numSegments + 1; i++) {
+		for (var i = 0; i < this._numSegments + 1; i++) {
 			parabolicCurve(this.ray.origin as Vector3, v0, a, dt * i, newPos);
 			this._points[i].copy(newPos);
 		}
@@ -71,11 +80,11 @@ export class CurvedRaycaster extends THREE.Raycaster {
 			intersects = [];
 		}
 		let p1, p2;
-		for (let i = 0; i < this.numSegments; i++) {
+		for (let i = 0; i < this._numSegments; i++) {
 			p1 = this._points[i];
 			p2 = this._points[i + 1];
 			let segment = p2.clone().sub(p1);
-			this.far = segment.length() * (i == this.numSegments - 1 ? 1.1 : 1);
+			this.far = segment.length() * (i == this._numSegments - 1 ? 1.1 : 1);
 			super.set(p1, segment.normalize());
 			const segmentIntersetcs = super.intersectObjects(objects, recursive);
 			intersects = intersects.concat(

@@ -24,8 +24,8 @@ export class CylinderObject extends PrimitiveObject {
 			height,
 			32,
 		);
-		const cube = new THREE.Mesh(this._geometry, this._material);
-		this.add(cube);
+		this._mesh = new THREE.Mesh(this._geometry, this._material);
+		this.add(this._mesh);
 		this.addComponent(RigidBodyComponent, {
 			mass: this._type == BODY_TYPES.DYNAMIC ? this._mass : 0,
 			shape: new Physics.Cylinder(

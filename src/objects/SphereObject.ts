@@ -13,8 +13,8 @@ export class SphereObject extends PrimitiveObject {
 		super(materialOptions, physicsOptions);
 		this._radius = radius;
 		this._geometry = new THREE.SphereGeometry(radius);
-		const cube = new THREE.Mesh(this._geometry, this._material);
-		this.add(cube);
+		this._mesh = new THREE.Mesh(this._geometry, this._material);
+		this.add(this._mesh);
 		this.addComponent(RigidBodyComponent, {
 			mass: this._type == BODY_TYPES.DYNAMIC ? this._mass : 0,
 			shape: new Physics.Sphere(this._radius),

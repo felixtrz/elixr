@@ -1,10 +1,12 @@
 import { Attributes, System, SystemQueries, World } from 'ecsy';
 import { Core, ExtendedWorld } from './Core';
+import { GameComponentConstructor, SystemConfig } from './GameComponent';
 
 import { ExtendedEntity } from './GameObject';
 
 export class GameSystem extends System {
 	core: Core;
+	static systemConfig?: GameComponentConstructor<SystemConfig>;
 
 	constructor(world: World, attributes?: Attributes) {
 		super(world, attributes);
@@ -75,5 +77,6 @@ export class SingleUseXRGameSystem extends GameSystem {
 export interface GameSystemConstructor<T extends GameSystem> {
 	isSystem: true;
 	queries: SystemQueries;
+	systemConfig?: GameComponentConstructor<SystemConfig>;
 	new (...args: any): T;
 }

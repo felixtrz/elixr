@@ -1,6 +1,5 @@
 import * as CANNON from 'cannon-es';
 
-import { ExtendedBody } from './RigidBodyPhysicsSystem';
 import { GameComponent } from '../GameComponent';
 import { THREE } from '../index';
 import { Types } from 'ecsy';
@@ -65,7 +64,7 @@ export class RigidBodyComponent extends GameComponent<any> {
 	}
 
 	remove() {
-		(this._body as ExtendedBody).removalFlag = true;
+		this.onRemove();
 	}
 
 	get position() {
@@ -118,7 +117,9 @@ export class RigidBodyComponent extends GameComponent<any> {
 	}
 
 	onRemove() {
-		(this._body as ExtendedBody).removalFlag = true;
+		if (this._body.world) {
+			this._body.world.removeBody(this._body);
+		}
 	}
 }
 

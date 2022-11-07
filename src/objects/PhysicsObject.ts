@@ -20,6 +20,7 @@ export class PhysicsObject extends GameObject {
 	protected _hasPhysics: boolean;
 	protected _mass: number;
 	protected _type: BODY_TYPES;
+	protected _shape: CANNON.Shape;
 
 	constructor(physicsOptions: PhysicsOptions = {}) {
 		super();
@@ -33,9 +34,10 @@ export class PhysicsObject extends GameObject {
 		if (this.hasComponent(RigidBodyComponent)) {
 			this.removeComponent(RigidBodyComponent, true);
 		}
+		this._shape = createConvexPolyhedron(geometry);
 		this.addComponent(RigidBodyComponent, {
 			mass: this._type == BODY_TYPES.DYNAMIC ? this._mass : 0,
-			shape: createConvexPolyhedron(geometry),
+			shape: this._shape,
 			type: this._type,
 		});
 	}
@@ -46,6 +48,16 @@ export class PhysicsObject extends GameObject {
 		this._hasPhysics = source._hasPhysics;
 		this._mass = source._mass;
 		this._type = source._type;
+		this._shape = source._shape;
+
+		if (this.hasComponent(RigidBodyComponent)) {
+			this.removeComponent(RigidBodyComponent, true);
+			this.addComponent(RigidBodyComponent, {
+				mass: this._type == BODY_TYPES.DYNAMIC ? this._mass : 0,
+				shape: this._shape,
+				type: this._type,
+			});
+		}
 
 		return this;
 	}

@@ -10,6 +10,7 @@ export type PrimitiveMaterialOptions = {
 export class PrimitiveObject extends PhysicsObject {
 	protected _material: THREE.MeshStandardMaterial | THREE.MeshBasicMaterial;
 	protected _geometry: THREE.BufferGeometry;
+	protected _mesh: THREE.Mesh;
 
 	constructor(
 		materialOptions: PrimitiveMaterialOptions = {},
@@ -53,6 +54,9 @@ export class PrimitiveObject extends PhysicsObject {
 
 		this._material = source._material;
 		this._geometry = source._geometry;
+		this.remove(this._mesh);
+		this._mesh = new THREE.Mesh(this._geometry, this._material);
+		this.add(this._mesh);
 
 		return this;
 	}

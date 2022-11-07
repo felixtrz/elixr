@@ -20,6 +20,7 @@ export { THREE };
 export { Not, Types } from 'ecsy';
 export { GameObject } from './GameObject';
 export { GameComponent } from './GameComponent';
+export { SystemConfig } from './GameComponent';
 export {
 	GameSystem,
 	XRGameSystem,

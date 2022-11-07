@@ -1,4 +1,5 @@
 import { ExtendedEntity, GameObject } from './GameObject';
+import { GameSystem, GameSystemConstructor } from './GameSystem';
 import {
 	PhysicsComponent,
 	RigidBodyComponent,
@@ -8,7 +9,6 @@ import { World, WorldOptions } from 'ecsy';
 import { ARButton } from 'three/examples/jsm/webxr/ARButton.js';
 import { GLTFModelLoader } from './objects/GLTFObject';
 import { GameComponentConstructor } from './GameComponent';
-import { GameSystemConstructor } from './GameSystem';
 import { GamepadWrapper } from 'gamepad-wrapper';
 import { RigidBodyPhysicsSystem } from './physics/RigidBodyPhysicsSystem';
 import { THREE } from './index';
@@ -159,6 +159,13 @@ export class Core {
 
 	getGameSystem(GameSystem: GameSystemConstructor<any>) {
 		return this._ecsyWorld.getSystem(GameSystem);
+	}
+
+	getGameSystemConfig(GameSystem: GameSystemConstructor<GameSystem>) {
+		if (GameSystem.systemConfig) {
+			return this.game.getComponent(GameSystem.systemConfig);
+		}
+		return null;
 	}
 
 	getGameSystems() {

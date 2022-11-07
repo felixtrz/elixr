@@ -2,8 +2,8 @@ import {
 	BUTTONS,
 	CurveTubeGeometry,
 	CurvedRaycaster,
-	GameComponent,
 	GameObject,
+	SystemConfig,
 	THREE,
 	Types,
 	Vector3,
@@ -12,19 +12,27 @@ import {
 import { HANDEDNESS, JOYSTICK_STATES } from '../enums';
 import { MovementObstacle, MovementSurface } from './MovementComponents';
 
-type XRTeleportConfig = {
+interface XRTeleportConfig extends XRTeleportComponent {
 	JOYSTICK_ANGLE_MIN: number;
 	JOYSTICK_ANGLE_MAX: number;
 	JOYSTICK_DEADZONE: number;
+	RAYCAST_SEGMENTS: number;
+	RAY_SPEED: number;
+	RAY_MIN_Y: number;
 	CONTROLLER_HANDEDNESS: HANDEDNESS;
-};
+}
 
-export class XRTeleportComponent extends GameComponent<any> {}
+export class XRTeleportComponent extends SystemConfig {
+	public needsUpdate: boolean = false;
+}
 
 XRTeleportComponent.schema = {
 	JOYSTICK_ANGLE_MIN: { type: Types.Number, default: (Math.PI / 180) * 135 },
 	JOYSTICK_ANGLE_MAX: { type: Types.Number, default: (Math.PI / 180) * 180 },
 	JOYSTICK_DEADZONE: { type: Types.Number, default: 0.95 },
+	RAYCAST_SEGMENTS: { type: Types.Number, default: 10 },
+	RAY_SPEED: { type: Types.Number, default: 7 },
+	RAY_MIN_Y: { type: Types.Number, default: -0.1 },
 	CONTROLLER_HANDEDNESS: { type: Types.String, default: HANDEDNESS.RIGHT },
 };
 
@@ -34,13 +42,19 @@ export class XRTeleportSystem extends XRGameSystem {
 	private _raycaster: CurvedRaycaster;
 	private _rayMesh: THREE.Mesh;
 	private _rayPath: THREE.CatmullRomCurve3;
-	private _teleortMarker: THREE.Mesh;
+	private _teleportMarker: THREE.Object3D;
+	private _markerMesh: THREE.Mesh;
+	private _material = new THREE.MeshBasicMaterial({
+		color: 0xffffff,
+		transparent: true,
+		opacity: 0.5,
+		side: THREE.DoubleSide,
+	});
+
+	private _tempMatrix3 = new THREE.Matrix3();
+	private _normalWorld = new Vector3();
 
 	init() {
-		this._prevState = JOYSTICK_STATES.DISENGAGED;
-		this._raycaster = new CurvedRaycaster(new Vector3(), new Vector3());
-		this._rayPath = new THREE.CatmullRomCurve3();
-
 		if (!this.core.hasRegisteredGameComponent(XRTeleportComponent)) {
 			this.core.registerGameComponent(XRTeleportComponent);
 		}
@@ -49,24 +63,45 @@ export class XRTeleportSystem extends XRGameSystem {
 			this.core.game.addComponent(XRTeleportComponent);
 		}
 
-		// @ts-ignore
-		this._config = this.core.game.getComponent(XRTeleportComponent);
+		this._config = this.core.game.getComponent(
+			XRTeleportComponent,
+		) as XRTeleportConfig;
+
+		this._prevState = JOYSTICK_STATES.DISENGAGED;
+		this._raycaster = new CurvedRaycaster(
+			new Vector3(),
+			new Vector3(),
+			this._config.RAYCAST_SEGMENTS,
+			this._config.RAY_SPEED,
+			this._config.RAY_MIN_Y,
+		);
+		this._rayPath = new THREE.CatmullRomCurve3();
 	}
 
 	update() {
 		if (!this.core.controllers[this._config.CONTROLLER_HANDEDNESS]) return;
 		if (!this._rayMesh) {
-			this._rayMesh = new THREE.Mesh(new CurveTubeGeometry(50, 8, 0.01, false));
+			this._rayMesh = new THREE.Mesh(
+				new CurveTubeGeometry(50, 8, 0.01, false),
+				this._material,
+			);
 			this.core.scene.add(this._rayMesh);
 			this._rayMesh.frustumCulled = false;
 			this._rayMesh.renderOrder = 999;
 		}
-		if (!this._teleortMarker) {
-			this._teleortMarker = new THREE.Mesh(
-				new THREE.SphereGeometry(0.1, 32, 32),
+		if (!this._teleportMarker) {
+			this._teleportMarker = new THREE.Object3D();
+			this._markerMesh = new THREE.Mesh(
+				new THREE.CylinderGeometry(0.5, 0.5, 0.1, 32, 1, true),
+				this._material,
 			);
-			this.core.scene.add(this._teleortMarker);
+			this._markerMesh.rotateX(Math.PI / 2);
+			this._markerMesh.position.y = 0.02;
+			this._teleportMarker.add(this._markerMesh);
+			this.core.scene.add(this._teleportMarker);
 		}
+
+		this._updateTeleportConfig();
 
 		const controller =
 			this.core.controllers[this._config.CONTROLLER_HANDEDNESS];
@@ -97,13 +132,13 @@ export class XRTeleportSystem extends XRGameSystem {
 			curState !== JOYSTICK_STATES.BACK &&
 			this._prevState === JOYSTICK_STATES.BACK
 		) {
-			if (this._teleortMarker.visible && this._teleortMarker.userData.valid) {
-				this.core.playerSpace.position.copy(this._teleortMarker.position);
+			if (this._teleportMarker.visible && this._teleportMarker.userData.valid) {
+				this.core.playerSpace.position.copy(this._teleportMarker.position);
 			}
 		}
 
 		this._rayMesh.visible = curState === JOYSTICK_STATES.BACK;
-		this._teleortMarker.visible = false;
+		this._teleportMarker.visible = false;
 		if (curState == JOYSTICK_STATES.BACK) {
 			const objects = this.queryGameObjects('obstacles').concat(
 				this.queryGameObjects('surfaces'),
@@ -111,19 +146,39 @@ export class XRTeleportSystem extends XRGameSystem {
 			const intersect = this._raycaster.intersectObjects(objects, true)[0];
 
 			if (intersect) {
-				this._teleortMarker.position.copy(intersect.point);
-				this._teleortMarker.visible = true;
+				this._tempMatrix3.getNormalMatrix(intersect.object.matrixWorld);
+				this._normalWorld
+					.copy(intersect.face.normal)
+					.applyMatrix3(this._tempMatrix3)
+					.normalize();
+
+				let angleRandian;
+				const opposite = Math.sqrt(
+					Math.pow(this._normalWorld.x, 2) + Math.pow(this._normalWorld.z, 2),
+				);
+				if (opposite < 1e-6) {
+					angleRandian = this._normalWorld.y > 0 ? 0 : Math.PI;
+				} else {
+					angleRandian = Math.atan(opposite / this._normalWorld.y);
+				}
+
+				console.log(angleRandian);
+
+				this._teleportMarker.position.copy(intersect.point);
+				this._teleportMarker.lookAt(
+					new Vector3()
+						.copy(this._teleportMarker.position)
+						.add(this._normalWorld),
+				);
+				this._teleportMarker.visible = true;
 				this._rayPath.points = calculateCulledRayPoints(
 					this._raycaster.points as Vector3[],
 					intersect.point as Vector3,
 				);
 
 				const object = findRootGameObject(intersect.object);
-				if (object.hasComponent(MovementSurface)) {
-					this._teleortMarker.userData.valid = true;
-				} else {
-					this._teleortMarker.userData.valid = false;
-				}
+				this._teleportMarker.userData.valid =
+					object.hasComponent(MovementSurface) && angleRandian < Math.PI / 4;
 			} else {
 				this._rayPath.points = this._raycaster.points as Vector3[];
 			}
@@ -132,12 +187,23 @@ export class XRTeleportSystem extends XRGameSystem {
 
 		this._prevState = curState;
 	}
+
+	_updateTeleportConfig() {
+		if (this._config.needsUpdate) {
+			this._config.needsUpdate = false;
+			this._raycaster.numSegments = this._config.RAYCAST_SEGMENTS;
+			this._raycaster.shootingSpeed = this._config.RAY_SPEED;
+			this._raycaster.minY = this._config.RAY_MIN_Y;
+		}
+	}
 }
 
 XRTeleportSystem.queries = {
 	obstacles: { components: [MovementObstacle] },
 	surfaces: { components: [MovementSurface] },
 };
+
+XRTeleportSystem.systemConfig = XRTeleportComponent;
 
 const findRootGameObject = (obj: THREE.Object3D): GameObject | null => {
 	if ((obj as GameObject).isGameObject) {
