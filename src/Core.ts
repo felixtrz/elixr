@@ -1,14 +1,14 @@
+import { Attributes, World, WorldOptions } from 'ecsy';
 import { ExtendedEntity, GameObject } from './GameObject';
+import { GameComponentConstructor, SystemConfig } from './GameComponent';
 import { GameSystem, GameSystemConstructor } from './GameSystem';
 import {
 	PhysicsComponent,
 	RigidBodyComponent,
 } from './physics/PhysicsComponents';
-import { World, WorldOptions } from 'ecsy';
 
 import { ARButton } from 'three/examples/jsm/webxr/ARButton.js';
 import { GLTFModelLoader } from './objects/GLTFObject';
-import { GameComponentConstructor } from './GameComponent';
 import { GamepadWrapper } from 'gamepad-wrapper';
 import { RigidBodyPhysicsSystem } from './physics/RigidBodyPhysicsSystem';
 import { THREE } from './index';
@@ -153,19 +153,28 @@ export class Core {
 		return this.renderer.xr.isPresenting;
 	}
 
-	registerGameSystem(GameSystem: GameSystemConstructor<any>) {
-		this._ecsyWorld.registerSystem(GameSystem);
+	registerGameSystem(
+		GameSystem: GameSystemConstructor<any>,
+		attributes: Attributes = {},
+	) {
+		if (GameSystem.systemConfig) {
+			this._ecsyWorld.registerComponent(GameSystem.systemConfig);
+			this.game.addComponent(GameSystem.systemConfig);
+			attributes.config = this.game.getMutableComponent(
+				GameSystem.systemConfig,
+			);
+		}
+		this._ecsyWorld.registerSystem(GameSystem, attributes);
 	}
 
 	getGameSystem(GameSystem: GameSystemConstructor<any>) {
 		return this._ecsyWorld.getSystem(GameSystem);
 	}
 
-	getGameSystemConfig(GameSystem: GameSystemConstructor<GameSystem>) {
-		if (GameSystem.systemConfig) {
-			return this.game.getComponent(GameSystem.systemConfig);
-		}
-		return null;
+	getGameSystemConfig(
+		GameSystem: GameSystemConstructor<GameSystem>,
+	): SystemConfig {
+		return this.getGameSystem(GameSystem).config;
 	}
 
 	getGameSystems() {

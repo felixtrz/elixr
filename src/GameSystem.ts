@@ -6,11 +6,13 @@ import { ExtendedEntity } from './GameObject';
 
 export class GameSystem extends System {
 	core: Core;
+	config?: SystemConfig;
 	static systemConfig?: GameComponentConstructor<SystemConfig>;
 
 	constructor(world: World, attributes?: Attributes) {
 		super(world, attributes);
 		this.core = (this.world as ExtendedWorld).core;
+		this.config = attributes?.config as SystemConfig;
 	}
 
 	execute(delta: number, time: number) {

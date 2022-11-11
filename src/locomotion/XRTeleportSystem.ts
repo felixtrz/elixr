@@ -55,17 +55,7 @@ export class XRTeleportSystem extends XRGameSystem {
 	private _normalWorld = new Vector3();
 
 	init() {
-		if (!this.core.hasRegisteredGameComponent(XRTeleportComponent)) {
-			this.core.registerGameComponent(XRTeleportComponent);
-		}
-
-		if (!this.core.game.hasComponent(XRTeleportComponent)) {
-			this.core.game.addComponent(XRTeleportComponent);
-		}
-
-		this._config = this.core.game.getComponent(
-			XRTeleportComponent,
-		) as XRTeleportConfig;
+		this._config = this.config as XRTeleportConfig;
 
 		this._prevState = JOYSTICK_STATES.DISENGAGED;
 		this._raycaster = new CurvedRaycaster(
@@ -161,8 +151,6 @@ export class XRTeleportSystem extends XRGameSystem {
 				} else {
 					angleRandian = Math.atan(opposite / this._normalWorld.y);
 				}
-
-				console.log(angleRandian);
 
 				this._teleportMarker.position.copy(intersect.point);
 				this._teleportMarker.lookAt(
