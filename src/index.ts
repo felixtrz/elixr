@@ -70,6 +70,10 @@ export { GLTFObject, GLTFModelLoader } from './objects/GLTFObject';
 /*                                Locomotion                                  */
 /* -------------------------------------------------------------------------- */
 export {
+	MovementSurface,
+	MovementObstacle,
+} from './locomotion/MovementComponents';
+export {
 	XRSnapTurnConfig,
 	XRSnapTurnSystem,
 } from './locomotion/XRSnapTurnSystem';
@@ -81,10 +85,7 @@ export {
 	XRTeleportConfig,
 	XRTeleportSystem,
 } from './locomotion/XRTeleportSystem';
-export {
-	MovementSurface,
-	MovementObstacle,
-} from './locomotion/MovementComponents';
+export { XRSlideConfig, XRSlideSystem } from './locomotion/XRSlideSystem';
 
 /* -------------------------------------------------------------------------- */
 /*                                    Enums                                   */
