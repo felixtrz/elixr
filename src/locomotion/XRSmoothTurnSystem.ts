@@ -1,14 +1,14 @@
-import { AXES, GameComponent, Types, XRGameSystem } from '../index';
+import { AXES, SystemConfig, Types, XRGameSystem } from '../index';
 
 import { HANDEDNESS } from '../enums';
 
-type XRSmoothTurnConfig = {
+export interface XRSmoothTurnConfig extends XRSmoothTurnComponent {
 	JOYSTICK_DEADZONE: number;
 	MAX_ANGULAR_SPEED: number;
 	CONTROLLER_HANDEDNESS: HANDEDNESS;
-};
+}
 
-export class XRSmoothTurnComponent extends GameComponent<any> {}
+class XRSmoothTurnComponent extends SystemConfig {}
 
 XRSmoothTurnComponent.schema = {
 	JOYSTICK_DEADZONE: { type: Types.Number, default: 0.1 },
@@ -20,16 +20,7 @@ export class XRSmoothTurnSystem extends XRGameSystem {
 	private _config: XRSmoothTurnConfig;
 
 	init() {
-		if (!this.core.hasRegisteredGameComponent(XRSmoothTurnComponent)) {
-			this.core.registerGameComponent(XRSmoothTurnComponent);
-		}
-
-		if (!this.core.game.hasComponent(XRSmoothTurnComponent)) {
-			this.core.game.addComponent(XRSmoothTurnComponent);
-		}
-
-		// @ts-ignore
-		this._config = this.core.game.getComponent(XRSmoothTurnComponent);
+		this._config = this.config as XRSmoothTurnConfig;
 	}
 
 	update(delta: number) {
@@ -44,3 +35,5 @@ export class XRSmoothTurnSystem extends XRGameSystem {
 		}
 	}
 }
+
+XRSmoothTurnSystem.systemConfig = XRSmoothTurnComponent;

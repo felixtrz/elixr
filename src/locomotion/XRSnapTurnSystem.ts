@@ -1,22 +1,22 @@
 import {
 	BUTTONS,
-	GameComponent,
 	Quaternion,
+	SystemConfig,
 	Types,
 	Vector3,
 	XRGameSystem,
 } from '../index';
 import { HANDEDNESS, JOYSTICK_STATES } from '../enums';
 
-type XRSnapTurnConfig = {
+export interface XRSnapTurnConfig extends XRSnapTurnComponent {
 	JOYSTICK_ANGLE_MIN: number;
 	JOYSTICK_ANGLE_MAX: number;
 	JOYSTICK_DEADZONE: number;
 	SNAP_ANGLE: number;
 	CONTROLLER_HANDEDNESS: HANDEDNESS;
-};
+}
 
-export class XRSnapTurnComponent extends GameComponent<any> {}
+class XRSnapTurnComponent extends SystemConfig {}
 
 XRSnapTurnComponent.schema = {
 	JOYSTICK_ANGLE_MIN: { type: Types.Number, default: (Math.PI / 180) * 45 },
@@ -33,16 +33,7 @@ export class XRSnapTurnSystem extends XRGameSystem {
 	init() {
 		this._prevState = JOYSTICK_STATES.DISENGAGED;
 
-		if (!this.core.hasRegisteredGameComponent(XRSnapTurnComponent)) {
-			this.core.registerGameComponent(XRSnapTurnComponent);
-		}
-
-		if (!this.core.game.hasComponent(XRSnapTurnComponent)) {
-			this.core.game.addComponent(XRSnapTurnComponent);
-		}
-
-		// @ts-ignore
-		this._config = this.core.game.getComponent(XRSnapTurnComponent);
+		this._config = this.config as XRSnapTurnConfig;
 	}
 
 	update() {
@@ -84,3 +75,5 @@ export class XRSnapTurnSystem extends XRGameSystem {
 		this._prevState = curState;
 	}
 }
+
+XRSnapTurnSystem.systemConfig = XRSnapTurnComponent;

@@ -12,7 +12,7 @@ import {
 import { HANDEDNESS, JOYSTICK_STATES } from '../enums';
 import { MovementObstacle, MovementSurface } from './MovementComponents';
 
-interface XRTeleportConfig extends XRTeleportComponent {
+export interface XRTeleportConfig extends XRTeleportComponent {
 	JOYSTICK_ANGLE_MIN: number;
 	JOYSTICK_ANGLE_MAX: number;
 	JOYSTICK_DEADZONE: number;
@@ -22,7 +22,7 @@ interface XRTeleportConfig extends XRTeleportComponent {
 	CONTROLLER_HANDEDNESS: HANDEDNESS;
 }
 
-export class XRTeleportComponent extends SystemConfig {
+class XRTeleportComponent extends SystemConfig {
 	public needsUpdate: boolean = false;
 }
 

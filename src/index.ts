@@ -70,15 +70,15 @@ export { GLTFObject, GLTFModelLoader } from './objects/GLTFObject';
 /*                                Locomotion                                  */
 /* -------------------------------------------------------------------------- */
 export {
-	XRSnapTurnComponent,
+	XRSnapTurnConfig,
 	XRSnapTurnSystem,
 } from './locomotion/XRSnapTurnSystem';
 export {
-	XRSmoothTurnComponent,
+	XRSmoothTurnConfig,
 	XRSmoothTurnSystem,
 } from './locomotion/XRSmoothTurnSystem';
 export {
-	XRTeleportComponent,
+	XRTeleportConfig,
 	XRTeleportSystem,
 } from './locomotion/XRTeleportSystem';
 export {
