@@ -21,9 +21,41 @@ export type ExtendedWorld = World & {
 
 export class Core {
 	private _ecsyWorld: ExtendedWorld;
+	private _tempVec3 = new THREE.Vector3();
+
+	/**
+	 * Main scene for the experience which allows you to set up what and where is
+	 * to be rendered by three.js. This is where you place game objects, lights
+	 * and cameras.
+	 *
+	 * @see https://threejs.org/docs/index.html?q=Scene#api/en/scenes/Scene
+	 */
 	scene: THREE.Scene;
+
+	/**
+	 * WebGL renderer used to render the scene
+	 *
+	 * @see https://threejs.org/docs/index.html?q=renderer#api/en/renderers/WebGLRenderer
+	 */
 	renderer: THREE.WebGLRenderer;
-	camera: THREE.PerspectiveCamera;
+
+	/**
+	 * Camera for inline mode, DO NOT USE for getting player head transform, use
+	 * {@link Core.playerHead} instead
+	 */
+	inlineCamera: THREE.PerspectiveCamera;
+
+	/**
+	 * Accurate source for player head transform, can be used to attach game
+	 * objects / audio listeners
+	 */
+	playerHead: THREE.Group;
+
+	/**
+	 * Core registers up to 2 xr controllers, the handedness keys for the
+	 * controllers vary across devices, with the most typical handednesses being
+	 * "left" and "right"
+	 */
 	controllers: {
 		[handedness: string]: {
 			targetRaySpace: THREE.Object3D;
@@ -32,16 +64,27 @@ export class Core {
 			model: THREE.Object3D;
 		};
 	};
+
+	/** Local space for the player, parent of camera and controllers */
 	playerSpace: THREE.Group;
-	vrButton: HTMLElement;
-	arButton: HTMLElement;
+
+	/**
+	 * Empty game object used for registering unique components, like
+	 * {@link SystemConfig} components
+	 */
 	game: GameObject;
+
+	/** Button used for initiating immersive-vr sessions */
+	vrButton: HTMLElement;
+
+	/** Button used for initiating immersive-ar sessions */
+	arButton: HTMLElement;
 
 	constructor(sceneContainer: HTMLElement, ecsyOptions: WorldOptions = {}) {
 		this._ecsyWorld = new World(ecsyOptions) as ExtendedWorld;
 		this._ecsyWorld.core = this;
 
-		this.createThreeScene();
+		this._createThreeScene();
 
 		sceneContainer.appendChild(this.renderer.domElement);
 
@@ -49,7 +92,9 @@ export class Core {
 		this.arButton = ARButton.createButton(this.renderer);
 
 		this.playerSpace = new THREE.Group();
-		this.playerSpace.add(this.camera);
+		this.playerSpace.add(this.inlineCamera);
+		this.playerHead = new THREE.Group();
+		this.playerSpace.add(this.playerHead);
 		this.scene.add(this.playerSpace);
 		this.controllers = {};
 
@@ -62,14 +107,14 @@ export class Core {
 
 		GLTFModelLoader.init(this.renderer);
 
-		this.setupControllers();
+		this._setupControllers();
 
-		this.setupRenderLoop();
+		this._setupRenderLoop();
 	}
 
-	private createThreeScene() {
+	private _createThreeScene() {
 		this.scene = new THREE.Scene();
-		this.camera = new THREE.PerspectiveCamera(
+		this.inlineCamera = new THREE.PerspectiveCamera(
 			50,
 			window.innerWidth / window.innerHeight,
 			0.1,
@@ -85,18 +130,18 @@ export class Core {
 		this.renderer.outputEncoding = THREE.sRGBEncoding;
 		this.renderer.xr.enabled = true;
 
-		this.camera.position.set(0, 1.7, 0);
+		this.inlineCamera.position.set(0, 1.7, 0);
 
 		const onWindowResize = () => {
-			this.camera.aspect = window.innerWidth / window.innerHeight;
-			this.camera.updateProjectionMatrix();
+			this.inlineCamera.aspect = window.innerWidth / window.innerHeight;
+			this.inlineCamera.updateProjectionMatrix();
 			this.renderer.setSize(window.innerWidth, window.innerHeight);
 		};
 
 		window.addEventListener('resize', onWindowResize, false);
 	}
 
-	private setupControllers() {
+	private _setupControllers() {
 		const controllerModelFactory = new XRControllerModelFactory();
 		const webxrManager = this.renderer.xr;
 		this.controllers = {};
@@ -130,7 +175,23 @@ export class Core {
 		}
 	}
 
-	private setupRenderLoop() {
+	private _updatePlayerHead() {
+		const xrManager = this.renderer.xr;
+		const frame = xrManager.getFrame();
+		const pose = frame?.getViewerPose(xrManager.getReferenceSpace());
+		if (pose) {
+			const headsetMatrix = new THREE.Matrix4().fromArray(
+				pose.views[0].transform.matrix,
+			);
+			headsetMatrix.decompose(
+				this.playerHead.position,
+				this.playerHead.quaternion,
+				this._tempVec3,
+			);
+		}
+	}
+
+	private _setupRenderLoop() {
 		const clock = new THREE.Clock();
 		const render = () => {
 			const delta = clock.getDelta();
@@ -138,21 +199,25 @@ export class Core {
 			Object.values(this.controllers).forEach((controller) => {
 				controller.gamepad.update();
 			});
+			this._updatePlayerHead();
 			this._ecsyWorld.execute(delta, elapsedTime);
-			this.renderer.render(this.scene, this.camera);
+			this.renderer.render(this.scene, this.inlineCamera);
 		};
 
 		this.renderer.setAnimationLoop(render);
 	}
 
+	/** Shortcut for getting the {@link PhysicsComponent} */
 	get physics(): PhysicsComponent {
 		return this.game.getMutableComponent(PhysicsComponent) as PhysicsComponent;
 	}
 
+	/** Boolean value for whether player is in immersive mode */
 	isImmersive() {
 		return this.renderer.xr.isPresenting;
 	}
 
+	/** Register a {@link GameSystem} */
 	registerGameSystem(
 		GameSystem: GameSystemConstructor<any>,
 		attributes: Attributes = {},
@@ -167,32 +232,46 @@ export class Core {
 		this._ecsyWorld.registerSystem(GameSystem, attributes);
 	}
 
+	/** Get a {@link GameSystem} registered in this world. */
 	getGameSystem(GameSystem: GameSystemConstructor<any>) {
 		return this._ecsyWorld.getSystem(GameSystem);
 	}
 
+	/**
+	 * Get the mutable {@link SystemConfig} component associated with the specified
+	 * {@link GameSystem}
+	 */
 	getGameSystemConfig(
 		GameSystem: GameSystemConstructor<GameSystem>,
 	): SystemConfig {
 		return this.getGameSystem(GameSystem).config;
 	}
 
+	/** Get a list of {@link GameSystem} registered in this world. */
 	getGameSystems() {
 		return this._ecsyWorld.getSystems();
 	}
 
+	/** Register a {@link GameComponent} */
 	registerGameComponent(GameComponent: GameComponentConstructor<any>) {
 		this._ecsyWorld.registerComponent(GameComponent);
 	}
 
+	/** Evluate whether a {@link GameComponent} has been registered to Core or not. */
 	hasRegisteredGameComponent(GameComponent: GameComponentConstructor<any>) {
 		return this._ecsyWorld.hasRegisteredComponent(GameComponent);
 	}
 
+	/** Unregister a {@link GameSystem} */
 	unregisterGameSystem(GameSystem: GameSystemConstructor<any>) {
 		this._ecsyWorld.unregisterSystem(GameSystem);
 	}
 
+	/**
+	 * Create an empty {@link GameObject}
+	 *
+	 * @deprecated Use {@link Core#addGameObject} instead.
+	 */
 	createEmptyGameObject(): GameObject {
 		const ecsyEntity = this._ecsyWorld.createEntity();
 		const gameObject = new GameObject();
@@ -200,6 +279,11 @@ export class Core {
 		return gameObject;
 	}
 
+	/**
+	 * Create a {@link GameObject}
+	 *
+	 * @deprecated Use {@link Core#addGameObject} instead.
+	 */
 	createGameObject(object3D: THREE.Object3D) {
 		const ecsyEntity = this._ecsyWorld.createEntity();
 		const gameObject = new GameObject();
@@ -216,6 +300,7 @@ export class Core {
 		return gameObject;
 	}
 
+	/** Add a {@link GameObject} to the game world */
 	addGameObject(gameObject: GameObject) {
 		if (!gameObject.isInitialized) {
 			const ecsyEntity = this._ecsyWorld.createEntity();
@@ -224,14 +309,17 @@ export class Core {
 		}
 	}
 
+	/** Resume execution of registered systems */
 	play() {
 		this._ecsyWorld.play();
 	}
 
+	/** Pause execution of registered systems */
 	stop() {
 		this._ecsyWorld.stop();
 	}
 
+	/** Enable {@link RigidBodyPhysicsSystem} */
 	enablePhysics() {
 		this._ecsyWorld.registerSystem(RigidBodyPhysicsSystem, {
 			priority: Infinity,
