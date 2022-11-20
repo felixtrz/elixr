@@ -13,7 +13,7 @@ export type ExtendedEntity = Entity & {
  * @see https://threejs.org/docs/#api/en/core/Object3D
  */
 export class GameObject extends THREE.Object3D {
-	static UNINITIALIZED_GAMEOBJECT_ERROR =
+	private static UNINITIALIZED_GAMEOBJECT_ERROR =
 		'Cannot perform action on uninitialized GameObject';
 
 	private _ecsyEntity: ExtendedEntity;
@@ -32,24 +32,22 @@ export class GameObject extends THREE.Object3D {
 		this._componentsToAdd = null;
 	}
 
+	/** Boolean value indicating whether the GameObject has been added to Core. */
 	get isInitialized() {
 		return this._ecsyEntity != null;
 	}
 
-	duplicate(): GameObject {
-		if (!this.isInitialized) throw GameObject.UNINITIALIZED_GAMEOBJECT_ERROR;
-		const newGameObject = super.clone(true);
-		const newEntity = this._ecsyEntity.clone();
-		newGameObject._init(newEntity);
-		return newGameObject;
-	}
-
+	/**
+	 * Copy the given GameObject into this GameObject, and copy all components
+	 * from the given GameObject.
+	 */
 	copy(source: this, recursive?: boolean): this {
 		super.copy(source, recursive);
 		this.copyAllComponentsFrom(source);
 		return this;
 	}
 
+	/** Copy all components from the given GameObject. */
 	copyAllComponentsFrom(gameObject: GameObject) {
 		const components = gameObject.getComponents();
 
@@ -77,6 +75,7 @@ export class GameObject extends THREE.Object3D {
 		}
 	}
 
+	/** Add a {@link GameComponent} to the entity. */
 	addComponent(
 		GameComponent: GameComponentConstructor<GameComponent<any>>,
 		values?: Partial<Omit<GameComponent<any>, keyof GameComponent<any>>>,
@@ -93,6 +92,7 @@ export class GameObject extends THREE.Object3D {
 		}
 	}
 
+	/** Get an immutable reference to a {@link GameComponent} on this entity. */
 	getComponent(
 		GameComponent: GameComponentConstructor<GameComponent<any>>,
 		includeRemoved?: boolean,
@@ -101,6 +101,7 @@ export class GameObject extends THREE.Object3D {
 		return this._ecsyEntity.getComponent(GameComponent, includeRemoved);
 	}
 
+	/** Get an mutable reference to a {@link GameComponent} on this entity. */
 	getMutableComponent(
 		GameComponent: GameComponentConstructor<GameComponent<any>>,
 	): GameComponent<any> {
@@ -108,21 +109,34 @@ export class GameObject extends THREE.Object3D {
 		return this._ecsyEntity.getMutableComponent(GameComponent);
 	}
 
+	/**
+	 * Get a list of {@link GameComponent} types that have been added to this
+	 * entity.
+	 */
 	getComponentTypes() {
 		if (!this.isInitialized) throw GameObject.UNINITIALIZED_GAMEOBJECT_ERROR;
 		return this._ecsyEntity.getComponentTypes();
 	}
 
+	/**
+	 * Get an object containing all the {@link GameComponent} on this entity, where
+	 * the object keys are the component types.
+	 */
 	getComponents() {
 		if (!this.isInitialized) throw GameObject.UNINITIALIZED_GAMEOBJECT_ERROR;
 		return this._ecsyEntity.getComponents();
 	}
 
+	/**
+	 * Get an object containing all the {@link GameComponent} that are slated to be
+	 * removed from this entity, where the object keys are the component types.
+	 */
 	getComponentsToRemove() {
 		if (!this.isInitialized) throw GameObject.UNINITIALIZED_GAMEOBJECT_ERROR;
 		return this._ecsyEntity.getComponentsToRemove();
 	}
 
+	/** Get a {@link GameComponent} that is slated to be removed from this entity. */
 	getRemovedComponent(
 		GameComponent: GameComponentConstructor<GameComponent<any>>,
 	): Readonly<GameComponent<any>> {
@@ -130,26 +144,40 @@ export class GameObject extends THREE.Object3D {
 		return this._ecsyEntity.getRemovedComponent(GameComponent);
 	}
 
+	/**
+	 * Boolean value indicating whether the entity has all {@link GameComponent} in
+	 * a list.
+	 */
 	hasAllComponents(GameComponents: GameComponentConstructor<any>[]): boolean {
 		if (!this.isInitialized) return false;
 		return this._ecsyEntity.hasAllComponents(GameComponents);
 	}
 
+	/**
+	 * Boolean value indicating whether the entity has any {@link GameComponent} in
+	 * a list.
+	 */
 	hasAnyComponents(GameComponents: GameComponentConstructor<any>[]): boolean {
 		if (!this.isInitialized) return false;
 		return this._ecsyEntity.hasAnyComponents(GameComponents);
 	}
 
+	/**
+	 * Boolean value indicating whether the entity has the given
+	 * {@link GameComponent}.
+	 */
 	hasComponent(GameComponent: GameComponentConstructor<any>): boolean {
 		if (!this.isInitialized) return false;
 		return this._ecsyEntity.hasComponent(GameComponent);
 	}
 
+	/** Remove all {@link GameComponent} on this entity. */
 	removeAllComponents(forceImmediate: boolean): void {
 		if (!this.isInitialized) throw GameObject.UNINITIALIZED_GAMEOBJECT_ERROR;
 		this._ecsyEntity.removeAllComponents(forceImmediate);
 	}
 
+	/** Remove a {@link GameComponent} from the entity. */
 	removeComponent(
 		GameComponent: GameComponentConstructor<any>,
 		forceImmediate: boolean,

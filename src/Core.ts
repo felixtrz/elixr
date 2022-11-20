@@ -33,7 +33,7 @@ export class Core {
 	scene: THREE.Scene;
 
 	/**
-	 * WebGL renderer used to render the scene
+	 * WebGL renderer used to render the scene.
 	 *
 	 * @see https://threejs.org/docs/index.html?q=renderer#api/en/renderers/WebGLRenderer
 	 */
@@ -41,20 +41,20 @@ export class Core {
 
 	/**
 	 * Camera for inline mode, DO NOT USE for getting player head transform, use
-	 * {@link Core.playerHead} instead
+	 * {@link Core.playerHead} instead.
 	 */
 	inlineCamera: THREE.PerspectiveCamera;
 
 	/**
 	 * Accurate source for player head transform, can be used to attach game
-	 * objects / audio listeners
+	 * objects / audio listeners.
 	 */
 	playerHead: THREE.Group;
 
 	/**
 	 * Core registers up to 2 xr controllers, the handedness keys for the
 	 * controllers vary across devices, with the most typical handednesses being
-	 * "left" and "right"
+	 * "left" and "right".
 	 */
 	controllers: {
 		[handedness: string]: {
@@ -65,19 +65,19 @@ export class Core {
 		};
 	};
 
-	/** Local space for the player, parent of camera and controllers */
+	/** Local space for the player, parent of camera and controllers. */
 	playerSpace: THREE.Group;
 
 	/**
 	 * Empty game object used for registering unique components, like
-	 * {@link SystemConfig} components
+	 * {@link SystemConfig} components.
 	 */
 	game: GameObject;
 
-	/** Button used for initiating immersive-vr sessions */
+	/** Button used for initiating immersive-vr sessions. */
 	vrButton: HTMLElement;
 
-	/** Button used for initiating immersive-ar sessions */
+	/** Button used for initiating immersive-ar sessions. */
 	arButton: HTMLElement;
 
 	constructor(sceneContainer: HTMLElement, ecsyOptions: WorldOptions = {}) {
@@ -212,12 +212,12 @@ export class Core {
 		return this.game.getMutableComponent(PhysicsComponent) as PhysicsComponent;
 	}
 
-	/** Boolean value for whether player is in immersive mode */
+	/** Boolean value for whether player is in immersive mode. */
 	isImmersive() {
 		return this.renderer.xr.isPresenting;
 	}
 
-	/** Register a {@link GameSystem} */
+	/** Register a {@link GameSystem}. */
 	registerGameSystem(
 		GameSystem: GameSystemConstructor<any>,
 		attributes: Attributes = {},
@@ -239,7 +239,7 @@ export class Core {
 
 	/**
 	 * Get the mutable {@link SystemConfig} component associated with the specified
-	 * {@link GameSystem}
+	 * {@link GameSystem}.
 	 */
 	getGameSystemConfig(
 		GameSystem: GameSystemConstructor<GameSystem>,
@@ -257,12 +257,15 @@ export class Core {
 		this._ecsyWorld.registerComponent(GameComponent);
 	}
 
-	/** Evluate whether a {@link GameComponent} has been registered to Core or not. */
+	/**
+	 * Boolean value indicating whether a {@link GameComponent} has been registered
+	 * to Core or not.
+	 */
 	hasRegisteredGameComponent(GameComponent: GameComponentConstructor<any>) {
 		return this._ecsyWorld.hasRegisteredComponent(GameComponent);
 	}
 
-	/** Unregister a {@link GameSystem} */
+	/** Unregister a {@link GameSystem}. */
 	unregisterGameSystem(GameSystem: GameSystemConstructor<any>) {
 		this._ecsyWorld.unregisterSystem(GameSystem);
 	}
@@ -300,7 +303,7 @@ export class Core {
 		return gameObject;
 	}
 
-	/** Add a {@link GameObject} to the game world */
+	/** Add a {@link GameObject} to the game world. */
 	addGameObject(gameObject: GameObject) {
 		if (!gameObject.isInitialized) {
 			const ecsyEntity = this._ecsyWorld.createEntity();
@@ -309,17 +312,17 @@ export class Core {
 		}
 	}
 
-	/** Resume execution of registered systems */
+	/** Resume execution of registered systems. */
 	play() {
 		this._ecsyWorld.play();
 	}
 
-	/** Pause execution of registered systems */
+	/** Pause execution of registered systems. */
 	stop() {
 		this._ecsyWorld.stop();
 	}
 
-	/** Enable {@link RigidBodyPhysicsSystem} */
+	/** Enable {@link RigidBodyPhysicsSystem}. */
 	enablePhysics() {
 		this._ecsyWorld.registerSystem(RigidBodyPhysicsSystem, {
 			priority: Infinity,
