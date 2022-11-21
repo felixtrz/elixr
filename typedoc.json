@@ -10,5 +10,9 @@
 	"favicon": "site/favicon/favicon.ico",
 	"readme": "README.md",
 	"cname": "elixrjs.io",
-	"customCss": "site/style.css"
+	"customCss": "site/style.css",
+	"sidebarLinks": {
+		"GitHub": "https://github.com/felixtrz/elixr",
+		"NPM": "https://www.npmjs.com/package/elixr"
+	}
 }
