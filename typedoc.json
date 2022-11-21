@@ -1,14 +1,14 @@
 {
-  "entryPoints": ["src/index.ts"],
-  "entryPointStrategy": "expand",
-  "out": "docs",
-  "tsconfig": "./tsconfig.json",
+	"entryPoints": ["src/index.ts"],
+	"entryPointStrategy": "expand",
+	"out": "docs",
+	"tsconfig": "./tsconfig.json",
 	"excludeExternals": true,
-  "excludeProtected": true,
+	"excludeProtected": true,
 	"excludePrivate": true,
 	"hideGenerator": true,
-  "favicon": "site/favicon/favicon.ico",
+	"favicon": "site/favicon/favicon.ico",
 	"readme": "README.md",
-  "cname": "elixrjs.io",
-  "customCss": "site/style.css",
+	"cname": "elixrjs.io",
+	"customCss": "site/style.css"
 }

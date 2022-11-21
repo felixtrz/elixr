@@ -1,3 +1,48 @@
+@import url('https://fonts.cdnfonts.com/css/space-mono');
+
+.tsd-page-toolbar {
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
+.tsd-page-toolbar .title {
+	font-family: 'Space Mono', sans-serif;
+	text-transform: uppercase;
+	font-weight: lighter !important;
+	letter-spacing: 0.6rem;
+	font-size: 2em;
+	opacity: 0.8;
+}
+
+.tsd-page-toolbar .title:hover {
+	text-decoration: none !important;
+	opacity: 1;
+}
+
 .tsd-page-title h2 {
-  display: none;
+	display: none;
+}
+
+.col-content {
+	padding: 52px 20px 12px 20px;
+}
+
+.col-menu {
+	border: none;
+	top: 1rem;
+	padding-top: 36px;
+}
+
+.col-menu--hide {
+	top: 1rem;
+}
+
+.tsd-page-toolbar--hide {
+	transform: none;
+}
+
+.container-main {
+	display: flex;
+	flex-direction: row-reverse;
+	padding: 0 30px;
 }
