@@ -96,3 +96,9 @@ export { JOYSTICK_STATES, HANDEDNESS } from './enums';
 /*                                 Geometries                                 */
 /* -------------------------------------------------------------------------- */
 export { CurveTubeGeometry } from './geometries/CurveTubeGeometry';
+
+/* -------------------------------------------------------------------------- */
+/*                                 XR Buttons                                 */
+/* -------------------------------------------------------------------------- */
+export { VRButton } from './utils/VRButton';
+export { ARButton } from './utils/ARButton';

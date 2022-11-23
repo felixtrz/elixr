@@ -7,12 +7,10 @@ import {
 	RigidBodyComponent,
 } from './physics/PhysicsComponents';
 
-import { ARButton } from 'three/examples/jsm/webxr/ARButton.js';
 import { GLTFModelLoader } from './objects/GLTFObject';
 import { GamepadWrapper } from 'gamepad-wrapper';
 import { RigidBodyPhysicsSystem } from './physics/RigidBodyPhysicsSystem';
 import { THREE } from './index';
-import { VRButton } from 'three/examples/jsm/webxr/VRButton.js';
 import { XRControllerModelFactory } from 'three/examples/jsm/webxr/XRControllerModelFactory.js';
 
 export type ExtendedWorld = World & {
@@ -74,12 +72,6 @@ export class Core {
 	 */
 	game: GameObject;
 
-	/** Button used for initiating immersive-vr sessions. */
-	vrButton: HTMLElement;
-
-	/** Button used for initiating immersive-ar sessions. */
-	arButton: HTMLElement;
-
 	constructor(sceneContainer: HTMLElement, ecsyOptions: WorldOptions = {}) {
 		this._ecsyWorld = new World(ecsyOptions) as ExtendedWorld;
 		this._ecsyWorld.core = this;
@@ -88,9 +80,6 @@ export class Core {
 
 		sceneContainer.appendChild(this.renderer.domElement);
 
-		this.vrButton = VRButton.createButton(this.renderer);
-		this.arButton = ARButton.createButton(this.renderer);
-
 		this.playerSpace = new THREE.Group();
 		this.playerSpace.add(this.inlineCamera);
 		this.playerHead = new THREE.Group();
@@ -98,7 +87,8 @@ export class Core {
 		this.scene.add(this.playerSpace);
 		this.controllers = {};
 
-		this.game = this.createEmptyGameObject();
+		this.game = new GameObject();
+		this.addGameObject(this.game);
 		this.registerGameComponent(PhysicsComponent);
 		this.registerGameComponent(RigidBodyComponent);
 		this.game.addComponent(PhysicsComponent, {

@@ -31,7 +31,7 @@
 
 .col-content {
 	margin: 60px 0 0 0;
-	padding: 1.5rem;
+	padding: 1.5rem max(calc((100% - 1200px) / 2), 1.5rem);
 	overflow-y: auto;
 }
 
