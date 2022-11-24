@@ -90,7 +90,7 @@ export { XRSlideConfig, XRSlideSystem } from './locomotion/XRSlideSystem';
 /* -------------------------------------------------------------------------- */
 /*                                    Enums                                   */
 /* -------------------------------------------------------------------------- */
-export { JOYSTICK_STATES, HANDEDNESS } from './enums';
+export { JOYSTICK_STATES, HANDEDNESS, SESSION_MODE } from './enums';
 
 /* -------------------------------------------------------------------------- */
 /*                                 Geometries                                 */
@@ -100,5 +100,5 @@ export { CurveTubeGeometry } from './geometries/CurveTubeGeometry';
 /* -------------------------------------------------------------------------- */
 /*                                 XR Buttons                                 */
 /* -------------------------------------------------------------------------- */
-export { VRButton } from './utils/VRButton';
-export { ARButton } from './utils/ARButton';
+export { VRButtonOptions, VRButton } from './utils/VRButton';
+export { ARButtonOptions, ARButton } from './utils/ARButton';

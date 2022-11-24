@@ -7,10 +7,10 @@ export type VRButtonOptions = {
 };
 
 export class VRButton {
-	static createButton(
+	static convertToVRButton(
+		button: HTMLButtonElement,
 		renderer: THREE.WebGLRenderer,
 		options: VRButtonOptions = {},
-		button: HTMLButtonElement = document.createElement('button'),
 	) {
 		function showEnterVR(/*device*/) {
 			const sessionInit = options.sessionInit ?? {
@@ -39,7 +39,7 @@ export class VRButton {
 			button.textContent = options.ENTER_VR_TEXT ?? 'ENTER VR';
 
 			button.onclick = function () {
-				if (currentSession === null) {
+				if (!currentSession) {
 					// WebXR's requestReferenceSpace only works if the corresponding feature
 					// was requested at session creation time. For simplicity, just ask for
 					// the interesting ones as optional features, but be aware that the
@@ -74,7 +74,6 @@ export class VRButton {
 
 		if ('xr' in navigator) {
 			button.id = 'VRButton';
-			button.style.display = 'none';
 
 			navigator.xr
 				.isSessionSupported('immersive-vr')
@@ -89,8 +88,6 @@ export class VRButton {
 		} else {
 			showWebXRNotFound();
 		}
-
-		return button;
 	}
 
 	static xrSessionIsGranted = false;
@@ -105,6 +102,15 @@ export class VRButton {
 				VRButton.xrSessionIsGranted = true;
 			});
 		}
+	}
+
+	static createButton(
+		renderer: THREE.WebGLRenderer,
+		options: VRButtonOptions = {},
+	) {
+		const button = document.createElement('button');
+		VRButton.convertToVRButton(button, renderer, options);
+		return button;
 	}
 }
 

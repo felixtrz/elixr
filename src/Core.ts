@@ -10,6 +10,7 @@ import {
 import { GLTFModelLoader } from './objects/GLTFObject';
 import { GamepadWrapper } from 'gamepad-wrapper';
 import { RigidBodyPhysicsSystem } from './physics/RigidBodyPhysicsSystem';
+import { SESSION_MODE } from './enums';
 import { THREE } from './index';
 import { XRControllerModelFactory } from 'three/examples/jsm/webxr/XRControllerModelFactory.js';
 
@@ -71,6 +72,20 @@ export class Core {
 	 * {@link SystemConfig} components.
 	 */
 	game: GameObject;
+
+	/** Enum value indicating the current XRSessionMode */
+	get sessionMode() {
+		if (!this.renderer.xr.isPresenting) {
+			return SESSION_MODE.INLINE;
+		} else {
+			const session = this.renderer.xr.getSession();
+			if (session.environmentBlendMode === 'opaque') {
+				return SESSION_MODE.IMMERSIVE_VR;
+			} else {
+				return SESSION_MODE.IMMERSIVE_AR;
+			}
+		}
+	}
 
 	constructor(sceneContainer: HTMLElement, ecsyOptions: WorldOptions = {}) {
 		this._ecsyWorld = new World(ecsyOptions) as ExtendedWorld;

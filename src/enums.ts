@@ -10,3 +10,9 @@ export enum HANDEDNESS {
 	LEFT = 'left',
 	RIGHT = 'right',
 }
+
+export enum SESSION_MODE {
+	INLINE = 'inline',
+	IMMERSIVE_VR = 'immersive-vr',
+	IMMERSIVE_AR = 'immersive-ar',
+}

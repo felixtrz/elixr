@@ -7,10 +7,10 @@ export type ARButtonOptions = {
 };
 
 export class ARButton {
-	static createButton(
+	static convertToARButton(
+		button: HTMLButtonElement,
 		renderer: THREE.WebGLRenderer,
 		options: ARButtonOptions = {},
-		button: HTMLButtonElement = document.createElement('button'),
 	) {
 		function showStartAR(/*device*/) {
 			const sessionInit = options.sessionInit ?? {};
@@ -20,10 +20,6 @@ export class ARButton {
 				const overlay = document.createElement('div');
 				overlay.style.display = 'none';
 				document.body.appendChild(overlay);
-
-				if (sessionInit.optionalFeatures === undefined) {
-					sessionInit.optionalFeatures = [];
-				}
 
 				sessionInit.optionalFeatures.push('dom-overlay');
 				sessionInit.domOverlay = { root: overlay };
@@ -46,7 +42,7 @@ export class ARButton {
 			button.textContent = options.ENTER_AR_TEXT ?? 'START AR';
 
 			button.onclick = function () {
-				if (currentSession === null) {
+				if (!currentSession) {
 					navigator.xr
 						.requestSession('immersive-ar', sessionInit)
 						.then(onSessionStarted);
@@ -72,7 +68,6 @@ export class ARButton {
 
 		if ('xr' in navigator) {
 			button.id = 'ARButton';
-			button.style.display = 'none';
 
 			navigator.xr
 				.isSessionSupported('immersive-ar')
@@ -83,7 +78,14 @@ export class ARButton {
 		} else {
 			showARNotSupported();
 		}
+	}
 
+	static createButton(
+		renderer: THREE.WebGLRenderer,
+		options: ARButtonOptions = {},
+	) {
+		const button = document.createElement('button');
+		ARButton.convertToARButton(button, renderer, options);
 		return button;
 	}
 }
