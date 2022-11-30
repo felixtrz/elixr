@@ -67,8 +67,6 @@ export class ARButton {
 		}
 
 		if ('xr' in navigator) {
-			button.id = 'ARButton';
-
 			navigator.xr
 				.isSessionSupported('immersive-ar')
 				.then(function (supported) {

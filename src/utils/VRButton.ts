@@ -73,8 +73,6 @@ export class VRButton {
 		}
 
 		if ('xr' in navigator) {
-			button.id = 'VRButton';
-
 			navigator.xr
 				.isSessionSupported('immersive-vr')
 				.then(function (supported) {
