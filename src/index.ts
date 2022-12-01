@@ -18,6 +18,7 @@ export { THREE };
 /*                           Entity Component System                          */
 /* -------------------------------------------------------------------------- */
 export { Not, Types } from 'ecsy';
+export { World } from './World';
 export { GameObject } from './GameObject';
 export { GameComponent } from './GameComponent';
 export { SystemConfig } from './GameComponent';

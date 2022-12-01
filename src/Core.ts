@@ -1,26 +1,28 @@
-import { Attributes, World, WorldOptions } from 'ecsy';
+import { Attributes, World as EcsyWorld, WorldOptions } from 'ecsy';
 import { ExtendedEntity, GameObject } from './GameObject';
 import { GameComponentConstructor, SystemConfig } from './GameComponent';
 import { GameSystem, GameSystemConstructor } from './GameSystem';
 import {
-	PhysicsComponent,
-	RigidBodyComponent,
-} from './physics/PhysicsComponents';
+	PhysicsConfig,
+	RigidBodyPhysicsSystem,
+} from './physics/RigidBodyPhysicsSystem';
 
 import { GLTFModelLoader } from './objects/GLTFObject';
 import { GamepadWrapper } from 'gamepad-wrapper';
-import { RigidBodyPhysicsSystem } from './physics/RigidBodyPhysicsSystem';
 import { SESSION_MODE } from './enums';
 import { THREE } from './index';
+import { World } from './World';
 import { XRControllerModelFactory } from 'three/examples/jsm/webxr/XRControllerModelFactory.js';
 
-export type ExtendedWorld = World & {
+export type ExtendedWorld = EcsyWorld & {
 	core: Core;
 };
 
 export class Core {
-	private _ecsyWorld: ExtendedWorld;
+	private _worlds: { [worldKey: string]: World } = {};
 	private _tempVec3 = new THREE.Vector3();
+
+	activeWorld: World;
 
 	/**
 	 * Main scene for the experience which allows you to set up what and where is
@@ -71,7 +73,9 @@ export class Core {
 	 * Empty game object used for registering unique components, like
 	 * {@link SystemConfig} components.
 	 */
-	game: GameObject;
+	get game() {
+		return this.activeWorld.game;
+	}
 
 	/** Enum value indicating the current XRSessionMode */
 	get sessionMode() {
@@ -88,37 +92,27 @@ export class Core {
 	}
 
 	constructor(sceneContainer: HTMLElement, ecsyOptions: WorldOptions = {}) {
-		this._ecsyWorld = new World(ecsyOptions) as ExtendedWorld;
-		this._ecsyWorld.core = this;
+		this._setupThreeGlobals();
+		this._setupPlayerSpace();
+		this._setupControllers();
 
-		this._createThreeScene();
+		this.createWorld('default', ecsyOptions);
+		this.switchToWorld('default');
+
+		GLTFModelLoader.init(this.renderer);
 
 		sceneContainer.appendChild(this.renderer.domElement);
+		this._setupRenderLoop();
+	}
 
+	private _setupPlayerSpace() {
 		this.playerSpace = new THREE.Group();
 		this.playerSpace.add(this.inlineCamera);
 		this.playerHead = new THREE.Group();
 		this.playerSpace.add(this.playerHead);
-		this.scene.add(this.playerSpace);
-		this.controllers = {};
-
-		this.game = new GameObject();
-		this.addGameObject(this.game);
-		this.registerGameComponent(PhysicsComponent);
-		this.registerGameComponent(RigidBodyComponent);
-		this.game.addComponent(PhysicsComponent, {
-			gravity: new THREE.Vector3(0, -9.8, 0),
-		});
-
-		GLTFModelLoader.init(this.renderer);
-
-		this._setupControllers();
-
-		this._setupRenderLoop();
 	}
 
-	private _createThreeScene() {
-		this.scene = new THREE.Scene();
+	private _setupThreeGlobals() {
 		this.inlineCamera = new THREE.PerspectiveCamera(
 			50,
 			window.innerWidth / window.innerHeight,
@@ -205,21 +199,46 @@ export class Core {
 				controller.gamepad.update();
 			});
 			this._updatePlayerHead();
-			this._ecsyWorld.execute(delta, elapsedTime);
+			this.activeWorld.execute(delta, elapsedTime);
 			this.renderer.render(this.scene, this.inlineCamera);
 		};
 
 		this.renderer.setAnimationLoop(render);
 	}
 
-	/** Shortcut for getting the {@link PhysicsComponent} */
-	get physics(): PhysicsComponent {
-		return this.game.getMutableComponent(PhysicsComponent) as PhysicsComponent;
+	/** Shortcut for getting the {@link PhysicsConfig} */
+	get physics(): PhysicsConfig {
+		return this.getGameSystemConfig(RigidBodyPhysicsSystem) as PhysicsConfig;
 	}
 
 	/** Boolean value for whether player is in immersive mode. */
 	isImmersive() {
 		return this.renderer.xr.isPresenting;
+	}
+
+	/**
+	 * Create a new world with a separate scene, its own collection of GameObjects
+	 * and physics world
+	 */
+	createWorld(worldKey: string, ecsyOptions: WorldOptions = {}) {
+		const world = new World(ecsyOptions, this);
+		this._worlds[worldKey] = world;
+		return world;
+	}
+
+	/**
+	 * Switch to the specified world, playerSpace will be transported to the new
+	 * world, developer is responsible for removing all GameObjects tied to the
+	 * previous world that are parented under playerSpace
+	 */
+	switchToWorld(worldKey: string) {
+		const world = this._worlds[worldKey];
+		if (!world) {
+			throw new Error(`World ${worldKey} does not exist`);
+		}
+		this.activeWorld = world;
+		this.scene = world.threeScene;
+		this.scene.add(this.playerSpace);
 	}
 
 	/** Register a {@link GameSystem}. */
@@ -228,18 +247,18 @@ export class Core {
 		attributes: Attributes = {},
 	) {
 		if (GameSystem.systemConfig) {
-			this._ecsyWorld.registerComponent(GameSystem.systemConfig);
+			this.activeWorld.registerComponent(GameSystem.systemConfig);
 			this.game.addComponent(GameSystem.systemConfig);
 			attributes.config = this.game.getMutableComponent(
 				GameSystem.systemConfig,
 			);
 		}
-		this._ecsyWorld.registerSystem(GameSystem, attributes);
+		this.activeWorld.registerSystem(GameSystem, attributes);
 	}
 
 	/** Get a {@link GameSystem} registered in this world. */
 	getGameSystem(GameSystem: GameSystemConstructor<any>) {
-		return this._ecsyWorld.getSystem(GameSystem);
+		return this.activeWorld.getSystem(GameSystem);
 	}
 
 	/**
@@ -254,12 +273,12 @@ export class Core {
 
 	/** Get a list of {@link GameSystem} registered in this world. */
 	getGameSystems() {
-		return this._ecsyWorld.getSystems();
+		return this.activeWorld.getSystems();
 	}
 
 	/** Register a {@link GameComponent} */
 	registerGameComponent(GameComponent: GameComponentConstructor<any>) {
-		this._ecsyWorld.registerComponent(GameComponent);
+		this.activeWorld.registerComponent(GameComponent);
 	}
 
 	/**
@@ -267,12 +286,12 @@ export class Core {
 	 * to Core or not.
 	 */
 	hasRegisteredGameComponent(GameComponent: GameComponentConstructor<any>) {
-		return this._ecsyWorld.hasRegisteredComponent(GameComponent);
+		return this.activeWorld.hasRegisteredComponent(GameComponent);
 	}
 
 	/** Unregister a {@link GameSystem}. */
 	unregisterGameSystem(GameSystem: GameSystemConstructor<any>) {
-		this._ecsyWorld.unregisterSystem(GameSystem);
+		this.activeWorld.unregisterSystem(GameSystem);
 	}
 
 	/**
@@ -281,7 +300,7 @@ export class Core {
 	 * @deprecated Use {@link Core#addGameObject} instead.
 	 */
 	createEmptyGameObject(): GameObject {
-		const ecsyEntity = this._ecsyWorld.createEntity();
+		const ecsyEntity = this.activeWorld.createEntity();
 		const gameObject = new GameObject();
 		gameObject._init(ecsyEntity as ExtendedEntity);
 		return gameObject;
@@ -293,7 +312,7 @@ export class Core {
 	 * @deprecated Use {@link Core#addGameObject} instead.
 	 */
 	createGameObject(object3D: THREE.Object3D) {
-		const ecsyEntity = this._ecsyWorld.createEntity();
+		const ecsyEntity = this.activeWorld.createEntity();
 		const gameObject = new GameObject();
 		this.scene.add(gameObject);
 		gameObject._init(ecsyEntity as ExtendedEntity);
@@ -311,7 +330,7 @@ export class Core {
 	/** Add a {@link GameObject} to the game world. */
 	addGameObject(gameObject: GameObject) {
 		if (!gameObject.isInitialized) {
-			const ecsyEntity = this._ecsyWorld.createEntity();
+			const ecsyEntity = this.activeWorld.createEntity();
 			this.scene.add(gameObject);
 			gameObject._init(ecsyEntity as ExtendedEntity);
 		}
@@ -319,18 +338,11 @@ export class Core {
 
 	/** Resume execution of registered systems. */
 	play() {
-		this._ecsyWorld.play();
+		this.activeWorld.play();
 	}
 
 	/** Pause execution of registered systems. */
 	stop() {
-		this._ecsyWorld.stop();
-	}
-
-	/** Enable {@link RigidBodyPhysicsSystem}. */
-	enablePhysics() {
-		this._ecsyWorld.registerSystem(RigidBodyPhysicsSystem, {
-			priority: Infinity,
-		});
+		this.activeWorld.stop();
 	}
 }
