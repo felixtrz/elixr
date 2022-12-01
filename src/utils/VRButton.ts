@@ -1,5 +1,7 @@
 export type VRButtonOptions = {
 	sessionInit?: XRSessionInit;
+	onSessionStarted?: (session: XRSession) => void;
+	onSessionEnded?: (session: XRSession) => void;
 	ENTER_VR_TEXT?: string;
 	LEAVE_VR_TEXT?: string;
 	VR_NOT_SUPPORTED_TEXT?: string;
@@ -28,11 +30,13 @@ export class VRButton {
 				await renderer.xr.setSession(session);
 				button.textContent = options.LEAVE_VR_TEXT ?? 'EXIT VR';
 				currentSession = session;
+				if (options.onSessionStarted) options.onSessionStarted(currentSession);
 			}
 
 			function onSessionEnded(/*event*/) {
 				currentSession.removeEventListener('end', onSessionEnded);
 				button.textContent = options.ENTER_VR_TEXT ?? 'ENTER VR';
+				if (options.onSessionEnded) options.onSessionEnded(currentSession);
 				currentSession = null;
 			}
 

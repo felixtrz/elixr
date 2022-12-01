@@ -1,5 +1,7 @@
 export type ARButtonOptions = {
 	sessionInit?: XRSessionInit;
+	onSessionStarted?: (session: XRSession) => void;
+	onSessionEnded?: (session: XRSession) => void;
 	ENTER_AR_TEXT?: string;
 	LEAVE_AR_TEXT?: string;
 	AR_NOT_SUPPORTED_TEXT?: string;
@@ -13,33 +15,26 @@ export class ARButton {
 		options: ARButtonOptions = {},
 	) {
 		function showStartAR(/*device*/) {
-			const sessionInit = options.sessionInit ?? {};
+			const sessionInit = options.sessionInit ?? { optionalFeatures: [] };
 			let currentSession: XRSession;
-
-			if (sessionInit.domOverlay === undefined) {
-				const overlay = document.createElement('div');
-				overlay.style.display = 'none';
-				document.body.appendChild(overlay);
-
-				sessionInit.optionalFeatures.push('dom-overlay');
-				sessionInit.domOverlay = { root: overlay };
-			}
 
 			async function onSessionStarted(session: XRSession) {
 				session.addEventListener('end', onSessionEnded);
 				renderer.xr.setReferenceSpaceType('local');
 				await renderer.xr.setSession(session);
-				button.textContent = options.LEAVE_AR_TEXT ?? 'STOP AR';
+				button.textContent = options.LEAVE_AR_TEXT ?? 'EXIT AR';
 				currentSession = session;
+				if (options.onSessionStarted) options.onSessionStarted(currentSession);
 			}
 
 			function onSessionEnded(/*event*/) {
 				currentSession.removeEventListener('end', onSessionEnded);
-				button.textContent = options.ENTER_AR_TEXT ?? 'START AR';
+				button.textContent = options.ENTER_AR_TEXT ?? 'ENTER AR';
+				if (options.onSessionEnded) options.onSessionEnded(currentSession);
 				currentSession = null;
 			}
 
-			button.textContent = options.ENTER_AR_TEXT ?? 'START AR';
+			button.textContent = options.ENTER_AR_TEXT ?? 'ENTER AR';
 
 			button.onclick = function () {
 				if (!currentSession) {
