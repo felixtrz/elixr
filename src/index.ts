@@ -38,10 +38,11 @@ export { BUTTONS, AXES, GamepadWrapper } from 'gamepad-wrapper';
 /*                               Physics Engine                               */
 /* -------------------------------------------------------------------------- */
 export * as Physics from 'cannon-es';
+export { RigidBodyComponent } from './physics/PhysicsComponents';
 export {
-	PhysicsComponent,
-	RigidBodyComponent,
-} from './physics/PhysicsComponents';
+	RigidBodyPhysicsSystem,
+	PhysicsConfig,
+} from './physics/RigidBodyPhysicsSystem';
 
 /* -------------------------------------------------------------------------- */
 /*                                    Math                                    */

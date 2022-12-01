@@ -4,20 +4,6 @@ import { GameComponent } from '../GameComponent';
 import { THREE } from '../index';
 import { Types } from 'ecsy';
 
-export class PhysicsComponent extends GameComponent<any> {
-	gravity: THREE.Vector3;
-	solverIterations: number;
-	stepTime: number;
-	world: CANNON.World;
-}
-
-PhysicsComponent.schema = {
-	gravity: { type: Types.Ref },
-	solverIterations: { type: Types.Number, default: 2 },
-	stepTime: { type: Types.Number, default: 1 / 60 },
-	world: { type: Types.Ref },
-};
-
 export class RigidBodyComponent extends GameComponent<any> {
 	mass: number;
 	shape: CANNON.Shape;

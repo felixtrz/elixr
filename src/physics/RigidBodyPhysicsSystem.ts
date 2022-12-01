@@ -1,8 +1,9 @@
 import * as CANNON from 'cannon-es';
 
+import { SystemConfig, THREE, Types } from '../index';
+
 import { GameSystem } from '../GameSystem';
 import { RigidBodyComponent } from './PhysicsComponents';
-import { THREE } from '../index';
 
 const calculateRotationVector = (quat: THREE.Quaternion) => {
 	const vec3 = new THREE.Vector3();
@@ -45,21 +46,40 @@ const copyThreeQuatToCannonQuat = (
 
 export type ExtendedBody = CANNON.Body & { removalFlag: boolean };
 
+class PhysicsComponent extends SystemConfig {}
+
+PhysicsComponent.schema = {
+	gravity: { type: Types.Ref },
+	solverIterations: { type: Types.Number, default: 2 },
+	stepTime: { type: Types.Number, default: 1 / 60 },
+	world: { type: Types.Ref },
+};
+
+export interface PhysicsConfig extends PhysicsComponent {
+	gravity: THREE.Vector3;
+	solverIterations: number;
+	stepTime: number;
+	world: CANNON.World;
+}
+
 export class RigidBodyPhysicsSystem extends GameSystem {
+	private _config: PhysicsConfig;
+
 	init() {
-		const physicsWorld = new CANNON.World();
-		physicsWorld.broadphase = new CANNON.NaiveBroadphase();
-		this.core.physics.world = physicsWorld;
+		this._config = this.config as PhysicsConfig;
 	}
 
 	update(delta: number, _time: number) {
-		this.core.physics.world.gravity.set(
-			this.core.physics.gravity.x,
-			this.core.physics.gravity.y,
-			this.core.physics.gravity.z,
+		// physics is not initialized
+		if (!this._config.world) return;
+
+		this._config.world.gravity.set(
+			this._config.gravity.x,
+			this._config.gravity.y,
+			this._config.gravity.z,
 		);
-		(this.core.physics.world.solver as CANNON.GSSolver).iterations =
-			this.core.physics.solverIterations;
+		(this._config.world.solver as CANNON.GSSolver).iterations =
+			this._config.solverIterations;
 		this.queryAddedGameObjects('rigidBodies').forEach((gameObject) => {
 			const rigidBody = gameObject.getMutableComponent(
 				RigidBodyComponent,
@@ -79,20 +99,20 @@ export class RigidBodyPhysicsSystem extends GameSystem {
 			});
 			if (rigidBody.initVelocity)
 				body.velocity.copy(threeVec3toCannonVec3(rigidBody.initVelocity));
-			this.core.physics.world.addBody(body);
+			this._config.world.addBody(body);
 			rigidBody._body = body;
 			rigidBody.setTransformFromObject3D(gameObject);
 		});
 
 		this._preStep(delta);
-		this.core.physics.world.step(this.core.physics.stepTime, delta);
+		this._config.world.step(this._config.stepTime, delta);
 		this._postStep();
 	}
 
 	_preStep(delta: number) {
-		[...this.core.physics.world.bodies].forEach((body) => {
+		[...this._config.world.bodies].forEach((body) => {
 			if ((body as ExtendedBody).removalFlag) {
-				this.core.physics.world.removeBody(body);
+				this._config.world.removeBody(body);
 			}
 		});
 		this.queryGameObjects('rigidBodies').forEach((gameObject) => {
@@ -184,3 +204,5 @@ RigidBodyPhysicsSystem.queries = {
 		},
 	},
 };
+
+RigidBodyPhysicsSystem.systemConfig = PhysicsComponent;
