@@ -2,6 +2,8 @@ export type ARButtonOptions = {
 	sessionInit?: XRSessionInit;
 	onSessionStarted?: (session: XRSession) => void;
 	onSessionEnded?: (session: XRSession) => void;
+	onUnsupported?: () => void;
+	onNotAllowed?: (exception: DOMException) => void;
 	ENTER_AR_TEXT?: string;
 	LEAVE_AR_TEXT?: string;
 	AR_NOT_SUPPORTED_TEXT?: string;
@@ -49,16 +51,20 @@ export class ARButton {
 
 		function showARNotSupported() {
 			button.onclick = null;
-			button.textContent = 'AR NOT SUPPORTED';
+			button.classList.add('ar-not-supported');
+			button.textContent = options.AR_NOT_SUPPORTED_TEXT ?? 'AR NOT SUPPORTED';
+			if (options.onUnsupported) options.onUnsupported();
 		}
 
 		function showARNotAllowed(exception: DOMException) {
 			button.onclick = null;
+			button.classList.add('ar-not-allowed');
 			button.textContent = options.AR_NOT_ALLOWED_TEXT ?? 'AR NOT ALLOWED';
 			console.warn(
 				'Exception when trying to call xr.isSessionSupported',
 				exception,
 			);
+			if (options.onNotAllowed) options.onNotAllowed(exception);
 		}
 
 		if ('xr' in navigator) {

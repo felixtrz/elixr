@@ -2,6 +2,8 @@ export type VRButtonOptions = {
 	sessionInit?: XRSessionInit;
 	onSessionStarted?: (session: XRSession) => void;
 	onSessionEnded?: (session: XRSession) => void;
+	onUnsupported?: () => void;
+	onNotAllowed?: (exception: DOMException) => void;
 	ENTER_VR_TEXT?: string;
 	LEAVE_VR_TEXT?: string;
 	VR_NOT_SUPPORTED_TEXT?: string;
@@ -62,18 +64,20 @@ export class VRButton {
 
 		function showWebXRNotFound() {
 			button.onclick = null;
-			button.classList.add('webxr-not-found');
-			button.textContent = 'VR NOT SUPPORTED';
+			button.classList.add('vr-not-supported');
+			button.textContent = options.VR_NOT_SUPPORTED_TEXT ?? 'VR NOT SUPPORTED';
+			if (options.onUnsupported) options.onUnsupported();
 		}
 
 		function showVRNotAllowed(exception: DOMException) {
 			button.onclick = null;
 			button.classList.add('vr-not-allowed');
-			button.textContent = 'VR NOT ALLOWED';
+			button.textContent = options.VR_NOT_ALLOWED_TEXT ?? 'VR NOT ALLOWED';
 			console.warn(
 				'Exception when trying to call xr.isSessionSupported',
 				exception,
 			);
+			if (options.onNotAllowed) options.onNotAllowed(exception);
 		}
 
 		if ('xr' in navigator) {
