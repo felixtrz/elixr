@@ -80,6 +80,7 @@ export class RigidBodyPhysicsSystem extends GameSystem {
 		);
 		(this._config.world.solver as CANNON.GSSolver).iterations =
 			this._config.solverIterations;
+		this._config.world.allowSleep = true;
 		this.queryAddedGameObjects('rigidBodies').forEach((gameObject) => {
 			const rigidBody = gameObject.getMutableComponent(
 				RigidBodyComponent,
@@ -95,8 +96,13 @@ export class RigidBodyPhysicsSystem extends GameSystem {
 				mass: rigidBody.mass,
 				shape: rigidBody.shape,
 				type: rigidBody.type,
+				material: rigidBody.material,
 				velocity: new CANNON.Vec3(),
+				allowSleep: rigidBody.allowSleep,
+				sleepSpeedLimit: rigidBody.sleepSpeedLimit,
+				sleepTimeLimit: rigidBody.sleepTimeLimit,
 			});
+			body.allowSleep = true;
 			if (rigidBody.initVelocity)
 				body.velocity.copy(threeVec3toCannonVec3(rigidBody.initVelocity));
 			this._config.world.addBody(body);

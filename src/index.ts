@@ -59,8 +59,15 @@ export { CurvedRaycaster } from './math/CurvedRaycaster';
 /* -------------------------------------------------------------------------- */
 /*                              Prototype Objects                             */
 /* -------------------------------------------------------------------------- */
-export { BODY_TYPES, PhysicsObject } from './objects/PhysicsObject';
-export { PrimitiveObject } from './objects/PrimitiveObject';
+export {
+	BODY_TYPES,
+	PhysicsObject,
+	PhysicsOptions,
+} from './objects/PhysicsObject';
+export {
+	PrimitiveObject,
+	PrimitiveMaterialOptions,
+} from './objects/PrimitiveObject';
 export { CubeObject } from './objects/CubeObject';
 export { SphereObject } from './objects/SphereObject';
 export { CylinderObject } from './objects/CylinderObject';

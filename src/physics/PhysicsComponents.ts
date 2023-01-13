@@ -8,6 +8,7 @@ export class RigidBodyComponent extends GameComponent<any> {
 	mass: number;
 	shape: CANNON.Shape;
 	type: CANNON.BodyType;
+	material: CANNON.Material;
 	initVelocity: THREE.Vector3;
 
 	angularDamping?: number;
@@ -17,6 +18,9 @@ export class RigidBodyComponent extends GameComponent<any> {
 	collisionGroup?: number;
 	fixedRotation?: boolean;
 	isTrigger?: boolean;
+	allowSleep?: boolean;
+	sleepSpeedLimit?: number;
+	sleepTimeLimit?: number;
 
 	_body: CANNON.Body;
 	_positionUpdate?: THREE.Vector3;
@@ -113,6 +117,7 @@ RigidBodyComponent.schema = {
 	mass: { type: Types.Number, default: 0 },
 	shape: { type: Types.Ref },
 	type: { type: Types.Number },
+	material: { type: Types.Ref },
 	initVelocity: { type: Types.Ref },
 
 	angularDamping: { type: Types.Number, default: 0.01 },
@@ -122,6 +127,9 @@ RigidBodyComponent.schema = {
 	collisionGroup: { type: Types.Number, default: 1 },
 	fixedRotation: { type: Types.Boolean, default: false },
 	isTrigger: { type: Types.Boolean, default: false },
+	allowSleep: { type: Types.Boolean, default: true },
+	sleepSpeedLimit: { type: Types.Number, default: 0.1 },
+	sleepTimeLimit: { type: Types.Number, default: 1 },
 
 	_body: { type: Types.Ref },
 	_velocityUpdate: { type: Types.Ref },
