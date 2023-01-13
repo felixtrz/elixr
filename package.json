@@ -1,6 +1,6 @@
 {
 	"name": "elixr",
-	"version": "0.4.10",
+	"version": "0.4.11",
 	"description": "WebXR Game Engine",
 	"main": "dist/index.js",
 	"types": "dist/index.d.ts",
