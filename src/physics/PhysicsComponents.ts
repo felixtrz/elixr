@@ -1,14 +1,14 @@
-import * as CANNON from 'cannon-es';
+import * as Physics from 'cannon-es';
 
 import { GameComponent } from '../GameComponent';
-import { THREE } from '../index';
+import { THREE } from '../three/CustomTHREE';
 import { Types } from 'ecsy';
 
 export class RigidBodyComponent extends GameComponent<any> {
 	mass: number;
-	shape: CANNON.Shape;
-	type: CANNON.BodyType;
-	material: CANNON.Material;
+	shape: Physics.Shape;
+	type: Physics.BodyType;
+	material: Physics.Material;
 	initVelocity: THREE.Vector3;
 
 	angularDamping?: number;
@@ -22,7 +22,7 @@ export class RigidBodyComponent extends GameComponent<any> {
 	sleepSpeedLimit?: number;
 	sleepTimeLimit?: number;
 
-	_body: CANNON.Body;
+	_body: Physics.Body;
 	_positionUpdate?: THREE.Vector3;
 	_quaternionUpdate?: THREE.Quaternion;
 	_velocityUpdate?: THREE.Vector3;

@@ -1,16 +1,15 @@
-import * as CANNON from 'cannon-es';
+import * as Physics from 'cannon-es';
 
 import { World as EcsyWorld, WorldOptions } from 'ecsy';
+import { ExtendedEntity, GameObject } from './GameObject';
 import {
-	GameObject,
 	PhysicsConfig,
-	RigidBodyComponent,
 	RigidBodyPhysicsSystem,
-	THREE,
-} from './index';
+} from './physics/RigidBodyPhysicsSystem';
 
 import { Core } from './Core';
-import { ExtendedEntity } from './GameObject';
+import { RigidBodyComponent } from './physics/PhysicsComponents';
+import { THREE } from './three/CustomTHREE';
 
 export class World extends EcsyWorld {
 	threeScene: THREE.Scene;
@@ -35,7 +34,7 @@ export class World extends EcsyWorld {
 			config: physicsConfig,
 		});
 		physicsConfig.gravity = new THREE.Vector3(0, 0, 0);
-		physicsConfig.world = new CANNON.World();
-		physicsConfig.world.broadphase = new CANNON.NaiveBroadphase();
+		physicsConfig.world = new Physics.World();
+		physicsConfig.world.broadphase = new Physics.NaiveBroadphase();
 	}
 }

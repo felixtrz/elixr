@@ -1,5 +1,7 @@
-import { Color, THREE } from '../index';
 import { PhysicsObject, PhysicsOptions } from './PhysicsObject';
+
+import { Color } from '../math/Color';
+import { THREE } from '../three/CustomTHREE';
 
 export type PrimitiveMaterialOptions = {
 	color?: number | string;

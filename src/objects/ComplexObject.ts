@@ -1,6 +1,6 @@
 import { ConvexGeometry } from 'three/examples/jsm/geometries/ConvexGeometry.js';
 import { PhysicsObject } from './PhysicsObject';
-import { THREE } from '../index';
+import { THREE } from '../three/CustomTHREE';
 
 export class ComplexObject extends PhysicsObject {
 	protected _convexHull?: THREE.Mesh;

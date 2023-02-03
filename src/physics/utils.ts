@@ -1,4 +1,6 @@
-import { Physics, THREE } from '../index';
+import * as Physics from 'cannon-es';
+
+import { THREE } from '../three/CustomTHREE';
 
 interface Face3 {
 	a: number;

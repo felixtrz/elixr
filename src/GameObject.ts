@@ -1,7 +1,7 @@
 import { GameComponent, GameComponentConstructor } from './GameComponent';
 
 import { Entity } from 'ecsy';
-import { THREE } from './index';
+import { THREE } from './three/CustomTHREE';
 
 export type ExtendedEntity = Entity & {
 	gameObject: GameObject;

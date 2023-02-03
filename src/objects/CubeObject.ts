@@ -1,6 +1,10 @@
+import * as Physics from 'cannon-es';
+
 import { BODY_TYPES, PhysicsOptions } from './PhysicsObject';
-import { Physics, RigidBodyComponent, THREE } from '../index';
 import { PrimitiveMaterialOptions, PrimitiveObject } from './PrimitiveObject';
+
+import { RigidBodyComponent } from '../physics/PhysicsComponents';
+import { THREE } from '../three/CustomTHREE';
 
 export class CubeObject extends PrimitiveObject {
 	private _width: number;

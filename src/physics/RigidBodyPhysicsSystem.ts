@@ -1,9 +1,10 @@
-import * as CANNON from 'cannon-es';
-
-import { SystemConfig, THREE, Types } from '../index';
+import * as Physics from 'cannon-es';
 
 import { GameSystem } from '../GameSystem';
 import { RigidBodyComponent } from './PhysicsComponents';
+import { SystemConfig } from '../GameComponent';
+import { THREE } from '../three/CustomTHREE';
+import { Types } from 'ecsy';
 
 const calculateRotationVector = (quat: THREE.Quaternion) => {
 	const vec3 = new THREE.Vector3();
@@ -24,27 +25,27 @@ const calculateRotationVector = (quat: THREE.Quaternion) => {
 
 const threeVec3toCannonVec3 = (vec3: THREE.Vector3) => {
 	if (vec3 != null) {
-		return new CANNON.Vec3(vec3.x, vec3.y, vec3.z);
+		return new Physics.Vec3(vec3.x, vec3.y, vec3.z);
 	} else {
 		return null;
 	}
 };
 
 const copyThreeVec3ToCannonVec3 = (
-	cannonVec3: CANNON.Vec3,
+	cannonVec3: Physics.Vec3,
 	threeVec3: THREE.Vector3,
 ) => {
 	cannonVec3.set(threeVec3.x, threeVec3.y, threeVec3.z);
 };
 
 const copyThreeQuatToCannonQuat = (
-	cannonQuat: CANNON.Quaternion,
+	cannonQuat: Physics.Quaternion,
 	threeQuat: THREE.Quaternion,
 ) => {
 	cannonQuat.set(threeQuat.x, threeQuat.y, threeQuat.z, threeQuat.w);
 };
 
-export type ExtendedBody = CANNON.Body & { removalFlag: boolean };
+export type ExtendedBody = Physics.Body & { removalFlag: boolean };
 
 class PhysicsComponent extends SystemConfig {}
 
@@ -59,7 +60,7 @@ export interface PhysicsConfig extends PhysicsComponent {
 	gravity: THREE.Vector3;
 	solverIterations: number;
 	stepTime: number;
-	world: CANNON.World;
+	world: Physics.World;
 }
 
 export class RigidBodyPhysicsSystem extends GameSystem {
@@ -78,14 +79,14 @@ export class RigidBodyPhysicsSystem extends GameSystem {
 			this._config.gravity.y,
 			this._config.gravity.z,
 		);
-		(this._config.world.solver as CANNON.GSSolver).iterations =
+		(this._config.world.solver as Physics.GSSolver).iterations =
 			this._config.solverIterations;
 		this._config.world.allowSleep = true;
 		this.queryAddedGameObjects('rigidBodies').forEach((gameObject) => {
 			const rigidBody = gameObject.getMutableComponent(
 				RigidBodyComponent,
 			) as RigidBodyComponent;
-			const body = new CANNON.Body({
+			const body = new Physics.Body({
 				angularDamping: rigidBody.angularDamping,
 				angularFactor: threeVec3toCannonVec3(rigidBody.angularConstraints),
 				linearDamping: rigidBody.linearDamping,
@@ -97,7 +98,7 @@ export class RigidBodyPhysicsSystem extends GameSystem {
 				shape: rigidBody.shape,
 				type: rigidBody.type,
 				material: rigidBody.material,
-				velocity: new CANNON.Vec3(),
+				velocity: new Physics.Vec3(),
 				allowSleep: rigidBody.allowSleep,
 				sleepSpeedLimit: rigidBody.sleepSpeedLimit,
 				sleepTimeLimit: rigidBody.sleepTimeLimit,
@@ -154,7 +155,7 @@ export class RigidBodyPhysicsSystem extends GameSystem {
 				);
 				rigidBody._quaternionUpdate = null;
 			}
-			if (rigidBody._body.type === CANNON.BODY_TYPES.KINEMATIC) {
+			if (rigidBody._body.type === Physics.BODY_TYPES.KINEMATIC) {
 				const deltaPosVec3 = gameObject
 					.getWorldPosition(new THREE.Vector3())
 					.sub(rigidBody.position);
@@ -180,9 +181,9 @@ export class RigidBodyPhysicsSystem extends GameSystem {
 			const rigidBody = gameObject.getMutableComponent(
 				RigidBodyComponent,
 			) as RigidBodyComponent;
-			if (rigidBody.type != CANNON.BODY_TYPES.DYNAMIC) return;
-			switch (rigidBody.type as CANNON.BodyType) {
-				case CANNON.BODY_TYPES.DYNAMIC:
+			if (rigidBody.type != Physics.BODY_TYPES.DYNAMIC) return;
+			switch (rigidBody.type as Physics.BodyType) {
+				case Physics.BODY_TYPES.DYNAMIC:
 					if (gameObject.parent == this.core.scene) {
 						rigidBody.copyTransformToObject3D(gameObject);
 					} else {
@@ -192,7 +193,7 @@ export class RigidBodyPhysicsSystem extends GameSystem {
 						parent.attach(gameObject);
 					}
 					break;
-				case CANNON.BODY_TYPES.KINEMATIC:
+				case Physics.BODY_TYPES.KINEMATIC:
 					rigidBody.setTransformFromObject3D(gameObject);
 					break;
 				default:

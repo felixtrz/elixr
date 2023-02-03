@@ -1,7 +1,8 @@
-import * as CANNON from 'cannon-es';
+import * as Physics from 'cannon-es';
 
-import { GameObject, RigidBodyComponent, THREE } from '../index';
-
+import { GameObject } from '../GameObject';
+import { RigidBodyComponent } from '../physics/PhysicsComponents';
+import { THREE } from '../three/CustomTHREE';
 import { createConvexPolyhedron } from '../physics/utils';
 
 export type PhysicsOptions = {
@@ -16,9 +17,9 @@ export type PhysicsOptions = {
 };
 
 export enum BODY_TYPES {
-	STATIC = CANNON.BODY_TYPES.STATIC,
-	DYNAMIC = CANNON.BODY_TYPES.DYNAMIC,
-	KINEMATIC = CANNON.BODY_TYPES.KINEMATIC,
+	STATIC = Physics.BODY_TYPES.STATIC,
+	DYNAMIC = Physics.BODY_TYPES.DYNAMIC,
+	KINEMATIC = Physics.BODY_TYPES.KINEMATIC,
 }
 
 export class PhysicsObject extends GameObject {
@@ -27,7 +28,7 @@ export class PhysicsObject extends GameObject {
 	protected _type: BODY_TYPES;
 	protected _friction: number;
 	protected _restitution: number;
-	protected _shape: CANNON.Shape;
+	protected _shape: Physics.Shape;
 	protected _allowSleep: boolean;
 	protected _sleepSpeedLimit: number;
 	protected _sleepTimeLimit: number;
@@ -71,7 +72,7 @@ export class PhysicsObject extends GameObject {
 				mass: this._type == BODY_TYPES.DYNAMIC ? this._mass : 0,
 				shape: this._shape,
 				type: this._type,
-				material: new CANNON.Material({
+				material: new Physics.Material({
 					friction: this._friction,
 					restitution: this._restitution,
 				}),

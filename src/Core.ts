@@ -10,7 +10,7 @@ import {
 import { GLTFModelLoader } from './objects/GLTFObject';
 import { GamepadWrapper } from 'gamepad-wrapper';
 import { SESSION_MODE } from './enums';
-import { THREE } from './index';
+import { THREE } from './three/CustomTHREE';
 import { World } from './World';
 import { XRControllerModelFactory } from 'three/examples/jsm/webxr/XRControllerModelFactory.js';
 
