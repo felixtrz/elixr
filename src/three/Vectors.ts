@@ -1,4 +1,4 @@
-import { THREE } from '../three/CustomTHREE';
+import * as THREE from 'three';
 
 /**
  * This class extends THREE.Vector2

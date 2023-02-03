@@ -1,4 +1,4 @@
-import { THREE } from '../three/CustomTHREE';
+import { THREE } from './CustomTHREE';
 import { Vector3 } from './Vectors';
 
 export class CurvedRaycaster extends THREE.Raycaster {

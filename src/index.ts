@@ -2,6 +2,9 @@
 /*                                 3D Library                                 */
 /* -------------------------------------------------------------------------- */
 export { THREE } from './three/CustomTHREE';
+export { Vector2, Vector3, Vector4 } from './three/Vectors';
+export { Quaternion } from './three/Quaternion';
+export { CurvedRaycaster } from './three/CurvedRaycaster';
 
 /* -------------------------------------------------------------------------- */
 /*                           Entity Component System                          */
@@ -33,17 +36,6 @@ export {
 	RigidBodyPhysicsSystem,
 	PhysicsConfig,
 } from './physics/RigidBodyPhysicsSystem';
-
-/* -------------------------------------------------------------------------- */
-/*                                    Math                                    */
-/* -------------------------------------------------------------------------- */
-export { Vector2, Vector3, Vector4 } from './math/Vectors';
-export { Quaternion } from './math/Quaternion';
-export { Matrix3, Matrix4 } from './math/Matrices';
-export { Box2, Box3 } from './math/Boxes';
-export { Color } from './math/Color';
-export { Euler } from './math/Euler';
-export { CurvedRaycaster } from './math/CurvedRaycaster';
 
 /* -------------------------------------------------------------------------- */
 /*                              Prototype Objects                             */

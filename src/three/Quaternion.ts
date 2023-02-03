@@ -1,4 +1,5 @@
-import { THREE } from '../three/CustomTHREE';
+import * as THREE from 'three';
+
 import { Vector3 } from './Vectors';
 
 export class Quaternion extends THREE.Quaternion {

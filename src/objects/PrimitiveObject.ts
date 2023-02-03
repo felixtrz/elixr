@@ -1,6 +1,5 @@
 import { PhysicsObject, PhysicsOptions } from './PhysicsObject';
 
-import { Color } from '../math/Color';
 import { THREE } from '../three/CustomTHREE';
 
 export type PrimitiveMaterialOptions = {
@@ -33,7 +32,7 @@ export class PrimitiveObject extends PhysicsObject {
 		return this._material.color;
 	}
 
-	set color(color: Color) {
+	set color(color: THREE.Color) {
 		this._material.color.copy(color);
 	}
 
