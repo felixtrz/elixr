@@ -1,5 +1,4 @@
 import { Attributes, World as EcsyWorld, WorldOptions } from 'ecsy';
-import { ExtendedEntity, GameObject } from './GameObject';
 import { GameComponentConstructor, SystemConfig } from './GameComponent';
 import { GameSystem, GameSystemConstructor } from './GameSystem';
 import {
@@ -21,6 +20,7 @@ export type ExtendedWorld = EcsyWorld & {
 export class Core {
 	private _worlds: { [worldKey: string]: World } = {};
 	private _tempVec3 = new THREE.Vector3();
+	private static _instance: Core;
 
 	activeWorld: World;
 
@@ -69,6 +69,10 @@ export class Core {
 	/** Local space for the player, parent of camera and controllers. */
 	playerSpace: THREE.Group;
 
+	get initialized() {
+		return Core._instance != null;
+	}
+
 	/**
 	 * Empty game object used for registering unique components, like
 	 * {@link SystemConfig} components.
@@ -103,6 +107,14 @@ export class Core {
 
 		sceneContainer.appendChild(this.renderer.domElement);
 		this._setupRenderLoop();
+		Core._instance = this;
+	}
+
+	static getInstance() {
+		if (!Core._instance) {
+			throw new Error('Core not initialized');
+		}
+		return Core._instance;
 	}
 
 	private _setupPlayerSpace() {
@@ -292,48 +304,6 @@ export class Core {
 	/** Unregister a {@link GameSystem}. */
 	unregisterGameSystem(GameSystem: GameSystemConstructor<any>) {
 		this.activeWorld.unregisterSystem(GameSystem);
-	}
-
-	/**
-	 * Create an empty {@link GameObject}
-	 *
-	 * @deprecated Use {@link Core#addGameObject} instead.
-	 */
-	createEmptyGameObject(): GameObject {
-		const ecsyEntity = this.activeWorld.createEntity();
-		const gameObject = new GameObject();
-		gameObject._init(ecsyEntity as ExtendedEntity);
-		return gameObject;
-	}
-
-	/**
-	 * Create a {@link GameObject}
-	 *
-	 * @deprecated Use {@link Core#addGameObject} instead.
-	 */
-	createGameObject(object3D: THREE.Object3D) {
-		const ecsyEntity = this.activeWorld.createEntity();
-		const gameObject = new GameObject();
-		this.scene.add(gameObject);
-		gameObject._init(ecsyEntity as ExtendedEntity);
-		if (object3D) {
-			if (object3D.parent) {
-				object3D.parent.add(gameObject);
-				gameObject.position.copy(object3D.position);
-				gameObject.quaternion.copy(object3D.quaternion);
-			}
-			gameObject.attach(object3D);
-		}
-		return gameObject;
-	}
-
-	/** Add a {@link GameObject} to the game world. */
-	addGameObject(gameObject: GameObject) {
-		if (!gameObject.isInitialized) {
-			const ecsyEntity = this.activeWorld.createEntity();
-			this.scene.add(gameObject);
-			gameObject._init(ecsyEntity as ExtendedEntity);
-		}
 	}
 
 	/** Resume execution of registered systems. */

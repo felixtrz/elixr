@@ -1,13 +1,13 @@
 import * as Physics from 'cannon-es';
 
 import { World as EcsyWorld, WorldOptions } from 'ecsy';
-import { ExtendedEntity, GameObject } from './GameObject';
 import {
 	PhysicsConfig,
 	RigidBodyPhysicsSystem,
 } from './physics/RigidBodyPhysicsSystem';
 
 import { Core } from './Core';
+import { GameObject } from './GameObject';
 import { RigidBodyComponent } from './physics/PhysicsComponents';
 import { THREE } from './three/CustomTHREE';
 
@@ -20,7 +20,6 @@ export class World extends EcsyWorld {
 		super(options);
 		this.core = core;
 		this.game = new GameObject();
-		this.game._init(this.createEntity() as ExtendedEntity);
 		this.threeScene = new THREE.Scene();
 
 		this.registerComponent(RigidBodyComponent);
