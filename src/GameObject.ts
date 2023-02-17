@@ -37,14 +37,12 @@ export class GameObject extends THREE.Object3D {
 		return this._ecsyEntity != null;
 	}
 
-	/**
-	 * Copy the given GameObject into this GameObject, and copy all components
-	 * from the given GameObject.
-	 */
-	copy(source: this, recursive?: boolean): this {
-		super.copy(source, recursive);
-		this.copyAllComponentsFrom(source);
-		return this;
+	copy(_source: this, _recursive?: boolean): this {
+		throw new Error('GameObject.copy() is not permitted');
+	}
+
+	clone(_recursive?: boolean): this {
+		throw new Error('GameObject.clone() is not permitted');
 	}
 
 	/** Copy all components from the given GameObject. */

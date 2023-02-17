@@ -49,16 +49,4 @@ export class PrimitiveObject extends PhysicsObject {
 			this._material.opacity = opacity;
 		}
 	}
-
-	copy(source: this, recursive?: boolean): this {
-		super.copy(source, recursive);
-
-		this._material = source._material;
-		this._geometry = source._geometry;
-		this.remove(this._mesh);
-		this._mesh = new THREE.Mesh(this._geometry, this._material);
-		this.add(this._mesh);
-
-		return this;
-	}
 }

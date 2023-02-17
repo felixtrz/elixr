@@ -57,31 +57,4 @@ export class PhysicsObject extends GameObject {
 			type: this._type,
 		});
 	}
-
-	copy(source: this, recursive?: boolean): this {
-		super.copy(source, recursive);
-
-		this._hasPhysics = source._hasPhysics;
-		this._mass = source._mass;
-		this._type = source._type;
-		this._shape = source._shape;
-
-		if (this.hasComponent(RigidBodyComponent)) {
-			this.removeComponent(RigidBodyComponent, true);
-			this.addComponent(RigidBodyComponent, {
-				mass: this._type == BODY_TYPES.DYNAMIC ? this._mass : 0,
-				shape: this._shape,
-				type: this._type,
-				material: new Physics.Material({
-					friction: this._friction,
-					restitution: this._restitution,
-				}),
-				allowSleep: this._allowSleep,
-				sleepSpeedLimit: this._sleepSpeedLimit,
-				sleepTimeLimit: this._sleepTimeLimit,
-			});
-		}
-
-		return this;
-	}
 }

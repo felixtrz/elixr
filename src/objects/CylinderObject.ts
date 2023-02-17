@@ -41,12 +41,4 @@ export class CylinderObject extends PrimitiveObject {
 			type: this._type,
 		});
 	}
-
-	copy(source: CylinderObject, recursive?: boolean): this {
-		super.copy(source as this, recursive);
-		this._radiusTop = source._radiusTop;
-		this._radiusBottom = source._radiusBottom;
-		this._height = source._height;
-		return this;
-	}
 }

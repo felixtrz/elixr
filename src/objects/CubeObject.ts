@@ -33,12 +33,4 @@ export class CubeObject extends PrimitiveObject {
 			type: this._type,
 		});
 	}
-
-	copy(source: CubeObject, recursive?: boolean): this {
-		super.copy(source as this, recursive);
-		this._width = source._width;
-		this._height = source._height;
-		this._depth = source._depth;
-		return this;
-	}
 }

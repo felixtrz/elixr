@@ -75,19 +75,4 @@ export class GLTFObject extends ComplexObject {
 	set colliderVisible(visible: boolean) {
 		this._colliderVisible = visible;
 	}
-
-	copy(source: this, recursive?: boolean): this {
-		super.copy(source, recursive);
-		this._modelURL = source._modelURL;
-		this._onLoad = source._onLoad;
-		this._colliderVisible = source._colliderVisible;
-		return this;
-	}
-
-	clone(recursive?: boolean): this {
-		return new GLTFObject(this._modelURL, {}, this._generateBody).copy(
-			this,
-			recursive,
-		) as this;
-	}
 }

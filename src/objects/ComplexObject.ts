@@ -50,10 +50,4 @@ export class ComplexObject extends PhysicsObject {
 	set colliderVisible(visible: boolean) {
 		this._convexHull.visible = visible;
 	}
-
-	copy(source: this, recursive?: boolean): this {
-		super.copy(source, recursive);
-		this._convexHull = this.getObjectByName('convexHull') as THREE.Mesh;
-		return this;
-	}
 }

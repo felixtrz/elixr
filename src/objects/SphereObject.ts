@@ -25,10 +25,4 @@ export class SphereObject extends PrimitiveObject {
 			type: this._type,
 		});
 	}
-
-	copy(source: SphereObject, recursive?: boolean): this {
-		super.copy(source as this, recursive);
-		this._radius = source._radius;
-		return this;
-	}
 }

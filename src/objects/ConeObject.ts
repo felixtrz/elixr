@@ -28,11 +28,4 @@ export class ConeObject extends PrimitiveObject {
 			type: this._type,
 		});
 	}
-
-	copy(source: ConeObject, recursive?: boolean): this {
-		super.copy(source as this, recursive);
-		this._radius = source._radius;
-		this._height = source._height;
-		return this;
-	}
 }
