@@ -5,6 +5,7 @@ export { THREE } from './three/CustomTHREE';
 export { Vector2, Vector3, Vector4 } from './three/Vectors';
 export { Quaternion } from './three/Quaternion';
 export { CurvedRaycaster } from './three/CurvedRaycaster';
+export { GLTFModelLoader } from './three/GLTFModelLoader';
 
 /* -------------------------------------------------------------------------- */
 /*                           Entity Component System                          */
@@ -53,8 +54,6 @@ export { CubeObject } from './objects/CubeObject';
 export { SphereObject } from './objects/SphereObject';
 export { CylinderObject } from './objects/CylinderObject';
 export { ConeObject } from './objects/ConeObject';
-export { ComplexObject } from './objects/ComplexObject';
-export { GLTFObject, GLTFModelLoader } from './objects/GLTFObject';
 
 /* -------------------------------------------------------------------------- */
 /*                                Locomotion                                  */

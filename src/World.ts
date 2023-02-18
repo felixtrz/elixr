@@ -6,19 +6,16 @@ import {
 	RigidBodyPhysicsSystem,
 } from './physics/RigidBodyPhysicsSystem';
 
-import { Core } from './Core';
 import { GameObject } from './GameObject';
 import { RigidBodyComponent } from './physics/PhysicsComponents';
 import { THREE } from './three/CustomTHREE';
 
 export class World extends EcsyWorld {
 	threeScene: THREE.Scene;
-	core: Core;
 	game: GameObject;
 
-	constructor(options: WorldOptions = {}, core: Core) {
+	constructor(options: WorldOptions = {}) {
 		super(options);
-		this.core = core;
 		this.game = new GameObject();
 		this.threeScene = new THREE.Scene();
 

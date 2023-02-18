@@ -6,7 +6,7 @@ import {
 	RigidBodyPhysicsSystem,
 } from './physics/RigidBodyPhysicsSystem';
 
-import { GLTFModelLoader } from './objects/GLTFObject';
+import { GLTFModelLoader } from './three/GLTFModelLoader';
 import { GamepadWrapper } from 'gamepad-wrapper';
 import { SESSION_MODE } from './enums';
 import { THREE } from './three/CustomTHREE';
@@ -233,7 +233,7 @@ export class Core {
 	 * and physics world
 	 */
 	createWorld(worldKey: string, ecsyOptions: WorldOptions = {}) {
-		const world = new World(ecsyOptions, this);
+		const world = new World(ecsyOptions);
 		this._worlds[worldKey] = world;
 		return world;
 	}
