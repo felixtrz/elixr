@@ -2,11 +2,20 @@ import { GameComponent, GameComponentConstructor } from './GameComponent';
 
 import { Core } from './Core';
 import { Entity } from 'ecsy';
-import { THREE } from './three/CustomTHREE';
+import { THREE } from '../graphics/CustomTHREE';
 
 export type ExtendedEntity = Entity & {
 	gameObject: GameObject;
 };
+
+export enum PrimitiveType {
+	Plane = 'Plane',
+	Cube = 'Cube',
+	Sphere = 'Sphere',
+	Cylinder = 'Cylinder',
+	Capsule = 'Capsule',
+	Quad = 'Quad',
+}
 
 /**
  * This class extends THREE.Object3D

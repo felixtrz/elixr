@@ -4,12 +4,12 @@ import { GameSystem, GameSystemConstructor } from './GameSystem';
 import {
 	PhysicsConfig,
 	RigidBodyPhysicsSystem,
-} from './physics/RigidBodyPhysicsSystem';
+} from '../physics/RigidBodyPhysicsSystem';
 
-import { GLTFModelLoader } from './three/GLTFModelLoader';
+import { GLTFModelLoader } from '../graphics/GLTFModelLoader';
 import { GamepadWrapper } from 'gamepad-wrapper';
 import { SESSION_MODE } from './enums';
-import { THREE } from './three/CustomTHREE';
+import { THREE } from '../graphics/CustomTHREE';
 import { World } from './World';
 import { XRControllerModelFactory } from 'three/examples/jsm/webxr/XRControllerModelFactory.js';
 

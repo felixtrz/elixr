@@ -4,11 +4,11 @@ import { World as EcsyWorld, WorldOptions } from 'ecsy';
 import {
 	PhysicsConfig,
 	RigidBodyPhysicsSystem,
-} from './physics/RigidBodyPhysicsSystem';
+} from '../physics/RigidBodyPhysicsSystem';
 
 import { GameObject } from './GameObject';
-import { RigidBodyComponent } from './physics/PhysicsComponents';
-import { THREE } from './three/CustomTHREE';
+import { RigidBodyComponent } from '../physics/PhysicsComponents';
+import { THREE } from '../graphics/CustomTHREE';
 
 export class World extends EcsyWorld {
 	threeScene: THREE.Scene;

@@ -1,27 +1,27 @@
 /* -------------------------------------------------------------------------- */
 /*                                 3D Library                                 */
 /* -------------------------------------------------------------------------- */
-export { THREE } from './three/CustomTHREE';
-export { Vector2, Vector3, Vector4 } from './three/Vectors';
-export { Quaternion } from './three/Quaternion';
-export { CurvedRaycaster } from './three/CurvedRaycaster';
-export { GLTFModelLoader } from './three/GLTFModelLoader';
+export { THREE } from './graphics/CustomTHREE';
+export { Vector2, Vector3, Vector4 } from './graphics/Vectors';
+export { Quaternion } from './graphics/Quaternion';
+export { CurvedRaycaster } from './graphics/CurvedRaycaster';
+export { GLTFModelLoader } from './graphics/GLTFModelLoader';
 
 /* -------------------------------------------------------------------------- */
 /*                           Entity Component System                          */
 /* -------------------------------------------------------------------------- */
 export { Not, Types } from 'ecsy';
-export { World } from './World';
-export { GameObject } from './GameObject';
-export { GameComponent } from './GameComponent';
-export { SystemConfig } from './GameComponent';
+export { World } from './core/World';
+export { GameObject } from './core/GameObject';
+export { GameComponent } from './core/GameComponent';
+export { SystemConfig } from './core/GameComponent';
 export {
 	GameSystem,
 	XRGameSystem,
 	SingleUseGameSystem,
 	SingleUseXRGameSystem,
-} from './GameSystem';
-export { Core } from './Core';
+} from './core/GameSystem';
+export { Core } from './core/Core';
 
 /* -------------------------------------------------------------------------- */
 /*                                Gamepad Utils                               */
@@ -39,55 +39,38 @@ export {
 } from './physics/RigidBodyPhysicsSystem';
 
 /* -------------------------------------------------------------------------- */
-/*                              Prototype Objects                             */
-/* -------------------------------------------------------------------------- */
-export {
-	BODY_TYPES,
-	PhysicsObject,
-	PhysicsOptions,
-} from './objects/PhysicsObject';
-export {
-	PrimitiveObject,
-	PrimitiveMaterialOptions,
-} from './objects/PrimitiveObject';
-export { CubeObject } from './objects/CubeObject';
-export { SphereObject } from './objects/SphereObject';
-export { CylinderObject } from './objects/CylinderObject';
-export { ConeObject } from './objects/ConeObject';
-
-/* -------------------------------------------------------------------------- */
 /*                                Locomotion                                  */
 /* -------------------------------------------------------------------------- */
 export {
 	MovementSurface,
 	MovementObstacle,
-} from './locomotion/MovementComponents';
+} from './xr/locomotion/MovementComponents';
 export {
 	XRSnapTurnConfig,
 	XRSnapTurnSystem,
-} from './locomotion/XRSnapTurnSystem';
+} from './xr/locomotion/XRSnapTurnSystem';
 export {
 	XRSmoothTurnConfig,
 	XRSmoothTurnSystem,
-} from './locomotion/XRSmoothTurnSystem';
+} from './xr/locomotion/XRSmoothTurnSystem';
 export {
 	XRTeleportConfig,
 	XRTeleportSystem,
-} from './locomotion/XRTeleportSystem';
-export { XRSlideConfig, XRSlideSystem } from './locomotion/XRSlideSystem';
+} from './xr/locomotion/XRTeleportSystem';
+export { XRSlideConfig, XRSlideSystem } from './xr/locomotion/XRSlideSystem';
 
 /* -------------------------------------------------------------------------- */
 /*                                    Enums                                   */
 /* -------------------------------------------------------------------------- */
-export { JOYSTICK_STATES, HANDEDNESS, SESSION_MODE } from './enums';
+export { JOYSTICK_STATES, HANDEDNESS, SESSION_MODE } from './core/enums';
 
 /* -------------------------------------------------------------------------- */
 /*                                 Geometries                                 */
 /* -------------------------------------------------------------------------- */
-export { CurveTubeGeometry } from './geometries/CurveTubeGeometry';
+export { CurveTubeGeometry } from './graphics/geometries/CurveTubeGeometry';
 
 /* -------------------------------------------------------------------------- */
 /*                                 XR Buttons                                 */
 /* -------------------------------------------------------------------------- */
-export { VRButtonOptions, VRButton } from './utils/VRButton';
-export { ARButtonOptions, ARButton } from './utils/ARButton';
+export { VRButtonOptions, VRButton } from './xr/VRButton';
+export { ARButtonOptions, ARButton } from './xr/ARButton';

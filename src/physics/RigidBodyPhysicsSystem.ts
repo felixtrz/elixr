@@ -1,9 +1,9 @@
 import * as Physics from 'cannon-es';
 
-import { GameSystem } from '../GameSystem';
+import { GameSystem } from '../core/GameSystem';
 import { RigidBodyComponent } from './PhysicsComponents';
-import { SystemConfig } from '../GameComponent';
-import { THREE } from '../three/CustomTHREE';
+import { SystemConfig } from '../core/GameComponent';
+import { THREE } from '../graphics/CustomTHREE';
 import { Types } from 'ecsy';
 
 const calculateRotationVector = (quat: THREE.Quaternion) => {

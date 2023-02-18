@@ -1,15 +1,15 @@
-import { HANDEDNESS, JOYSTICK_STATES } from '../enums';
+import { HANDEDNESS, JOYSTICK_STATES } from '../../core/enums';
 import { MovementObstacle, MovementSurface } from './MovementComponents';
 
 import { BUTTONS } from 'gamepad-wrapper';
-import { CurveTubeGeometry } from '../geometries/CurveTubeGeometry';
-import { CurvedRaycaster } from '../three/CurvedRaycaster';
-import { GameObject } from '../GameObject';
-import { SystemConfig } from '../GameComponent';
-import { THREE } from '../three/CustomTHREE';
+import { CurveTubeGeometry } from '../../graphics/geometries/CurveTubeGeometry';
+import { CurvedRaycaster } from '../../graphics/CurvedRaycaster';
+import { GameObject } from '../../core/GameObject';
+import { SystemConfig } from '../../core/GameComponent';
+import { THREE } from '../../graphics/CustomTHREE';
 import { Types } from 'ecsy';
-import { Vector3 } from '../three/Vectors';
-import { XRGameSystem } from '../GameSystem';
+import { Vector3 } from '../../graphics/Vectors';
+import { XRGameSystem } from '../../core/GameSystem';
 
 export interface XRTeleportConfig extends XRTeleportComponent {
 	JOYSTICK_ANGLE_MIN: number;

@@ -1,7 +1,7 @@
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { KTX2Loader } from 'three/examples/jsm/loaders/KTX2Loader.js';
-import { THREE } from '../three/CustomTHREE';
+import { THREE } from './CustomTHREE';
 
 export class GLTFModelLoader {
 	private static _instance: GLTFLoader;
