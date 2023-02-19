@@ -6,6 +6,7 @@ export { Vector2, Vector3, Vector4 } from './graphics/Vectors';
 export { Quaternion } from './graphics/Quaternion';
 export { CurvedRaycaster } from './graphics/CurvedRaycaster';
 export { GLTFModelLoader } from './graphics/GLTFModelLoader';
+export { MeshRenderer } from './graphics/meshes/MeshRendererComponent';
 
 /* -------------------------------------------------------------------------- */
 /*                           Entity Component System                          */

@@ -1,7 +1,7 @@
 import { GameComponent } from '../../core/GameComponent';
 import { Types } from 'ecsy';
 
-class MeshRenderer extends GameComponent<any> {
+export class MeshRenderer extends GameComponent<any> {
 	get mesh() {
 		// @ts-ignore
 		return this.meshRef;
@@ -13,6 +13,14 @@ class MeshRenderer extends GameComponent<any> {
 
 	get material() {
 		return this.mesh.material;
+	}
+
+	onAdd(): void {
+		this.gameObject.addThreeObjects(this.mesh);
+	}
+
+	onRemove(): void {
+		this.gameObject.remove(this.mesh);
 	}
 }
 

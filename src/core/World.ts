@@ -16,8 +16,8 @@ export class World extends EcsyWorld {
 
 	constructor(options: WorldOptions = {}) {
 		super(options);
-		this.game = new GameObject();
 		this.threeScene = new THREE.Scene();
+		this.game = new GameObject(this);
 
 		this.registerComponent(RigidBodyComponent);
 		this.registerComponent(RigidBodyPhysicsSystem.systemConfig);

@@ -3,6 +3,7 @@ import { GameComponent, GameComponentConstructor } from './GameComponent';
 import { Core } from './Core';
 import { Entity } from 'ecsy';
 import { THREE } from '../graphics/CustomTHREE';
+import { World } from './World';
 
 export type ExtendedEntity = Entity & {
 	gameObject: GameObject;
@@ -26,11 +27,12 @@ export class GameObject extends THREE.Object3D {
 	private _ecsyEntity: ExtendedEntity;
 	isGameObject: boolean = true;
 
-	constructor() {
+	constructor(worldOverride?: World) {
 		super();
-		this._ecsyEntity =
-			Core.getInstance().activeWorld.createEntity() as ExtendedEntity;
+		const world = worldOverride || Core.getInstance().activeWorld;
+		this._ecsyEntity = world.createEntity() as ExtendedEntity;
 		this._ecsyEntity.gameObject = this;
+		world.threeScene.add(this);
 	}
 
 	copy(_source: this, _recursive?: boolean): this {
@@ -41,6 +43,19 @@ export class GameObject extends THREE.Object3D {
 		throw new Error('GameObject.clone() is not permitted');
 	}
 
+	addThreeObjects(...object: THREE.Object3D<THREE.Event>[]): this {
+		return super.add(...object);
+	}
+
+	add(...gameObject: GameObject[]): this {
+		gameObject.forEach((go) => {
+			if (!go.isGameObject) {
+				throw new Error('GameObject.add() only accepts GameObjects');
+			}
+		});
+		return super.add(...gameObject);
+	}
+
 	/** Add a {@link GameComponent} to the entity. */
 	addComponent(
 		GameComponent: GameComponentConstructor<GameComponent<any>>,
@@ -49,6 +64,7 @@ export class GameObject extends THREE.Object3D {
 		this._ecsyEntity.addComponent(GameComponent, values);
 		const newComponent = this.getMutableComponent(GameComponent);
 		newComponent.gameObject = this;
+		if (newComponent.onAdd) newComponent.onAdd();
 	}
 
 	/** Get an immutable reference to a {@link GameComponent} on this entity. */

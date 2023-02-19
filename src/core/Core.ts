@@ -107,6 +107,7 @@ export class Core {
 
 		sceneContainer.appendChild(this.renderer.domElement);
 		this._setupRenderLoop();
+
 		Core._instance = this;
 	}
 
