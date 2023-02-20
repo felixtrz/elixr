@@ -69,6 +69,8 @@ export class Core {
 	/** Local space for the player, parent of camera and controllers. */
 	playerSpace: THREE.Group;
 
+	RAPIER: typeof import('@dimforge/rapier3d/rapier');
+
 	get initialized() {
 		return Core._instance != null;
 	}
@@ -95,7 +97,24 @@ export class Core {
 		}
 	}
 
-	constructor(sceneContainer: HTMLElement, ecsyOptions: WorldOptions = {}) {
+	static async init(
+		sceneContainer: HTMLElement,
+		ecsyOptions: WorldOptions = {},
+	) {
+		const RAPIER = await import('@dimforge/rapier3d');
+		if (Core._instance) {
+			throw new Error('Core already initialized');
+		}
+		const coreInstance = new Core(sceneContainer, ecsyOptions, RAPIER);
+		return coreInstance;
+	}
+
+	private constructor(
+		sceneContainer: HTMLElement,
+		ecsyOptions: WorldOptions = {},
+		RAPIER: typeof import('@dimforge/rapier3d/rapier'),
+	) {
+		this.RAPIER = RAPIER;
 		this._setupThreeGlobals();
 		this._setupPlayerSpace();
 		this._setupControllers();
@@ -234,7 +253,7 @@ export class Core {
 	 * and physics world
 	 */
 	createWorld(worldKey: string, ecsyOptions: WorldOptions = {}) {
-		const world = new World(ecsyOptions);
+		const world = new World(ecsyOptions, this.RAPIER);
 		this._worlds[worldKey] = world;
 		return world;
 	}

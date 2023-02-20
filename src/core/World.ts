@@ -1,10 +1,5 @@
-import * as Physics from 'cannon-es';
-
 import { World as EcsyWorld, WorldOptions } from 'ecsy';
-import {
-	PhysicsConfig,
-	RigidBodyPhysicsSystem,
-} from '../physics/RigidBodyPhysicsSystem';
+import { PhysicsConfig, PhysicsSystem } from '../physics/PhysicsSystem';
 
 import { GameObject } from './GameObject';
 import { RigidBodyComponent } from '../physics/PhysicsComponents';
@@ -12,25 +7,29 @@ import { THREE } from '../graphics/CustomTHREE';
 
 export class World extends EcsyWorld {
 	threeScene: THREE.Scene;
+	rapierWorld: import('@dimforge/rapier3d/rapier').World;
 	game: GameObject;
 
-	constructor(options: WorldOptions = {}) {
+	constructor(
+		options: WorldOptions = {},
+		RAPIER: typeof import('@dimforge/rapier3d/rapier'),
+	) {
 		super(options);
 		this.threeScene = new THREE.Scene();
 		this.game = new GameObject(this);
 
 		this.registerComponent(RigidBodyComponent);
-		this.registerComponent(RigidBodyPhysicsSystem.systemConfig);
-		this.game.addComponent(RigidBodyPhysicsSystem.systemConfig);
+		this.registerComponent(PhysicsSystem.systemConfig);
+		this.game.addComponent(PhysicsSystem.systemConfig);
 		const physicsConfig = this.game.getMutableComponent(
-			RigidBodyPhysicsSystem.systemConfig,
+			PhysicsSystem.systemConfig,
 		) as PhysicsConfig;
-		this.registerSystem(RigidBodyPhysicsSystem, {
+		this.registerSystem(PhysicsSystem, {
 			priority: Infinity,
 			config: physicsConfig,
 		});
 		physicsConfig.gravity = new THREE.Vector3(0, 0, 0);
-		physicsConfig.world = new Physics.World();
-		physicsConfig.world.broadphase = new Physics.NaiveBroadphase();
+		physicsConfig.world = new RAPIER.World(physicsConfig.gravity);
+		this.rapierWorld = physicsConfig.world;
 	}
 }

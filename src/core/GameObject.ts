@@ -26,6 +26,7 @@ export enum PrimitiveType {
 export class GameObject extends THREE.Object3D {
 	private _ecsyEntity: ExtendedEntity;
 	isGameObject: boolean = true;
+	world: World;
 
 	constructor(worldOverride?: World) {
 		super();
@@ -33,6 +34,7 @@ export class GameObject extends THREE.Object3D {
 		this._ecsyEntity = world.createEntity() as ExtendedEntity;
 		this._ecsyEntity.gameObject = this;
 		world.threeScene.add(this);
+		this.world = world;
 	}
 
 	copy(_source: this, _recursive?: boolean): this {
