@@ -32,12 +32,9 @@ export { BUTTONS, AXES, GamepadWrapper } from 'gamepad-wrapper';
 /* -------------------------------------------------------------------------- */
 /*                               Physics Engine                               */
 /* -------------------------------------------------------------------------- */
-export * as Physics from 'cannon-es';
-export { RigidBodyComponent } from './physics/PhysicsComponents';
-export {
-	RigidBodyPhysicsSystem,
-	PhysicsConfig,
-} from './physics/RigidBodyPhysicsSystem';
+export { RigidBody } from './physics/RigidBodyComponent';
+export { ColliderSet } from './physics/ColliderSetComponent';
+export { PhysicsSystem, PhysicsConfig } from './physics/PhysicsSystem';
 
 /* -------------------------------------------------------------------------- */
 /*                                Locomotion                                  */

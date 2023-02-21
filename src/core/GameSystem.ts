@@ -1,7 +1,7 @@
 import { Attributes, System, SystemQueries, World } from 'ecsy';
+import { Core, ExtendedWorld } from './Core';
 import { GameComponentConstructor, SystemConfig } from './GameComponent';
 
-import { Core } from './Core';
 import { ExtendedEntity } from './GameObject';
 
 export class GameSystem extends System {
@@ -23,13 +23,10 @@ export class GameSystem extends System {
 	 */
 	static queries: SystemQueries;
 
-	RAPIER: typeof import('/Users/felixz/Projects/elixr/node_modules/@dimforge/rapier3d/rapier');
-
 	constructor(world: World, attributes?: Attributes) {
 		super(world, attributes);
-		this.core = Core.getInstance();
+		this.core = (this.world as ExtendedWorld).core;
 		this.config = attributes?.config as SystemConfig;
-		this.RAPIER = this.core.RAPIER;
 	}
 
 	/** @ignore */

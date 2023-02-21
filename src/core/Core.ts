@@ -1,10 +1,7 @@
 import { Attributes, World as EcsyWorld, WorldOptions } from 'ecsy';
 import { GameComponentConstructor, SystemConfig } from './GameComponent';
 import { GameSystem, GameSystemConstructor } from './GameSystem';
-import {
-	PhysicsConfig,
-	RigidBodyPhysicsSystem,
-} from '../physics/RigidBodyPhysicsSystem';
+import { PhysicsConfig, PhysicsSystem } from '../physics/PhysicsSystem';
 
 import { GLTFModelLoader } from '../graphics/GLTFModelLoader';
 import { GamepadWrapper } from 'gamepad-wrapper';
@@ -31,7 +28,9 @@ export class Core {
 	 *
 	 * @see https://threejs.org/docs/index.html?q=Scene#api/en/scenes/Scene
 	 */
-	scene: THREE.Scene;
+	get scene() {
+		return this.activeWorld.threeScene;
+	}
 
 	/**
 	 * WebGL renderer used to render the scene.
@@ -240,7 +239,7 @@ export class Core {
 
 	/** Shortcut for getting the {@link PhysicsConfig} */
 	get physics(): PhysicsConfig {
-		return this.getGameSystemConfig(RigidBodyPhysicsSystem) as PhysicsConfig;
+		return this.getGameSystemConfig(PhysicsSystem) as PhysicsConfig;
 	}
 
 	/** Boolean value for whether player is in immersive mode. */
@@ -255,6 +254,7 @@ export class Core {
 	createWorld(worldKey: string, ecsyOptions: WorldOptions = {}) {
 		const world = new World(ecsyOptions, this.RAPIER);
 		this._worlds[worldKey] = world;
+		world.core = this;
 		return world;
 	}
 
@@ -269,7 +269,6 @@ export class Core {
 			throw new Error(`World ${worldKey} does not exist`);
 		}
 		this.activeWorld = world;
-		this.scene = world.threeScene;
 		this.scene.add(this.playerSpace);
 	}
 

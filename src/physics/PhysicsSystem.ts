@@ -1,5 +1,5 @@
+import { Core } from '../core/Core';
 import { GameSystem } from '../core/GameSystem';
-import { MeshRenderer } from '../graphics/meshes/MeshRendererComponent';
 import { RigidBody } from './RigidBodyComponent';
 import { SystemConfig } from '../core/GameComponent';
 import { Types } from 'ecsy';
@@ -28,18 +28,17 @@ export class PhysicsSystem extends GameSystem {
 		// let world = new this.RAPIER.World(gravity);
 		setRapierVector3(this._config.gravity, this._config.world.gravity);
 		this._config.world.step();
+		this._postStep();
 	}
 
 	_postStep() {
 		this.queryGameObjects('rigidBodies').forEach((gameObject) => {
 			const rigidBody = gameObject.getMutableComponent(RigidBody) as RigidBody;
-			const meshRenderer = gameObject.getMutableComponent(
-				MeshRenderer,
-			) as MeshRenderer;
-			if (rigidBody.body && meshRenderer) {
-				meshRenderer.mesh.position.copy(rigidBody.position);
-				meshRenderer.mesh.quaternion.copy(rigidBody.rotation);
-			}
+			const parent = gameObject.parent;
+			Core.getInstance().scene.attach(gameObject);
+			gameObject.position.copy(rigidBody.position);
+			gameObject.quaternion.copy(rigidBody.quaternion);
+			parent.attach(gameObject);
 		});
 	}
 }

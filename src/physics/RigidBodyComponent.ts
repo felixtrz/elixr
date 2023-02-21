@@ -39,7 +39,7 @@ export class RigidBody extends RigidBodyComponent {
 		return new Vector3(translation.x, translation.y, translation.z);
 	}
 
-	get rotation() {
+	get quaternion() {
 		const rotation = this.body.rotation();
 		return new Quaternion(rotation.x, rotation.y, rotation.z, rotation.w);
 	}
@@ -141,9 +141,9 @@ export class RigidBody extends RigidBodyComponent {
 
 	onAdd(): void {
 		this.initConfig = {
-			position: this.initConfig.position || new Vector3(),
-			rotation: this.initConfig.rotation || new Quaternion(),
-			constraints: this.initConfig.constraints || {
+			position: this.initConfig?.position || new Vector3(),
+			rotation: this.initConfig?.rotation || new Quaternion(),
+			constraints: this.initConfig?.constraints || {
 				translational: {
 					x: true,
 					y: true,
@@ -155,17 +155,17 @@ export class RigidBody extends RigidBodyComponent {
 					z: true,
 				},
 			},
-			freezePosition: this.initConfig.freezePosition || false,
-			freezeRotation: this.initConfig.freezeRotation || false,
-			angularDrag: this.initConfig.angularDrag || 0,
-			angularVelocity: this.initConfig.angularVelocity || new Vector3(),
-			drag: this.initConfig.drag || 0,
-			velocity: this.initConfig.velocity || new Vector3(),
+			freezePosition: this.initConfig?.freezePosition || false,
+			freezeRotation: this.initConfig?.freezeRotation || false,
+			angularDrag: this.initConfig?.angularDrag || 0,
+			angularVelocity: this.initConfig?.angularVelocity || new Vector3(),
+			drag: this.initConfig?.drag || 0,
+			velocity: this.initConfig?.velocity || new Vector3(),
 			collisionDetectionMode:
-				this.initConfig.collisionDetectionMode ||
+				this.initConfig?.collisionDetectionMode ||
 				CollisionDetectionMode.Discrete,
-			gravityScale: this.initConfig.gravityScale || 1,
-			bodyType: this.initConfig.bodyType || RigidBodyType.Dynamic,
+			gravityScale: this.initConfig?.gravityScale || 1,
+			bodyType: this.initConfig?.bodyType || RigidBodyType.Dynamic,
 		};
 		const RAPIER = Core.getInstance().RAPIER;
 		const rapierWorld = this.gameObject.world.rapierWorld;
@@ -206,6 +206,9 @@ export class RigidBody extends RigidBodyComponent {
 		}
 
 		this.body = rapierWorld.createRigidBody(rigidBodyDesc);
+
+		this.body.setTranslation(this.gameObject.position, true);
+		this.body.setRotation(this.gameObject.quaternion, true);
 	}
 
 	onRemove(): void {
