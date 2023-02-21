@@ -1,25 +1,24 @@
-import { Attributes, World as EcsyWorld, WorldOptions } from 'ecsy';
+import { Attributes, World as EcsyWorld, Entity } from 'ecsy';
 import { GameComponentConstructor, SystemConfig } from './GameComponent';
 import { GameSystem, GameSystemConstructor } from './GameSystem';
 import { PhysicsConfig, PhysicsSystem } from '../physics/PhysicsSystem';
 
+import { ColliderSet } from '../physics/ColliderSetComponent';
 import { GLTFModelLoader } from '../graphics/GLTFModelLoader';
 import { GamepadWrapper } from 'gamepad-wrapper';
+import { RigidBody } from '../physics/RigidBodyComponent';
 import { SESSION_MODE } from './enums';
 import { THREE } from '../graphics/CustomTHREE';
-import { World } from './World';
 import { XRControllerModelFactory } from 'three/examples/jsm/webxr/XRControllerModelFactory.js';
 
-export type ExtendedWorld = EcsyWorld & {
-	core: Core;
-};
-
 export class Core {
-	private _worlds: { [worldKey: string]: World } = {};
 	private _tempVec3 = new THREE.Vector3();
 	private static _instance: Core;
 
-	activeWorld: World;
+	private _ecsyWorld: EcsyWorld;
+	private _gameManager: Entity;
+	private _rapierWorld: import('@dimforge/rapier3d/rapier').World;
+	private _threeScene: THREE.Scene;
 
 	/**
 	 * Main scene for the experience which allows you to set up what and where is
@@ -29,7 +28,15 @@ export class Core {
 	 * @see https://threejs.org/docs/index.html?q=Scene#api/en/scenes/Scene
 	 */
 	get scene() {
-		return this.activeWorld.threeScene;
+		return this._threeScene;
+	}
+
+	get ecsWorld() {
+		return this._ecsyWorld;
+	}
+
+	get physicsWorld() {
+		return this._rapierWorld;
 	}
 
 	/**
@@ -74,14 +81,6 @@ export class Core {
 		return Core._instance != null;
 	}
 
-	/**
-	 * Empty game object used for registering unique components, like
-	 * {@link SystemConfig} components.
-	 */
-	get game() {
-		return this.activeWorld.game;
-	}
-
 	/** Enum value indicating the current XRSessionMode */
 	get sessionMode() {
 		if (!this.renderer.xr.isPresenting) {
@@ -96,37 +95,31 @@ export class Core {
 		}
 	}
 
-	static async init(
-		sceneContainer: HTMLElement,
-		ecsyOptions: WorldOptions = {},
-	) {
+	static async init(sceneContainer: HTMLElement) {
 		const RAPIER = await import('@dimforge/rapier3d');
 		if (Core._instance) {
 			throw new Error('Core already initialized');
 		}
-		const coreInstance = new Core(sceneContainer, ecsyOptions, RAPIER);
+		const coreInstance = new Core(sceneContainer, RAPIER);
 		return coreInstance;
 	}
 
 	private constructor(
 		sceneContainer: HTMLElement,
-		ecsyOptions: WorldOptions = {},
 		RAPIER: typeof import('@dimforge/rapier3d/rapier'),
 	) {
-		this.RAPIER = RAPIER;
-		this._setupThreeGlobals();
+		Core._instance = this;
+		this._initECS();
+		this._initGraphics();
+		this._initPhysics(RAPIER);
+
 		this._setupPlayerSpace();
 		this._setupControllers();
-
-		this.createWorld('default', ecsyOptions);
-		this.switchToWorld('default');
 
 		GLTFModelLoader.init(this.renderer);
 
 		sceneContainer.appendChild(this.renderer.domElement);
 		this._setupRenderLoop();
-
-		Core._instance = this;
 	}
 
 	static getInstance() {
@@ -141,9 +134,15 @@ export class Core {
 		this.playerSpace.add(this.inlineCamera);
 		this.playerHead = new THREE.Group();
 		this.playerSpace.add(this.playerHead);
+		this.scene.add(this.playerSpace);
 	}
 
-	private _setupThreeGlobals() {
+	private _initECS() {
+		this._ecsyWorld = new EcsyWorld();
+		this._gameManager = this._ecsyWorld.createEntity();
+	}
+
+	private _initGraphics() {
 		this.inlineCamera = new THREE.PerspectiveCamera(
 			50,
 			window.innerWidth / window.innerHeight,
@@ -169,6 +168,26 @@ export class Core {
 		};
 
 		window.addEventListener('resize', onWindowResize, false);
+
+		this._threeScene = new THREE.Scene();
+	}
+
+	private _initPhysics(RAPIER: typeof import('@dimforge/rapier3d/rapier')) {
+		this.RAPIER = RAPIER;
+		this.registerGameComponent(RigidBody);
+		this.registerGameComponent(ColliderSet);
+		this.registerGameComponent(PhysicsSystem.systemConfig);
+		this._gameManager.addComponent(PhysicsSystem.systemConfig);
+		const physicsConfig = this._gameManager.getMutableComponent(
+			PhysicsSystem.systemConfig,
+		) as PhysicsConfig;
+		this.registerGameSystem(PhysicsSystem, {
+			priority: Infinity,
+			config: physicsConfig,
+		});
+		physicsConfig.gravity = new THREE.Vector3(0, 0, 0);
+		physicsConfig.world = new RAPIER.World(physicsConfig.gravity);
+		this._rapierWorld = physicsConfig.world;
 	}
 
 	private _setupControllers() {
@@ -230,7 +249,7 @@ export class Core {
 				controller.gamepad.update();
 			});
 			this._updatePlayerHead();
-			this.activeWorld.execute(delta, elapsedTime);
+			this._ecsyWorld.execute(delta, elapsedTime);
 			this.renderer.render(this.scene, this.inlineCamera);
 		};
 
@@ -247,49 +266,24 @@ export class Core {
 		return this.renderer.xr.isPresenting;
 	}
 
-	/**
-	 * Create a new world with a separate scene, its own collection of GameObjects
-	 * and physics world
-	 */
-	createWorld(worldKey: string, ecsyOptions: WorldOptions = {}) {
-		const world = new World(ecsyOptions, this.RAPIER);
-		this._worlds[worldKey] = world;
-		world.core = this;
-		return world;
-	}
-
-	/**
-	 * Switch to the specified world, playerSpace will be transported to the new
-	 * world, developer is responsible for removing all GameObjects tied to the
-	 * previous world that are parented under playerSpace
-	 */
-	switchToWorld(worldKey: string) {
-		const world = this._worlds[worldKey];
-		if (!world) {
-			throw new Error(`World ${worldKey} does not exist`);
-		}
-		this.activeWorld = world;
-		this.scene.add(this.playerSpace);
-	}
-
 	/** Register a {@link GameSystem}. */
 	registerGameSystem(
 		GameSystem: GameSystemConstructor<any>,
 		attributes: Attributes = {},
 	) {
 		if (GameSystem.systemConfig) {
-			this.activeWorld.registerComponent(GameSystem.systemConfig);
-			this.game.addComponent(GameSystem.systemConfig);
-			attributes.config = this.game.getMutableComponent(
+			this._ecsyWorld.registerComponent(GameSystem.systemConfig);
+			this._gameManager.addComponent(GameSystem.systemConfig);
+			attributes.config = this._gameManager.getMutableComponent(
 				GameSystem.systemConfig,
 			);
 		}
-		this.activeWorld.registerSystem(GameSystem, attributes);
+		this._ecsyWorld.registerSystem(GameSystem, attributes);
 	}
 
 	/** Get a {@link GameSystem} registered in this world. */
 	getGameSystem(GameSystem: GameSystemConstructor<any>) {
-		return this.activeWorld.getSystem(GameSystem);
+		return this._ecsyWorld.getSystem(GameSystem);
 	}
 
 	/**
@@ -304,12 +298,12 @@ export class Core {
 
 	/** Get a list of {@link GameSystem} registered in this world. */
 	getGameSystems() {
-		return this.activeWorld.getSystems();
+		return this._ecsyWorld.getSystems();
 	}
 
 	/** Register a {@link GameComponent} */
 	registerGameComponent(GameComponent: GameComponentConstructor<any>) {
-		this.activeWorld.registerComponent(GameComponent);
+		this._ecsyWorld.registerComponent(GameComponent);
 	}
 
 	/**
@@ -317,21 +311,21 @@ export class Core {
 	 * to Core or not.
 	 */
 	hasRegisteredGameComponent(GameComponent: GameComponentConstructor<any>) {
-		return this.activeWorld.hasRegisteredComponent(GameComponent);
+		return this._ecsyWorld.hasRegisteredComponent(GameComponent);
 	}
 
 	/** Unregister a {@link GameSystem}. */
 	unregisterGameSystem(GameSystem: GameSystemConstructor<any>) {
-		this.activeWorld.unregisterSystem(GameSystem);
+		this._ecsyWorld.unregisterSystem(GameSystem);
 	}
 
 	/** Resume execution of registered systems. */
 	play() {
-		this.activeWorld.play();
+		this._ecsyWorld.play();
 	}
 
 	/** Pause execution of registered systems. */
 	stop() {
-		this.activeWorld.stop();
+		this._ecsyWorld.stop();
 	}
 }

@@ -3,7 +3,6 @@ import { GameComponent, GameComponentConstructor } from './GameComponent';
 import { Core } from './Core';
 import { Entity } from 'ecsy';
 import { THREE } from '../graphics/CustomTHREE';
-import { World } from './World';
 
 export type ExtendedEntity = Entity & {
 	gameObject: GameObject;
@@ -26,15 +25,13 @@ export enum PrimitiveType {
 export class GameObject extends THREE.Object3D {
 	private _ecsyEntity: ExtendedEntity;
 	isGameObject: boolean = true;
-	world: World;
 
-	constructor(worldOverride?: World) {
+	constructor() {
 		super();
-		const world = worldOverride || Core.getInstance().activeWorld;
-		this._ecsyEntity = world.createEntity() as ExtendedEntity;
+		this._ecsyEntity =
+			Core.getInstance().ecsWorld.createEntity() as ExtendedEntity;
 		this._ecsyEntity.gameObject = this;
-		world.threeScene.add(this);
-		this.world = world;
+		Core.getInstance().scene.add(this);
 	}
 
 	copy(_source: this, _recursive?: boolean): this {

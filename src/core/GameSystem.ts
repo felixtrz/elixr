@@ -1,7 +1,7 @@
 import { Attributes, System, SystemQueries, World } from 'ecsy';
-import { Core, ExtendedWorld } from './Core';
 import { GameComponentConstructor, SystemConfig } from './GameComponent';
 
+import { Core } from './Core';
 import { ExtendedEntity } from './GameObject';
 
 export class GameSystem extends System {
@@ -25,7 +25,7 @@ export class GameSystem extends System {
 
 	constructor(world: World, attributes?: Attributes) {
 		super(world, attributes);
-		this.core = (this.world as ExtendedWorld).core;
+		this.core = Core.getInstance();
 		this.config = attributes?.config as SystemConfig;
 	}
 

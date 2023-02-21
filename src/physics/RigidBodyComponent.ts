@@ -168,7 +168,7 @@ export class RigidBody extends RigidBodyComponent {
 			bodyType: this.initConfig?.bodyType || RigidBodyType.Dynamic,
 		};
 		const RAPIER = Core.getInstance().RAPIER;
-		const rapierWorld = this.gameObject.world.rapierWorld;
+		const rapierWorld = Core.getInstance().physicsWorld;
 		let rigidBodyDesc = new RAPIER.RigidBodyDesc(this.initConfig.bodyType)
 			.setTranslation(
 				this.initConfig.position.x,
@@ -212,7 +212,7 @@ export class RigidBody extends RigidBodyComponent {
 	}
 
 	onRemove(): void {
-		const rapierWorld = this.gameObject.world.rapierWorld;
+		const rapierWorld = Core.getInstance().physicsWorld;
 		rapierWorld.removeRigidBody(this.body);
 	}
 }

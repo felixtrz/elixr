@@ -1,3 +1,4 @@
+import { Core } from '../core/Core';
 import { GameComponent } from '../core/GameComponent';
 import { RigidBody } from './RigidBodyComponent';
 
@@ -7,7 +8,7 @@ export class ColliderSet extends ColliderSetComponent {
 	colliders: import('@dimforge/rapier3d/rapier').Collider[] = [];
 
 	addCollider(desc: import('@dimforge/rapier3d/rapier').ColliderDesc) {
-		const rapierWorld = this.gameObject.world.rapierWorld;
+		const rapierWorld = Core.getInstance().physicsWorld;
 		if (this.gameObject.hasComponent(RigidBody)) {
 			const rigidBody = (this.gameObject.getComponent(RigidBody) as RigidBody)
 				.body;
@@ -20,7 +21,7 @@ export class ColliderSet extends ColliderSetComponent {
 	}
 
 	onRemove(): void {
-		const rapierWorld = this.gameObject.world.rapierWorld;
+		const rapierWorld = Core.getInstance().physicsWorld;
 		this.colliders.forEach((collider) => {
 			rapierWorld.removeCollider(collider, true);
 		});

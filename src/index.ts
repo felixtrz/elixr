@@ -12,7 +12,6 @@ export { MeshRenderer } from './graphics/meshes/MeshRendererComponent';
 /*                           Entity Component System                          */
 /* -------------------------------------------------------------------------- */
 export { Not, Types } from 'ecsy';
-export { World } from './core/World';
 export { GameObject } from './core/GameObject';
 export { GameComponent } from './core/GameComponent';
 export { SystemConfig } from './core/GameComponent';
