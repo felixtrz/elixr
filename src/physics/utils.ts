@@ -1,6 +1,6 @@
 import * as Physics from 'cannon-es';
 
-import { THREE } from '../three/CustomTHREE';
+import { THREE } from '../graphics/CustomTHREE';
 
 interface Face3 {
 	a: number;

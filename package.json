@@ -8,7 +8,7 @@
 		"dist"
 	],
 	"scripts": {
-		"build": "tsc && rollup -c",
+		"build": "rimraf dist && tsc",
 		"docs": "typedoc && cpy 'assets/**/*' docs/assets",
 		"lint": "eslint ./src",
 		"format": "prettier --write ./src/**/*",
@@ -32,6 +32,7 @@
 	},
 	"homepage": "https://github.com/felixtrz/elixr#readme",
 	"dependencies": {
+		"@dimforge/rapier3d": "^0.11.1",
 		"cannon-es": "^0.20.0",
 		"ecsy": "github:felixtrz/felicsy",
 		"gamepad-wrapper": "^1.2.0",
@@ -39,10 +40,7 @@
 		"three-mesh-bvh": "^0.5.17"
 	},
 	"devDependencies": {
-		"@rollup/plugin-commonjs": "^23.0.2",
-		"@rollup/plugin-json": "^5.0.1",
-		"@rollup/plugin-node-resolve": "^15.0.1",
-		"@rollup/plugin-replace": "^5.0.1",
+		"@types/node": "^18.14.0",
 		"@types/three": "^0.144.0",
 		"cpy-cli": "^4.2.0",
 		"eslint": "^8.23.0",
@@ -51,8 +49,7 @@
 		"pre-commit": "^1.2.2",
 		"prettier": "^2.7.1",
 		"prettier-plugin-jsdoc": "^0.4.2",
-		"rollup-plugin-json": "^4.0.0",
-		"rollup-plugin-terser": "^7.0.2",
+		"rimraf": "^4.1.2",
 		"typedoc": "^0.23.21",
 		"typedoc-plugin-extras": "^2.3.0",
 		"typescript": "^4.8.3"
