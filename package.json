@@ -33,7 +33,6 @@
 	"homepage": "https://github.com/felixtrz/elixr#readme",
 	"dependencies": {
 		"@dimforge/rapier3d": "^0.11.1",
-		"cannon-es": "^0.20.0",
 		"ecsy": "github:felixtrz/felicsy",
 		"gamepad-wrapper": "^1.2.0",
 		"three": "github:snagy/three.js-1#d982fc9",
