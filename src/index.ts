@@ -32,8 +32,24 @@ export { BUTTONS, AXES, GamepadWrapper } from 'gamepad-wrapper';
 /*                               Physics Engine                               */
 /* -------------------------------------------------------------------------- */
 export { RigidBody } from './physics/RigidBodyComponent';
-export { ColliderSet } from './physics/ColliderSetComponent';
+export { Collider } from './physics/ColliderComponent';
+export { PhysicsMaterial } from './physics/PhysicsMaterial';
 export { PhysicsSystem, PhysicsConfig } from './physics/PhysicsSystem';
+export { ActiveCollisionTypes } from '@dimforge/rapier3d/geometry';
+export { RigidBodyType, CoefficientCombineRule } from '@dimforge/rapier3d';
+export {
+	Cuboid,
+	Ball,
+	Capsule,
+	Cylinder,
+	Cone,
+	ConvexPolyhedron,
+} from '@dimforge/rapier3d';
+export {
+	CollisionDetectionMode,
+	RigidBodyConstraints,
+	convexHullShape,
+} from './physics/PhysicsHelper';
 
 /* -------------------------------------------------------------------------- */
 /*                                Locomotion                                  */

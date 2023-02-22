@@ -3,9 +3,10 @@ import { GameComponentConstructor, SystemConfig } from './GameComponent';
 import { GameSystem, GameSystemConstructor } from './GameSystem';
 import { PhysicsConfig, PhysicsSystem } from '../physics/PhysicsSystem';
 
-import { ColliderSet } from '../physics/ColliderSetComponent';
+import { Collider } from '../physics/ColliderComponent';
 import { GLTFModelLoader } from '../graphics/GLTFModelLoader';
 import { GamepadWrapper } from 'gamepad-wrapper';
+import { MeshRenderer } from '../graphics/meshes/MeshRendererComponent';
 import { RigidBody } from '../physics/RigidBodyComponent';
 import { SESSION_MODE } from './enums';
 import { THREE } from '../graphics/CustomTHREE';
@@ -75,7 +76,7 @@ export class Core {
 	/** Local space for the player, parent of camera and controllers. */
 	playerSpace: THREE.Group;
 
-	RAPIER: typeof import('@dimforge/rapier3d/rapier');
+	RAPIER: typeof import('@dimforge/rapier3d');
 
 	get initialized() {
 		return Core._instance != null;
@@ -106,7 +107,7 @@ export class Core {
 
 	private constructor(
 		sceneContainer: HTMLElement,
-		RAPIER: typeof import('@dimforge/rapier3d/rapier'),
+		RAPIER: typeof import('@dimforge/rapier3d'),
 	) {
 		Core._instance = this;
 		this._initECS();
@@ -170,12 +171,13 @@ export class Core {
 		window.addEventListener('resize', onWindowResize, false);
 
 		this._threeScene = new THREE.Scene();
+		this.registerGameComponent(MeshRenderer);
 	}
 
 	private _initPhysics(RAPIER: typeof import('@dimforge/rapier3d/rapier')) {
 		this.RAPIER = RAPIER;
 		this.registerGameComponent(RigidBody);
-		this.registerGameComponent(ColliderSet);
+		this.registerGameComponent(Collider);
 		this.registerGameComponent(PhysicsSystem.systemConfig);
 		this._gameManager.addComponent(PhysicsSystem.systemConfig);
 		const physicsConfig = this._gameManager.getMutableComponent(

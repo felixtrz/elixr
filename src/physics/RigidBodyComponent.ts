@@ -1,12 +1,9 @@
-import {
-	CollisionDetectionMode,
-	RigidBodyConstraints,
-	RigidBodyType,
-} from './PhysicsHelper';
+import { CollisionDetectionMode, RigidBodyConstraints } from './PhysicsHelper';
 import { Quaternion, Vector3 } from 'three';
 
 import { Core } from '../core/Core';
 import { GameComponent } from '../core/GameComponent';
+import { RigidBodyType } from '@dimforge/rapier3d';
 import { Types } from 'ecsy';
 
 export type RigidBodyInitConfig = {
@@ -31,7 +28,7 @@ class RigidBodyComponent extends GameComponent<any> {
 }
 
 export class RigidBody extends RigidBodyComponent {
-	body: import('@dimforge/rapier3d/rapier').RigidBody;
+	body: import('@dimforge/rapier3d').RigidBody;
 	initConfig: RigidBodyInitConfig;
 
 	get position() {

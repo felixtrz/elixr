@@ -16,3 +16,12 @@ export enum SESSION_MODE {
 	IMMERSIVE_VR = 'immersive-vr',
 	IMMERSIVE_AR = 'immersive-ar',
 }
+
+export enum PRIMITIVE_TYPE {
+	Sphere = 'sphere',
+	Capsule = 'capsule',
+	Cylinder = 'cylinder',
+	Cube = 'cube',
+	Plane = 'plane',
+	Quad = 'quad',
+}
