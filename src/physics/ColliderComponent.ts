@@ -28,6 +28,9 @@ export class Collider extends ColliderComponent {
 		this.material.attachedColliders.push(this);
 		const RAPIER = Core.getInstance().RAPIER;
 		const rapierWorld = Core.getInstance().physicsWorld;
+		if ((this.shape as PrimitiveShape).isPrimitiveShape) {
+			(this.shape as PrimitiveShape).setInitialScale(this.gameObject.scale);
+		}
 		this._colliderDesc = new RAPIER.ColliderDesc(this.shape)
 			.setDensity(this.material.density)
 			.setFriction(this.material.friction)

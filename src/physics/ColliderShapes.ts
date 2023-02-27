@@ -27,8 +27,14 @@ export class CubeShape extends Cuboid {
 		return this._scale;
 	}
 
-	setScale(scale: Vector3) {
+	setInitialScale(scale: Vector3) {
+		this._initialHalfExtents.x = this.halfExtents.x / scale.x;
+		this._initialHalfExtents.y = this.halfExtents.y / scale.y;
+		this._initialHalfExtents.z = this.halfExtents.z / scale.z;
 		this._scale.copy(scale);
+	}
+
+	setScale(scale: Vector3) {
 		this.halfExtents.x = this._initialHalfExtents.x * scale.x;
 		this.halfExtents.y = this._initialHalfExtents.y * scale.y;
 		this.halfExtents.z = this._initialHalfExtents.z * scale.z;
@@ -50,6 +56,11 @@ export class SphereShape extends Ball {
 	/** @readonly */
 	get scale() {
 		return this._scale;
+	}
+
+	setInitialScale(scale: Vector3) {
+		this._initialRadius = this.radius / Math.max(scale.x, scale.y, scale.z);
+		this._scale.copy(scale);
 	}
 
 	setScale(scale: Vector3) {
@@ -74,6 +85,12 @@ export class CylinderShape extends Cylinder {
 	/** @readonly */
 	get scale() {
 		return this._scale;
+	}
+
+	setInitialScale(scale: Vector3) {
+		this._initialHalfHeight = this.halfHeight / scale.y;
+		this._initialRadius = this.radius / Math.max(scale.x, scale.z);
+		this._scale.copy(scale);
 	}
 
 	setScale(scale: Vector3) {
@@ -101,6 +118,12 @@ export class CapsuleShape extends Cylinder {
 		return this._scale;
 	}
 
+	setInitialScale(scale: Vector3) {
+		this._initialHalfHeight = this.halfHeight / scale.y;
+		this._initialRadius = this.radius / Math.max(scale.x, scale.z);
+		this._scale.copy(scale);
+	}
+
 	setScale(scale: Vector3) {
 		this.halfHeight = this._initialHalfHeight * scale.y;
 		this.radius = this._initialRadius * Math.max(scale.x, scale.z);
@@ -126,6 +149,12 @@ export class ConeShape extends Cylinder {
 		return this._scale;
 	}
 
+	setInitialScale(scale: Vector3) {
+		this._initialHalfHeight = this.halfHeight / scale.y;
+		this._initialRadius = this.radius / Math.max(scale.x, scale.z);
+		this._scale.copy(scale);
+	}
+
 	setScale(scale: Vector3) {
 		this.halfHeight = this._initialHalfHeight * scale.y;
 		this.radius = this._initialRadius * Math.max(scale.x, scale.z);
@@ -149,6 +178,12 @@ export class QuadShape extends Cuboid {
 		return this._scale;
 	}
 
+	setInitialScale(scale: Vector3) {
+		this._initialHalfExtents.x = this.halfExtents.x / scale.x;
+		this._initialHalfExtents.y = this.halfExtents.y / scale.y;
+		this._scale.copy(scale);
+	}
+
 	setScale(scale: Vector3) {
 		this.halfExtents.x = this._initialHalfExtents.x * scale.x;
 		this.halfExtents.y = this._initialHalfExtents.y * scale.y;
@@ -170,6 +205,12 @@ export class PlaneShape extends Cuboid {
 	/** @readonly */
 	get scale() {
 		return this._scale;
+	}
+
+	setInitialScale(scale: Vector3) {
+		this._initialHalfExtents.x = this.halfExtents.x / scale.x;
+		this._initialHalfExtents.z = this.halfExtents.z / scale.z;
+		this._scale.copy(scale);
 	}
 
 	setScale(scale: Vector3) {
