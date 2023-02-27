@@ -1,6 +1,9 @@
+import { Quaternion, Vector3 } from 'three';
+
 import { Core } from '../core/Core';
 import { GameSystem } from '../core/GameSystem';
 import { RigidBody } from './RigidBodyComponent';
+import { RigidBodyType } from '@dimforge/rapier3d';
 import { SystemConfig } from '../core/GameComponent';
 import { Types } from 'ecsy';
 
@@ -19,6 +22,9 @@ export interface PhysicsConfig extends PhysicsComponent {
 export class PhysicsSystem extends GameSystem {
 	private _config: PhysicsConfig;
 
+	private _vec3 = new Vector3();
+	private _quat = new Quaternion();
+
 	init() {
 		this._config = this.config as PhysicsConfig;
 	}
@@ -27,8 +33,21 @@ export class PhysicsSystem extends GameSystem {
 		if (!this._config.world) return;
 		// let world = new this.RAPIER.World(gravity);
 		setRapierVector3(this._config.gravity, this._config.world.gravity);
+		this._preStep();
 		this._config.world.step();
 		this._postStep();
+	}
+
+	_preStep() {
+		this.queryGameObjects('rigidBodies').forEach((gameObject) => {
+			const rigidBody = gameObject.getMutableComponent(RigidBody) as RigidBody;
+			if (rigidBody.bodyType == RigidBodyType.KinematicPositionBased) {
+				gameObject.getWorldPosition(this._vec3);
+				gameObject.getWorldQuaternion(this._quat);
+				rigidBody.body.setTranslation(this._vec3, true);
+				rigidBody.body.setRotation(this._quat, true);
+			}
+		});
 	}
 
 	_postStep() {
