@@ -1,7 +1,9 @@
 import { Quaternion, Vector3 } from 'three';
 
+import { Collider } from './ColliderComponent';
 import { Core } from '../core/Core';
 import { GameSystem } from '../core/GameSystem';
+import { PrimitiveShape } from './ColliderShapes';
 import { RigidBody } from './RigidBodyComponent';
 import { RigidBodyType } from '@dimforge/rapier3d';
 import { SystemConfig } from '../core/GameComponent';
@@ -46,6 +48,13 @@ export class PhysicsSystem extends GameSystem {
 				gameObject.getWorldQuaternion(this._quat);
 				rigidBody.body.setTranslation(this._vec3, true);
 				rigidBody.body.setRotation(this._quat, true);
+			}
+
+			const collider = gameObject.getMutableComponent(Collider) as Collider;
+			if ((collider.shape as PrimitiveShape).isPrimitiveShape) {
+				if (!collider.scale.equals(gameObject.scale)) {
+					collider.setScale(gameObject.scale);
+				}
 			}
 		});
 	}

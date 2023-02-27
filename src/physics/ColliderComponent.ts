@@ -66,6 +66,17 @@ export class Collider extends ColliderComponent {
 		rapierWorld.removeCollider(this._collider, true);
 	}
 
+	get scale() {
+		if ((this.shape as PrimitiveShape).isPrimitiveShape) {
+			return (this.shape as PrimitiveShape).scale;
+		} else {
+			console.warn(
+				'Generic collider shape does not support scaling. Use a primitive shape instead.',
+			);
+			return new Vector3();
+		}
+	}
+
 	setScale(scale: Vector3) {
 		if ((this.shape as PrimitiveShape).isPrimitiveShape) {
 			(this.shape as PrimitiveShape).setScale(scale);
