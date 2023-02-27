@@ -38,13 +38,15 @@ export { PhysicsSystem, PhysicsConfig } from './physics/PhysicsSystem';
 export { ActiveCollisionTypes } from '@dimforge/rapier3d/geometry';
 export { RigidBodyType, CoefficientCombineRule } from '@dimforge/rapier3d';
 export {
-	Cuboid,
-	Ball,
-	Capsule,
-	Cylinder,
-	Cone,
-	ConvexPolyhedron,
-} from '@dimforge/rapier3d';
+	PrimitiveShape,
+	PlaneShape,
+	CubeShape,
+	SphereShape,
+	CylinderShape,
+	CapsuleShape,
+	ConeShape,
+	QuadShape,
+} from './physics/ColliderShapes';
 export {
 	CollisionDetectionMode,
 	RigidBodyConstraints,

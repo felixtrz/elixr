@@ -14,6 +14,7 @@ export enum PrimitiveType {
 	Sphere = 'Sphere',
 	Cylinder = 'Cylinder',
 	Capsule = 'Capsule',
+	Cone = 'Cone',
 	Quad = 'Quad',
 }
 

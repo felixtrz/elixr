@@ -2,8 +2,10 @@ import { ActiveCollisionTypes } from '@dimforge/rapier3d/geometry';
 import { Core } from '../core/Core';
 import { GameComponent } from '../core/GameComponent';
 import { PhysicsMaterial } from './PhysicsMaterial';
+import { PrimitiveShape } from './ColliderShapes';
 import { RigidBody } from './RigidBodyComponent';
 import { Types } from 'ecsy';
+import { Vector3 } from 'three';
 
 class ColliderComponent extends GameComponent<any> {
 	static schema = {
@@ -59,6 +61,17 @@ export class Collider extends ColliderComponent {
 	onRemove(): void {
 		const rapierWorld = Core.getInstance().physicsWorld;
 		rapierWorld.removeCollider(this._collider, true);
+	}
+
+	setScale(scale: Vector3) {
+		if ((this.shape as PrimitiveShape).isPrimitiveShape) {
+			(this.shape as PrimitiveShape).setScale(scale);
+			this._collider.setShape(this.shape);
+		} else {
+			console.warn(
+				'Generic collider shape does not support scaling. Use a primitive shape instead.',
+			);
+		}
 	}
 
 	setActiveCollisionTypes(
