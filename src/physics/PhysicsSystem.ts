@@ -35,6 +35,15 @@ export class PhysicsSystem extends GameSystem {
 		if (!this._config.world) return;
 		// let world = new this.RAPIER.World(gravity);
 		setRapierVector3(this._config.gravity, this._config.world.gravity);
+
+		this.queryAddedGameObjects('rigidBodies').forEach((gameObject) => {
+			const rigidBody = gameObject.getMutableComponent(RigidBody) as RigidBody;
+			gameObject.getWorldPosition(this._vec3);
+			gameObject.getWorldQuaternion(this._quat);
+			rigidBody.body.setTranslation(this._vec3, true);
+			rigidBody.body.setRotation(this._quat, true);
+		});
+
 		this._preStep();
 		this._config.world.step();
 		this._postStep();
@@ -74,6 +83,9 @@ export class PhysicsSystem extends GameSystem {
 PhysicsSystem.queries = {
 	rigidBodies: {
 		components: [RigidBody],
+		listen: {
+			added: true,
+		},
 	},
 };
 

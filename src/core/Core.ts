@@ -178,15 +178,11 @@ export class Core {
 		this.RAPIER = RAPIER;
 		this.registerGameComponent(RigidBody);
 		this.registerGameComponent(Collider);
-		this.registerGameComponent(PhysicsSystem.systemConfig);
-		this._gameManager.addComponent(PhysicsSystem.systemConfig);
+
+		this.registerGameSystem(PhysicsSystem, { priority: Infinity });
 		const physicsConfig = this._gameManager.getMutableComponent(
 			PhysicsSystem.systemConfig,
 		) as PhysicsConfig;
-		this.registerGameSystem(PhysicsSystem, {
-			priority: Infinity,
-			config: physicsConfig,
-		});
 		physicsConfig.gravity = new THREE.Vector3(0, 0, 0);
 		physicsConfig.world = new RAPIER.World(physicsConfig.gravity);
 		this._rapierWorld = physicsConfig.world;

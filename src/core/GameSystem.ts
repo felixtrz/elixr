@@ -23,14 +23,29 @@ export class GameSystem extends System {
 	 */
 	static queries: SystemQueries;
 
+	protected _isImmersive = false;
+
 	constructor(world: World, attributes?: Attributes) {
 		super(world, attributes);
 		this.core = Core.getInstance();
 		this.config = attributes?.config as SystemConfig;
 	}
 
+	/** This function is called on the frames in which the app enters immersive */
+	initXR() {}
+
+	/** This function is called on the frames in which the app exits immersive */
+	exitXR() {}
+
 	/** @ignore */
 	execute(delta: number, time: number) {
+		const isImmersive = this.core.isImmersive();
+		if (isImmersive) {
+			if (!this._isImmersive) this.initXR();
+		} else {
+			if (this._isImmersive) this.exitXR();
+		}
+		this._isImmersive = isImmersive;
 		this.update(delta, time);
 	}
 
@@ -89,9 +104,14 @@ export class GameSystem extends System {
 export class XRGameSystem extends GameSystem {
 	/** @ignore */
 	execute(delta: number, time: number) {
-		if (this.core.isImmersive()) {
+		const isImmersive = this.core.isImmersive();
+		if (isImmersive) {
+			if (!this._isImmersive) this.initXR();
 			this.update(delta, time);
+		} else {
+			if (this._isImmersive) this.exitXR();
 		}
+		this._isImmersive = isImmersive;
 	}
 }
 

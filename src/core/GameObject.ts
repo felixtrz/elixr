@@ -1,4 +1,13 @@
 import { GameComponent, GameComponentConstructor } from './GameComponent';
+import {
+	createCapsulePrimitive,
+	createConePrimitive,
+	createCubePrimitive,
+	createCylinderPrimitive,
+	createPlanePrimitive,
+	createQuadPrimitive,
+	createSpherePrimitive,
+} from './primitives';
 
 import { Core } from './Core';
 import { Entity } from 'ecsy';
@@ -150,5 +159,26 @@ export class GameObject extends THREE.Object3D {
 		const component = this._ecsyEntity.getMutableComponent(GameComponent);
 		if (component.onRemove) component.onRemove();
 		this._ecsyEntity.removeComponent(GameComponent, forceImmediate);
+	}
+
+	static createPrimitive(primitiveType: PrimitiveType) {
+		switch (primitiveType) {
+			case PrimitiveType.Plane:
+				return createPlanePrimitive();
+			case PrimitiveType.Cube:
+				return createCubePrimitive();
+			case PrimitiveType.Sphere:
+				return createSpherePrimitive();
+			case PrimitiveType.Cylinder:
+				return createCylinderPrimitive();
+			case PrimitiveType.Capsule:
+				return createCapsulePrimitive();
+			case PrimitiveType.Cone:
+				return createConePrimitive();
+			case PrimitiveType.Quad:
+				return createQuadPrimitive();
+			default:
+				throw new Error('Primitive type not found');
+		}
 	}
 }
