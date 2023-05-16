@@ -161,6 +161,12 @@ export class GameObject extends THREE.Object3D {
 		this._ecsyEntity.removeComponent(GameComponent, forceImmediate);
 	}
 
+	/** Destroy this GameObject */
+	destroy(forceImmediate?: boolean) {
+		this.parent?.remove(this);
+		this._ecsyEntity.remove(forceImmediate ?? false);
+	}
+
 	static createPrimitive(primitiveType: PrimitiveType) {
 		switch (primitiveType) {
 			case PrimitiveType.Plane:
