@@ -76,6 +76,9 @@ export class Core {
 	/** Local space for the player, parent of camera and controllers. */
 	playerSpace: THREE.Group;
 
+	/** Global data store */
+	globals: Map<string, any> = new Map();
+
 	RAPIER: typeof import('@dimforge/rapier3d');
 
 	get initialized() {
