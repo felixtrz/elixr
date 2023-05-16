@@ -16,7 +16,7 @@ export class MeshRenderer extends GameComponent<any> {
 	}
 
 	onAdd(): void {
-		this.gameObject.addThreeObjects(this.mesh);
+		this.gameObject.add(this.mesh);
 	}
 
 	onRemove(): void {

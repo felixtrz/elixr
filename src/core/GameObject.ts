@@ -52,19 +52,6 @@ export class GameObject extends THREE.Object3D {
 		throw new Error('GameObject.clone() is not permitted');
 	}
 
-	addThreeObjects(...object: THREE.Object3D<THREE.Event>[]): this {
-		return super.add(...object);
-	}
-
-	add(...gameObject: GameObject[]): this {
-		gameObject.forEach((go) => {
-			if (!go.isGameObject) {
-				throw new Error('GameObject.add() only accepts GameObjects');
-			}
-		});
-		return super.add(...gameObject);
-	}
-
 	/** Add a {@link GameComponent} to the entity. */
 	addComponent(
 		GameComponent: GameComponentConstructor<GameComponent<any>>,
