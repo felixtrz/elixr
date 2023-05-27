@@ -144,7 +144,7 @@ export class GameObject extends THREE.Object3D {
 		forceImmediate: boolean,
 	): void {
 		const component = this._ecsyEntity.getMutableComponent(GameComponent);
-		if (component.onRemove) component.onRemove();
+		if (component?.onRemove) component.onRemove();
 		this._ecsyEntity.removeComponent(GameComponent, forceImmediate);
 	}
 
