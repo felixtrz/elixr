@@ -44,6 +44,10 @@ export class GameObject extends THREE.Object3D {
 		Core.getInstance().scene.add(this);
 	}
 
+	get alive(): boolean {
+		return this._ecsyEntity.alive;
+	}
+
 	copy(_source: this, _recursive?: boolean): this {
 		throw new Error('GameObject.copy() is not permitted');
 	}
