@@ -20,6 +20,8 @@ export class Core {
 	private _gameManager: Entity;
 	private _rapierWorld: import('@dimforge/rapier3d/rapier').World;
 	private _threeScene: THREE.Scene;
+	private _controllersActive: number = 0;
+	private _handsActive: number = 0;
 
 	/**
 	 * Main scene for the experience which allows you to set up what and where is
@@ -38,6 +40,14 @@ export class Core {
 
 	get physicsWorld() {
 		return this._rapierWorld;
+	}
+
+	get controllersActive() {
+		return this._controllersActive;
+	}
+
+	get handsActive() {
+		return this._handsActive;
 	}
 
 	/**
@@ -246,6 +256,18 @@ export class Core {
 		const render = () => {
 			const delta = clock.getDelta();
 			const elapsedTime = clock.elapsedTime;
+			this._handsActive = 0;
+			this._controllersActive = 0;
+			if (this.isImmersive()) {
+				const session = this.renderer.xr.getSession();
+				session.inputSources.forEach((inputSource) => {
+					if (inputSource.hand) {
+						this._handsActive += 1;
+					} else {
+						this._controllersActive += 1;
+					}
+				});
+			}
 			Object.values(this.controllers).forEach((controller) => {
 				controller.gamepad.update();
 			});
