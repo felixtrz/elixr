@@ -4,10 +4,6 @@ export type VRButtonOptions = {
 	onSessionEnded?: (session: XRSession) => void;
 	onUnsupported?: () => void;
 	onNotAllowed?: (exception: DOMException) => void;
-	ENTER_VR_TEXT?: string;
-	LEAVE_VR_TEXT?: string;
-	VR_NOT_SUPPORTED_TEXT?: string;
-	VR_NOT_ALLOWED_TEXT?: string;
 };
 
 export class VRButton {
@@ -30,19 +26,15 @@ export class VRButton {
 			async function onSessionStarted(session: XRSession) {
 				session.addEventListener('end', onSessionEnded);
 				await renderer.xr.setSession(session);
-				button.textContent = options.LEAVE_VR_TEXT ?? 'EXIT VR';
 				currentSession = session;
 				if (options.onSessionStarted) options.onSessionStarted(currentSession);
 			}
 
 			function onSessionEnded(/*event*/) {
 				currentSession.removeEventListener('end', onSessionEnded);
-				button.textContent = options.ENTER_VR_TEXT ?? 'ENTER VR';
 				if (options.onSessionEnded) options.onSessionEnded(currentSession);
 				currentSession = null;
 			}
-
-			button.textContent = options.ENTER_VR_TEXT ?? 'ENTER VR';
 
 			button.onclick = function () {
 				if (!currentSession) {
@@ -65,14 +57,12 @@ export class VRButton {
 		function showWebXRNotFound() {
 			button.onclick = null;
 			button.classList.add('vr-not-supported');
-			button.textContent = options.VR_NOT_SUPPORTED_TEXT ?? 'VR NOT SUPPORTED';
 			if (options.onUnsupported) options.onUnsupported();
 		}
 
 		function showVRNotAllowed(exception: DOMException) {
 			button.onclick = null;
 			button.classList.add('vr-not-allowed');
-			button.textContent = options.VR_NOT_ALLOWED_TEXT ?? 'VR NOT ALLOWED';
 			console.warn(
 				'Exception when trying to call xr.isSessionSupported',
 				exception,
