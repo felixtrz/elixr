@@ -86,7 +86,7 @@ export class GameSystem extends System {
 	queryRemovedGameObjects(queryId: string) {
 		if (!this.queries[queryId]) {
 			throw 'Query id does not exist in current game system';
-		} else if (!this.queries[queryId].added) {
+		} else if (!this.queries[queryId].removed) {
 			throw 'This query does not listen to removed events';
 		}
 		return this.queries[queryId].removed?.map(
