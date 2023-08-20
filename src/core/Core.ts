@@ -12,6 +12,10 @@ import { SESSION_MODE } from './enums';
 import { THREE } from '../graphics/CustomTHREE';
 import { XRControllerModelFactory } from 'three/examples/jsm/webxr/XRControllerModelFactory.js';
 
+export type CoreInitOptions = {
+	physics?: boolean;
+};
+
 export class Core {
 	private _tempVec3 = new THREE.Vector3();
 	private static _instance: Core;
@@ -109,23 +113,29 @@ export class Core {
 		}
 	}
 
-	static async init(sceneContainer: HTMLElement) {
+	static async init(
+		sceneContainer: HTMLElement,
+		options: CoreInitOptions = {},
+	) {
 		const RAPIER = await import('@dimforge/rapier3d');
 		if (Core._instance) {
 			throw new Error('Core already initialized');
 		}
-		const coreInstance = new Core(sceneContainer, RAPIER);
+		const coreInstance = new Core(sceneContainer, RAPIER, options.physics);
 		return coreInstance;
 	}
 
 	private constructor(
 		sceneContainer: HTMLElement,
 		RAPIER: typeof import('@dimforge/rapier3d'),
+		usePhysics: boolean = true,
 	) {
 		Core._instance = this;
 		this._initECS();
 		this._initGraphics();
-		this._initPhysics(RAPIER);
+		if (usePhysics) {
+			this._initPhysics(RAPIER);
+		}
 
 		this._setupPlayerSpace();
 		this._setupControllers();
