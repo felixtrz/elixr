@@ -29,6 +29,7 @@ const DOWNWARD_VECTOR = new THREE.Vector3(0, -1, 0);
 
 export class XRSlideSystem extends XRGameSystem {
 	private _config: XRSlideConfig;
+
 	private _raycaster: THREE.Raycaster;
 
 	init() {

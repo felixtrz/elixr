@@ -1,9 +1,20 @@
 /* eslint-env node */
 module.exports = {
-	extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended'],
+	env: {
+		browser: true,
+		es2021: true,
+	},
+	extends: [
+		'eslint:recommended',
+		'prettier',
+		'plugin:@typescript-eslint/recommended',
+	],
 	parser: '@typescript-eslint/parser',
-	plugins: ['@typescript-eslint', 'html'],
-	root: true,
+	plugins: ['@typescript-eslint'],
+	parserOptions: {
+		ecmaVersion: 12,
+		sourceType: 'module',
+	},
 	rules: {
 		'sort-imports': [
 			'error',
@@ -15,8 +26,17 @@ module.exports = {
 				allowSeparatedGroups: false,
 			},
 		],
-		'no-unused-vars': 'off',
-		'@typescript-eslint/no-unused-vars': 'error',
-		'lines-between-class-members': ['warn', 'always'],
+		'@typescript-eslint/no-unused-vars': [
+			'error',
+			{ vars: 'all', args: 'all', argsIgnorePattern: '^_' },
+		],
+		"@typescript-eslint/no-explicit-any": "off",
+		"@typescript-eslint/lines-between-class-members": ['warn', 'always'],
+		"no-multiple-empty-lines": ["error", { "max": 1, "maxEOF": 0 }],
+		"eol-last": ["error", "always"],
+		"no-trailing-spaces": ["error"],
+		"semi": ["error", "always"],
+		"semi-spacing": ["error", {"before": false, "after": true}],
 	},
+	root: true,
 };

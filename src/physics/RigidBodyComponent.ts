@@ -1,21 +1,21 @@
 import { CollisionDetectionMode, RigidBodyConstraints } from './PhysicsHelper';
-import { Quaternion, Vector3 } from 'three';
 
 import { Core } from '../core/Core';
 import { GameComponent } from '../core/GameComponent';
 import { RigidBodyType } from '@dimforge/rapier3d';
+import { THREE } from '../graphics/CustomTHREE';
 import { Types } from 'ecsy';
 
 export type RigidBodyInitConfig = {
-	position: Vector3;
-	rotation: Quaternion;
+	position: THREE.Vector3;
+	rotation: THREE.Quaternion;
 	constraints: RigidBodyConstraints;
 	freezePosition: boolean;
 	freezeRotation: boolean;
 	angularDrag: number;
-	angularVelocity: Vector3;
+	angularVelocity: THREE.Vector3;
 	drag: number;
-	velocity: Vector3;
+	velocity: THREE.Vector3;
 	collisionDetectionMode: CollisionDetectionMode;
 	gravityScale: number;
 	bodyType: RigidBodyType;
@@ -29,16 +29,17 @@ class RigidBodyComponent extends GameComponent<any> {
 
 export class RigidBody extends RigidBodyComponent {
 	body: import('@dimforge/rapier3d').RigidBody;
+
 	initConfig: RigidBodyInitConfig;
 
 	get position() {
 		const translation = this.body.translation();
-		return new Vector3(translation.x, translation.y, translation.z);
+		return new THREE.Vector3(translation.x, translation.y, translation.z);
 	}
 
 	get quaternion() {
 		const rotation = this.body.rotation();
-		return new Quaternion(rotation.x, rotation.y, rotation.z, rotation.w);
+		return new  THREE.Quaternion(rotation.x, rotation.y, rotation.z, rotation.w);
 	}
 
 	setConstraints(constraints: RigidBodyConstraints) {
@@ -72,13 +73,13 @@ export class RigidBody extends RigidBodyComponent {
 		return this.body.angularDamping();
 	}
 
-	set angularVelocity(value: Vector3) {
+	set angularVelocity(value: THREE.Vector3) {
 		this.body.setAngvel(value, true);
 	}
 
-	get angularVelocity(): Vector3 {
+	get angularVelocity(): THREE.Vector3 {
 		const angvel = this.body.angvel();
-		return new Vector3(angvel.x, angvel.y, angvel.z);
+		return new THREE.Vector3(angvel.x, angvel.y, angvel.z);
 	}
 
 	set drag(value: number) {
@@ -89,13 +90,13 @@ export class RigidBody extends RigidBodyComponent {
 		return this.body.linearDamping();
 	}
 
-	set velocity(value: Vector3) {
+	set velocity(value: THREE.Vector3) {
 		this.body.setLinvel(value, true);
 	}
 
-	get velocity(): Vector3 {
+	get velocity(): THREE.Vector3 {
 		const linvel = this.body.linvel();
-		return new Vector3(linvel.x, linvel.y, linvel.z);
+		return new THREE.Vector3(linvel.x, linvel.y, linvel.z);
 	}
 
 	set collisionDetectionMode(value: CollisionDetectionMode) {
@@ -138,8 +139,8 @@ export class RigidBody extends RigidBodyComponent {
 
 	onAdd(): void {
 		this.initConfig = {
-			position: this.initConfig?.position || new Vector3(),
-			rotation: this.initConfig?.rotation || new Quaternion(),
+			position: this.initConfig?.position || new THREE.Vector3(),
+			rotation: this.initConfig?.rotation || new THREE.Quaternion(),
 			constraints: this.initConfig?.constraints || {
 				translational: {
 					x: true,
@@ -155,9 +156,9 @@ export class RigidBody extends RigidBodyComponent {
 			freezePosition: this.initConfig?.freezePosition || false,
 			freezeRotation: this.initConfig?.freezeRotation || false,
 			angularDrag: this.initConfig?.angularDrag || 0,
-			angularVelocity: this.initConfig?.angularVelocity || new Vector3(),
+			angularVelocity: this.initConfig?.angularVelocity || new THREE.Vector3(),
 			drag: this.initConfig?.drag || 0,
-			velocity: this.initConfig?.velocity || new Vector3(),
+			velocity: this.initConfig?.velocity || new THREE.Vector3(),
 			collisionDetectionMode:
 				this.initConfig?.collisionDetectionMode ||
 				CollisionDetectionMode.Discrete,

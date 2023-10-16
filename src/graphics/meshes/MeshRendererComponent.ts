@@ -3,6 +3,7 @@ import { Types } from 'ecsy';
 
 export class MeshRenderer extends GameComponent<any> {
 	get mesh() {
+		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 		// @ts-ignore
 		return this.meshRef;
 	}

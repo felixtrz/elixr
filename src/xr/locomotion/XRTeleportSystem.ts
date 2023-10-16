@@ -8,7 +8,6 @@ import { GameObject } from '../../core/GameObject';
 import { SystemConfig } from '../../core/GameComponent';
 import { THREE } from '../../graphics/CustomTHREE';
 import { Types } from 'ecsy';
-import { Vector3 } from '../../graphics/Vectors';
 import { XRGameSystem } from '../../core/GameSystem';
 
 export interface XRTeleportConfig extends XRTeleportComponent {
@@ -37,12 +36,19 @@ XRTeleportComponent.schema = {
 
 export class XRTeleportSystem extends XRGameSystem {
 	private _prevState: number;
+
 	private _config: XRTeleportConfig;
+
 	private _raycaster: CurvedRaycaster;
+
 	private _rayMesh: THREE.Mesh;
+
 	private _rayPath: THREE.CatmullRomCurve3;
+
 	private _teleportMarker: THREE.Object3D;
+
 	private _markerMesh: THREE.Mesh;
+
 	private _material = new THREE.MeshBasicMaterial({
 		color: 0xffffff,
 		transparent: true,
@@ -51,15 +57,16 @@ export class XRTeleportSystem extends XRGameSystem {
 	});
 
 	private _tempMatrix3 = new THREE.Matrix3();
-	private _normalWorld = new Vector3();
+
+	private _normalWorld = new THREE.Vector3();
 
 	init() {
 		this._config = this.config as XRTeleportConfig;
 
 		this._prevState = JOYSTICK_STATES.DISENGAGED;
 		this._raycaster = new CurvedRaycaster(
-			new Vector3(),
-			new Vector3(),
+			new THREE.Vector3(),
+			new THREE.Vector3(),
 			this._config.RAYCAST_SEGMENTS,
 			this._config.RAY_SPEED,
 			this._config.RAY_MIN_Y,
@@ -98,10 +105,10 @@ export class XRTeleportSystem extends XRGameSystem {
 		this._raycaster.set(
 			controller.targetRaySpace.getWorldPosition(
 				new THREE.Vector3(),
-			) as Vector3,
+			) as THREE.Vector3,
 			controller.targetRaySpace
 				.getWorldDirection(new THREE.Vector3())
-				.multiplyScalar(-1) as Vector3,
+				.multiplyScalar(-1) as THREE.Vector3,
 		);
 
 		const gamepad = controller.gamepad;
@@ -153,21 +160,21 @@ export class XRTeleportSystem extends XRGameSystem {
 
 				this._teleportMarker.position.copy(intersect.point);
 				this._teleportMarker.lookAt(
-					new Vector3()
+					new THREE.Vector3()
 						.copy(this._teleportMarker.position)
 						.add(this._normalWorld),
 				);
 				this._teleportMarker.visible = true;
 				this._rayPath.points = calculateCulledRayPoints(
-					this._raycaster.points as Vector3[],
-					intersect.point as Vector3,
+					this._raycaster.points as THREE.Vector3[],
+					intersect.point as THREE.Vector3,
 				);
 
 				const object = findRootGameObject(intersect.object);
 				this._teleportMarker.userData.valid =
 					object.hasComponent(MovementSurface) && angleRandian < Math.PI / 4;
 			} else {
-				this._rayPath.points = this._raycaster.points as Vector3[];
+				this._rayPath.points = this._raycaster.points as THREE.Vector3[];
 			}
 			(this._rayMesh.geometry as CurveTubeGeometry).setFromPath(this._rayPath);
 		}
@@ -203,8 +210,8 @@ const findRootGameObject = (obj: THREE.Object3D): GameObject | null => {
 };
 
 const calculateCulledRayPoints = (
-	segmentPoints: Vector3[],
-	intersectPoint: Vector3,
+	segmentPoints: THREE.Vector3[],
+	intersectPoint: THREE.Vector3,
 ) => {
 	const culledPoints = [];
 

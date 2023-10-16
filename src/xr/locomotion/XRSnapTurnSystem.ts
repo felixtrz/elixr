@@ -26,6 +26,7 @@ XRSnapTurnComponent.schema = {
 
 export class XRSnapTurnSystem extends XRGameSystem {
 	private _prevState: number;
+
 	private _config: XRSnapTurnConfig;
 
 	init() {
@@ -33,7 +34,7 @@ export class XRSnapTurnSystem extends XRGameSystem {
 
 		this._config = this.config as XRSnapTurnConfig;
 	}
-
+	
 	update() {
 		if (!this.core.controllers[this._config.CONTROLLER_HANDEDNESS]) return;
 		const gamepad =

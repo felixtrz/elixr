@@ -1,14 +1,12 @@
 import * as THREE from 'three';
 
-import { Vector3 } from './Vectors';
-
 export class Quaternion extends THREE.Quaternion {
 	toString(): string {
 		return `${this.x},${this.y},${this.z},${this.w}`;
 	}
 
 	/** Converts the quaternion to [ axis, angle ] representation. */
-	toAxisAngle(targetAxis = new Vector3()): [Vector3, number] {
+	toAxisAngle(targetAxis = new THREE.Vector3()): [THREE.Vector3, number] {
 		this.normalize(); // if w>1 acos and sqrt will produce errors, this cant happen if quaternion is normalised
 		const angle = 2 * Math.acos(this.w);
 		const s = Math.sqrt(1 - this.w * this.w); // assuming quaternion normalised then w is less than 1, so term always positive.
@@ -31,9 +29,9 @@ export class Quaternion extends THREE.Quaternion {
 	 * time step.
 	 */
 	integrate(
-		angularVelocity: Vector3,
+		angularVelocity: THREE.Vector3,
 		dt: number,
-		angularFactor: Vector3,
+		angularFactor: THREE.Vector3,
 		target = new Quaternion(),
 	): Quaternion {
 		const ax = angularVelocity.x * angularFactor.x,
@@ -60,7 +58,7 @@ export class Quaternion extends THREE.Quaternion {
 	 *
 	 * @param order Three-character string, defaults to "YZX"
 	 */
-	toEuler(target: Vector3, order = 'YZX'): void {
+	toEuler(target: THREE.Vector3, order = 'YZX'): void {
 		let heading;
 		let attitude;
 		let bank;
@@ -68,10 +66,10 @@ export class Quaternion extends THREE.Quaternion {
 		const y = this.y;
 		const z = this.z;
 		const w = this.w;
+		const test = x * y + z * w;
 
 		switch (order) {
 			case 'YZX':
-				const test = x * y + z * w;
 				if (test > 0.499) {
 					// singularity at north pole
 					heading = 2 * Math.atan2(x, w);

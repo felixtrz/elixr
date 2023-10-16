@@ -7,7 +7,9 @@ import {
 
 export class CurveTubeGeometry extends BufferGeometry {
 	tangents: Vector3[];
+
 	normals: Vector3[];
+
 	binormals: Vector3[];
 
 	private parameters: {
@@ -16,13 +18,21 @@ export class CurveTubeGeometry extends BufferGeometry {
 		radius: number;
 		closed: boolean;
 	};
+
 	private _vertex: Vector3;
+
 	private _normal: Vector3;
+
 	private _uv: Vector2;
+
 	private _P: Vector3;
+
 	private _vertices: number[];
+
 	private _normals: number[];
+
 	private _uvs: number[];
+
 	private _indices: number[];
 
 	constructor(
@@ -32,8 +42,6 @@ export class CurveTubeGeometry extends BufferGeometry {
 		closed = false,
 	) {
 		super();
-		this.type = 'CurveTubeGeometry';
-
 		this.parameters = {
 			tubularSegments: tubularSegments,
 			radialSegments: radialSegments,
@@ -44,11 +52,12 @@ export class CurveTubeGeometry extends BufferGeometry {
 		this.tangents = null;
 		this.normals = null;
 		this.binormals = null;
+		Object.defineProperty(this, 'type', { value: 'CurveTubeGeometry' });
 	}
 
 	setFromPath(path: THREE.Curve<Vector3>) {
-		let tubularSegments = this.parameters['tubularSegments'];
-		let closed = this.parameters['closed'];
+		const tubularSegments = this.parameters['tubularSegments'];
+		const closed = this.parameters['closed'];
 		const frames = path.computeFrenetFrames(tubularSegments, closed);
 
 		// expose internals
@@ -82,8 +91,8 @@ export class CurveTubeGeometry extends BufferGeometry {
 	}
 
 	private _generateSegment(i: number, path: THREE.Curve<Vector3>) {
-		let tubularSegments = this.parameters['tubularSegments'];
-		let radialSegments = this.parameters['radialSegments'];
+		const tubularSegments = this.parameters['tubularSegments'];
+		const radialSegments = this.parameters['radialSegments'];
 		// we use getPointAt to sample evenly distributed points from the given path
 
 		this._P = path.getPointAt(i / tubularSegments, this._P);
@@ -112,7 +121,7 @@ export class CurveTubeGeometry extends BufferGeometry {
 
 			// vertex
 
-			let curRadius = this.parameters['radius'];
+			const curRadius = this.parameters['radius'];
 			this._vertex.x = this._P.x + curRadius * this._normal.x;
 			this._vertex.y = this._P.y + curRadius * this._normal.y;
 			this._vertex.z = this._P.z + curRadius * this._normal.z;
@@ -122,8 +131,8 @@ export class CurveTubeGeometry extends BufferGeometry {
 	}
 
 	private _generateIndices() {
-		let tubularSegments = this.parameters['tubularSegments'];
-		let radialSegments = this.parameters['radialSegments'];
+		const tubularSegments = this.parameters['tubularSegments'];
+		const radialSegments = this.parameters['radialSegments'];
 		for (let j = 1; j <= tubularSegments; j++) {
 			for (let i = 1; i <= radialSegments; i++) {
 				const a = (radialSegments + 1) * (j - 1) + (i - 1);
@@ -140,8 +149,8 @@ export class CurveTubeGeometry extends BufferGeometry {
 	}
 
 	private _generateUVs() {
-		let tubularSegments = this.parameters['tubularSegments'];
-		let radialSegments = this.parameters['radialSegments'];
+		const tubularSegments = this.parameters['tubularSegments'];
+		const radialSegments = this.parameters['radialSegments'];
 		for (let i = 0; i <= tubularSegments; i++) {
 			for (let j = 0; j <= radialSegments; j++) {
 				this._uv.x = i / tubularSegments;
@@ -153,8 +162,8 @@ export class CurveTubeGeometry extends BufferGeometry {
 	}
 
 	private _generateBufferData(path: THREE.Curve<Vector3>) {
-		let tubularSegments = this.parameters['tubularSegments'];
-		let closed = this.parameters['closed'];
+		const tubularSegments = this.parameters['tubularSegments'];
+		const closed = this.parameters['closed'];
 		for (let i = 0; i < tubularSegments; i++) {
 			this._generateSegment(i, path);
 		}

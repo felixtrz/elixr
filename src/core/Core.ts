@@ -18,13 +18,19 @@ export type CoreInitOptions = {
 
 export class Core {
 	private _tempVec3 = new THREE.Vector3();
+
 	private static _instance: Core;
 
 	private _ecsyWorld: EcsyWorld;
+
 	private _gameManager: Entity;
+
 	private _rapierWorld: import('@dimforge/rapier3d/rapier').World;
+
 	private _threeScene: THREE.Scene;
+
 	private _controllersActive: number = 0;
+
 	private _handsActive: number = 0;
 
 	/**
@@ -180,7 +186,7 @@ export class Core {
 		} as THREE.WebGLRendererParameters);
 		this.renderer.setPixelRatio(window.devicePixelRatio);
 		this.renderer.setSize(window.innerWidth, window.innerHeight);
-		this.renderer.outputEncoding = THREE.sRGBEncoding;
+		this.renderer.outputColorSpace = THREE.SRGBColorSpace;
 		this.renderer.xr.enabled = true;
 
 		this.inlineCamera.position.set(0, 1.7, 0);

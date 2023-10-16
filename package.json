@@ -8,6 +8,7 @@
 		"dist"
 	],
 	"scripts": {
+		"prebuild": "node -p \"'export const VERSION = ' + JSON.stringify(require('./package.json').version) + ';'\" > src/version.ts",
 		"build": "rimraf dist && tsc",
 		"docs": "typedoc && cpy 'assets/**/*' docs/assets",
 		"lint": "eslint ./src",
@@ -35,12 +36,14 @@
 		"@dimforge/rapier3d": "^0.11.1",
 		"ecsy": "github:felixtrz/felicsy",
 		"gamepad-wrapper": "^1.2.0",
-		"three": "github:snagy/three.js-1#d982fc9",
+		"three": "npm:super-three@^0.156.0",
 		"three-mesh-bvh": "^0.5.17"
 	},
 	"devDependencies": {
 		"@types/node": "^18.14.0",
-		"@types/three": "^0.144.0",
+		"@types/three": "^0.156.0",
+		"@typescript-eslint/eslint-plugin": "^6.7.5",
+		"@typescript-eslint/parser": "^6.7.5",
 		"cpy-cli": "^4.2.0",
 		"eslint": "^8.23.0",
 		"eslint-config-prettier": "^8.5.0",

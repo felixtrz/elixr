@@ -1,5 +1,3 @@
-import { Quaternion, Vector3 } from 'three';
-
 import { Collider } from './ColliderComponent';
 import { Core } from '../core/Core';
 import { GameSystem } from '../core/GameSystem';
@@ -7,6 +5,7 @@ import { PrimitiveShape } from './ColliderShapes';
 import { RigidBody } from './RigidBodyComponent';
 import { RigidBodyType } from '@dimforge/rapier3d';
 import { SystemConfig } from '../core/GameComponent';
+import { THREE } from '../graphics/CustomTHREE';
 import { Types } from 'ecsy';
 
 class PhysicsComponent extends SystemConfig {}
@@ -24,8 +23,9 @@ export interface PhysicsConfig extends PhysicsComponent {
 export class PhysicsSystem extends GameSystem {
 	private _config: PhysicsConfig;
 
-	private _vec3 = new Vector3();
-	private _quat = new Quaternion();
+	private _vec3 = new THREE.Vector3();
+
+	private _quat = new THREE.Quaternion();
 
 	init() {
 		this._config = this.config as PhysicsConfig;
