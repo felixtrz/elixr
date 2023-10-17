@@ -5,7 +5,9 @@ import { GameSystem } from './GameSystem';
 
 export class GameComponent<C> extends Component<C> {
 	gameObject: GameObject;
+
 	onRemove() {}
+
 	onAdd() {}
 }
 

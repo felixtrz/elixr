@@ -4,8 +4,8 @@ import { GameComponent } from '../core/GameComponent';
 import { PhysicsMaterial } from './PhysicsMaterial';
 import { PrimitiveShape } from './ColliderShapes';
 import { RigidBody } from './RigidBodyComponent';
+import { THREE } from '../graphics/CustomTHREE';
 import { Types } from 'ecsy';
-import { Vector3 } from 'three';
 
 class ColliderComponent extends GameComponent<any> {
 	static schema = {
@@ -16,8 +16,11 @@ class ColliderComponent extends GameComponent<any> {
 
 export class Collider extends ColliderComponent {
 	shape: import('@dimforge/rapier3d/rapier').Shape;
+
 	material: PhysicsMaterial;
+
 	private _colliderDesc: import('@dimforge/rapier3d/rapier').ColliderDesc;
+
 	private _collider: import('@dimforge/rapier3d/rapier').Collider;
 
 	onAdd(): void {
@@ -73,11 +76,11 @@ export class Collider extends ColliderComponent {
 			console.warn(
 				'Generic collider shape does not support scaling. Use a primitive shape instead.',
 			);
-			return new Vector3();
+			return new THREE.Vector3();
 		}
 	}
 
-	setScale(scale: Vector3) {
+	setScale(scale: THREE.Vector3) {
 		if ((this.shape as PrimitiveShape).isPrimitiveShape) {
 			(this.shape as PrimitiveShape).setScale(scale);
 			this._collider.setShape(this.shape);

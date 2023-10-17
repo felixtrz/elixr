@@ -34,6 +34,7 @@ export enum PrimitiveType {
  */
 export class GameObject extends THREE.Object3D {
 	private _ecsyEntity: ExtendedEntity;
+
 	isGameObject: boolean = true;
 
 	constructor() {

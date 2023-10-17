@@ -26,6 +26,7 @@ XRSnapTurnComponent.schema = {
 
 export class XRSnapTurnSystem extends XRGameSystem {
 	private _prevState: number;
+
 	private _config: XRSnapTurnConfig;
 
 	init() {

@@ -3,11 +3,17 @@ import { Collider } from './ColliderComponent';
 
 export class PhysicsMaterial {
 	private _density: number;
+
 	private _friction: number;
+
 	private _frictionCombine: CoefficientCombineRule;
+
 	private _restitution: number;
+
 	private _restitutionCombine: CoefficientCombineRule;
+
 	public name: string;
+
 	public attachedColliders: Collider[] = [];
 
 	constructor(

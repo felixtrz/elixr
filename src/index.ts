@@ -1,9 +1,19 @@
+import { VERSION as ELIXR_VERSION } from './version';
+import { version as RAPIER_VERSION } from '@dimforge/rapier3d';
+import { REVISION as THREE_VERSION } from 'three';
+
+const FIGLET = String.raw`
+___________ __   __ ____  _____________ 
+\_   _____/|  | |__|\   \/  /\______   \
+ |    __)_ |  | |  | \     /  |       _/
+ |        \|  |_|  | /     \  |    |   \
+/_______  /|____/__|/___/\  \ |___/|_  /
+        \/                \_/        \/ `;
+
 /* -------------------------------------------------------------------------- */
 /*                                 3D Library                                 */
 /* -------------------------------------------------------------------------- */
-export { THREE } from './graphics/CustomTHREE';
-export { Vector2, Vector3, Vector4 } from './graphics/Vectors';
-export { Quaternion } from './graphics/Quaternion';
+export * from './graphics/CustomTHREE';
 export { CurvedRaycaster } from './graphics/CurvedRaycaster';
 export { GLTFModelLoader } from './graphics/GLTFModelLoader';
 export { MeshRenderer } from './graphics/meshes/MeshRendererComponent';
@@ -89,3 +99,8 @@ export { CurveTubeGeometry } from './graphics/geometries/CurveTubeGeometry';
 /* -------------------------------------------------------------------------- */
 export { VRButtonOptions, VRButton } from './xr/VRButton';
 export { ARButtonOptions, ARButton } from './xr/ARButton';
+
+console.log(FIGLET + ` v${ELIXR_VERSION}`);
+console.log(`THREE Version (https://github.com/supermedium/three.js): r${THREE_VERSION}`);
+console.log(`Rapier Version (https://github.com/dimforge/rapier): v${RAPIER_VERSION()}`);
+export { ELIXR_VERSION };
