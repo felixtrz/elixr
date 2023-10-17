@@ -14,7 +14,6 @@
 		"lint": "eslint ./src",
 		"format": "prettier --write ./src/**/*",
 		"dev:server": "http-server -c-1 -p 8080 --cors ./site",
-		"includedocs": "git add ./docs/*",
 		"prepublishOnly": "npm run build"
 	},
 	"pre-commit": [
@@ -48,7 +47,6 @@
 		"eslint": "^8.23.0",
 		"eslint-config-prettier": "^8.5.0",
 		"http-server": "^14.1.1",
-		"pre-commit": "^1.2.2",
 		"prettier": "^2.7.1",
 		"prettier-plugin-jsdoc": "^0.4.2",
 		"rimraf": "^4.1.2",
