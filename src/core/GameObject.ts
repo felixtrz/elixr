@@ -1,3 +1,4 @@
+import { PRIVATE as CORE_PRIVATE, Core } from './Core';
 import { GameComponent, GameComponentConstructor } from './GameComponent';
 import {
 	createCapsulePrimitive,
@@ -9,7 +10,6 @@ import {
 	createSpherePrimitive,
 } from './primitives';
 
-import { Core } from './Core';
 import { Entity } from 'ecsy';
 import { THREE } from '../graphics/CustomTHREE';
 
@@ -37,12 +37,15 @@ export class GameObject extends THREE.Object3D {
 
 	isGameObject: boolean = true;
 
-	constructor() {
+	constructor(parent?: THREE.Scene | THREE.Object3D, entity?: ExtendedEntity) {
 		super();
 		this._ecsyEntity =
-			Core.getInstance().ecsWorld.createEntity() as ExtendedEntity;
+			entity ??
+			(Core.getInstance()[
+				CORE_PRIVATE
+			].ecsyWorld.createEntity() as ExtendedEntity);
 		this._ecsyEntity.gameObject = this;
-		Core.getInstance().scene.add(this);
+		(parent ?? Core.getInstance().scene).add(this);
 	}
 
 	get alive(): boolean {

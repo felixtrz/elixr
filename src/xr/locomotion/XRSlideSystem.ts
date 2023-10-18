@@ -1,7 +1,7 @@
 import { AXES, BUTTONS } from 'gamepad-wrapper';
 import { MovementObstacle, MovementSurface } from './MovementComponents';
 
-import { HANDEDNESS } from '../../core/enums';
+import { HANDEDNESS } from '../../constants';
 import { SystemConfig } from '../../core/GameComponent';
 import { THREE } from '../../graphics/CustomTHREE';
 import { Types } from 'ecsy';

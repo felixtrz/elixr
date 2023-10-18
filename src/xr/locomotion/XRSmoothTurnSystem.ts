@@ -1,5 +1,5 @@
 import { AXES } from 'gamepad-wrapper';
-import { HANDEDNESS } from '../../core/enums';
+import { HANDEDNESS } from '../../constants';
 import { SystemConfig } from '../../core/GameComponent';
 import { Types } from 'ecsy';
 import { XRGameSystem } from '../../core/GameSystem';

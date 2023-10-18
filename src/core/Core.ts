@@ -5,33 +5,56 @@ import { PhysicsConfig, PhysicsSystem } from '../physics/PhysicsSystem';
 
 import { Collider } from '../physics/ColliderComponent';
 import { GLTFModelLoader } from '../graphics/GLTFModelLoader';
+import { GameObject } from './GameObject';
 import { GamepadWrapper } from 'gamepad-wrapper';
 import { MeshRenderer } from '../graphics/meshes/MeshRendererComponent';
 import { RigidBody } from '../physics/RigidBodyComponent';
-import { SESSION_MODE } from './enums';
+import { SESSION_MODE } from '../constants';
 import { THREE } from '../graphics/CustomTHREE';
 import { XRControllerModelFactory } from 'three/examples/jsm/webxr/XRControllerModelFactory.js';
 
+export const PRIVATE = Symbol('@elixr/core/core');
+
 export type CoreInitOptions = {
+	cameraFov?: number;
+	cameraNear?: number;
+	cameraFar?: number;
+	alpha?: boolean;
+	onResize?: () => void;
 	physics?: boolean;
 };
 
 export class Core {
-	private _tempVec3 = new THREE.Vector3();
+	/** @ignore */
+	[PRIVATE]: {
+		vec3: THREE.Vector3;
+		ecsyWorld: EcsyWorld;
+		gameManager: Entity;
+		rapierWorld: import('@dimforge/rapier3d/rapier').World;
+		threeScene: THREE.Scene;
+		onResize: () => void;
+		controllersActive: number;
+		handsActive: number;
+		renderer: THREE.WebGLRenderer;
+		camera: THREE.PerspectiveCamera;
+		player: GameObject;
+		playerHead: THREE.Group;
+	} = {
+		vec3: new THREE.Vector3(),
+		ecsyWorld: null,
+		gameManager: null,
+		rapierWorld: null,
+		threeScene: null,
+		onResize: () => {},
+		controllersActive: 0,
+		handsActive: 0,
+		renderer: null,
+		camera: null,
+		player: null,
+		playerHead: null,
+	};
 
 	private static _instance: Core;
-
-	private _ecsyWorld: EcsyWorld;
-
-	private _gameManager: Entity;
-
-	private _rapierWorld: import('@dimforge/rapier3d/rapier').World;
-
-	private _threeScene: THREE.Scene;
-
-	private _controllersActive: number = 0;
-
-	private _handsActive: number = 0;
 
 	/**
 	 * Main scene for the experience which allows you to set up what and where is
@@ -41,23 +64,19 @@ export class Core {
 	 * @see https://threejs.org/docs/index.html?q=Scene#api/en/scenes/Scene
 	 */
 	get scene() {
-		return this._threeScene;
-	}
-
-	get ecsWorld() {
-		return this._ecsyWorld;
+		return this[PRIVATE].threeScene;
 	}
 
 	get physicsWorld() {
-		return this._rapierWorld;
+		return this[PRIVATE].rapierWorld;
 	}
 
 	get controllersActive() {
-		return this._controllersActive;
+		return this[PRIVATE].controllersActive || 0;
 	}
 
 	get handsActive() {
-		return this._handsActive;
+		return this[PRIVATE].handsActive || 0;
 	}
 
 	/**
@@ -65,19 +84,32 @@ export class Core {
 	 *
 	 * @see https://threejs.org/docs/index.html?q=renderer#api/en/renderers/WebGLRenderer
 	 */
-	renderer: THREE.WebGLRenderer;
+	get renderer() {
+		return this[PRIVATE].renderer;
+	}
 
 	/**
 	 * Camera for inline mode, DO NOT USE for getting player head transform, use
 	 * {@link Core.playerHead} instead.
 	 */
-	inlineCamera: THREE.PerspectiveCamera;
+	get camera() {
+		return this[PRIVATE].camera;
+	}
+
+	/**
+	 * @deprecated Use {@link Core.camera} instead.
+	 */
+	get inlineCamera() {
+		return this.camera;
+	}
 
 	/**
 	 * Accurate source for player head transform, can be used to attach game
 	 * objects / audio listeners.
 	 */
-	playerHead: THREE.Group;
+	get playerHead() {
+		return this[PRIVATE].playerHead;
+	}
 
 	/**
 	 * Core registers up to 2 xr controllers, the handedness keys for the
@@ -127,19 +159,26 @@ export class Core {
 		if (Core._instance) {
 			throw new Error('Core already initialized');
 		}
-		const coreInstance = new Core(sceneContainer, RAPIER, options.physics);
+		const coreInstance = new Core(sceneContainer, RAPIER, options);
 		return coreInstance;
 	}
 
 	private constructor(
 		sceneContainer: HTMLElement,
 		RAPIER: typeof import('@dimforge/rapier3d'),
-		usePhysics: boolean = true,
+		{
+			physics = true,
+			cameraFov = 50,
+			cameraNear = 0.1,
+			cameraFar = 100,
+			alpha = true,
+			onResize = () => {},
+		}: CoreInitOptions,
 	) {
 		Core._instance = this;
 		this._initECS();
-		this._initGraphics();
-		if (usePhysics) {
+		this._initGraphics(cameraFov, cameraNear, cameraFar, alpha, onResize);
+		if (physics) {
 			this._initPhysics(RAPIER);
 		}
 
@@ -161,45 +200,53 @@ export class Core {
 
 	private _setupPlayerSpace() {
 		this.playerSpace = new THREE.Group();
-		this.playerSpace.add(this.inlineCamera);
-		this.playerHead = new THREE.Group();
+		this.playerSpace.add(this.camera);
+		this[PRIVATE].playerHead = new THREE.Group();
 		this.playerSpace.add(this.playerHead);
 		this.scene.add(this.playerSpace);
 	}
 
 	private _initECS() {
-		this._ecsyWorld = new EcsyWorld();
-		this._gameManager = this._ecsyWorld.createEntity();
+		this[PRIVATE].ecsyWorld = new EcsyWorld();
+		this[PRIVATE].gameManager = this[PRIVATE].ecsyWorld.createEntity();
 	}
 
-	private _initGraphics() {
-		this.inlineCamera = new THREE.PerspectiveCamera(
-			50,
+	private _initGraphics(
+		fov: number,
+		near: number,
+		far: number,
+		alpha: boolean,
+		onResize: () => void,
+	) {
+		this[PRIVATE].camera = new THREE.PerspectiveCamera(
+			fov,
 			window.innerWidth / window.innerHeight,
-			0.1,
-			100,
+			near,
+			far,
 		);
-		this.renderer = new THREE.WebGLRenderer({
+		this[PRIVATE].renderer = new THREE.WebGLRenderer({
 			antialias: true,
-			alpha: true,
+			alpha,
 			multiviewStereo: true,
 		} as THREE.WebGLRendererParameters);
+		this[PRIVATE].onResize = onResize;
 		this.renderer.setPixelRatio(window.devicePixelRatio);
 		this.renderer.setSize(window.innerWidth, window.innerHeight);
 		this.renderer.outputColorSpace = THREE.SRGBColorSpace;
 		this.renderer.xr.enabled = true;
 
-		this.inlineCamera.position.set(0, 1.7, 0);
+		this[PRIVATE].camera.position.set(0, 1.7, 0);
 
 		const onWindowResize = () => {
-			this.inlineCamera.aspect = window.innerWidth / window.innerHeight;
-			this.inlineCamera.updateProjectionMatrix();
+			this[PRIVATE].camera.aspect = window.innerWidth / window.innerHeight;
+			this[PRIVATE].camera.updateProjectionMatrix();
 			this.renderer.setSize(window.innerWidth, window.innerHeight);
+			this[PRIVATE].onResize();
 		};
 
 		window.addEventListener('resize', onWindowResize, false);
 
-		this._threeScene = new THREE.Scene();
+		this[PRIVATE].threeScene = new THREE.Scene();
 		this.registerGameComponent(MeshRenderer);
 	}
 
@@ -209,12 +256,12 @@ export class Core {
 		this.registerGameComponent(Collider);
 
 		this.registerGameSystem(PhysicsSystem, { priority: Infinity });
-		const physicsConfig = this._gameManager.getMutableComponent(
+		const physicsConfig = this[PRIVATE].gameManager.getMutableComponent(
 			PhysicsSystem.systemConfig,
 		) as PhysicsConfig;
 		physicsConfig.gravity = new THREE.Vector3(0, 0, 0);
 		physicsConfig.world = new RAPIER.World(physicsConfig.gravity);
-		this._rapierWorld = physicsConfig.world;
+		this[PRIVATE].rapierWorld = physicsConfig.world;
 	}
 
 	private _setupControllers() {
@@ -262,7 +309,7 @@ export class Core {
 			headsetMatrix.decompose(
 				this.playerHead.position,
 				this.playerHead.quaternion,
-				this._tempVec3,
+				this[PRIVATE].vec3,
 			);
 		}
 	}
@@ -272,15 +319,15 @@ export class Core {
 		const render = () => {
 			const delta = clock.getDelta();
 			const elapsedTime = clock.elapsedTime;
-			this._handsActive = 0;
-			this._controllersActive = 0;
+			this[PRIVATE].handsActive = 0;
+			this[PRIVATE].controllersActive = 0;
 			if (this.isImmersive()) {
 				const session = this.renderer.xr.getSession();
 				session.inputSources.forEach((inputSource) => {
 					if (inputSource.hand) {
-						this._handsActive += 1;
+						this[PRIVATE].handsActive += 1;
 					} else {
-						this._controllersActive += 1;
+						this[PRIVATE].controllersActive += 1;
 					}
 				});
 			}
@@ -288,7 +335,7 @@ export class Core {
 				controller.gamepad.update();
 			});
 			this._updatePlayerHead();
-			this._ecsyWorld.execute(delta, elapsedTime);
+			this[PRIVATE].ecsyWorld.execute(delta, elapsedTime);
 			this.renderer.render(this.scene, this.inlineCamera);
 		};
 
@@ -311,18 +358,18 @@ export class Core {
 		attributes: Attributes = {},
 	) {
 		if (GameSystem.systemConfig) {
-			this._ecsyWorld.registerComponent(GameSystem.systemConfig);
-			this._gameManager.addComponent(GameSystem.systemConfig);
-			attributes.config = this._gameManager.getMutableComponent(
+			this[PRIVATE].ecsyWorld.registerComponent(GameSystem.systemConfig);
+			this[PRIVATE].gameManager.addComponent(GameSystem.systemConfig);
+			attributes.config = this[PRIVATE].gameManager.getMutableComponent(
 				GameSystem.systemConfig,
 			);
 		}
-		this._ecsyWorld.registerSystem(GameSystem, attributes);
+		this[PRIVATE].ecsyWorld.registerSystem(GameSystem, attributes);
 	}
 
 	/** Get a {@link GameSystem} registered in this world. */
 	getGameSystem(GameSystem: GameSystemConstructor<any>) {
-		return this._ecsyWorld.getSystem(GameSystem);
+		return this[PRIVATE].ecsyWorld.getSystem(GameSystem);
 	}
 
 	/**
@@ -337,12 +384,12 @@ export class Core {
 
 	/** Get a list of {@link GameSystem} registered in this world. */
 	getGameSystems() {
-		return this._ecsyWorld.getSystems();
+		return this[PRIVATE].ecsyWorld.getSystems();
 	}
 
 	/** Register a {@link GameComponent} */
 	registerGameComponent(GameComponent: GameComponentConstructor<any>) {
-		this._ecsyWorld.registerComponent(GameComponent);
+		this[PRIVATE].ecsyWorld.registerComponent(GameComponent);
 	}
 
 	/**
@@ -350,21 +397,21 @@ export class Core {
 	 * to Core or not.
 	 */
 	hasRegisteredGameComponent(GameComponent: GameComponentConstructor<any>) {
-		return this._ecsyWorld.hasRegisteredComponent(GameComponent);
+		return this[PRIVATE].ecsyWorld.hasRegisteredComponent(GameComponent);
 	}
 
 	/** Unregister a {@link GameSystem}. */
 	unregisterGameSystem(GameSystem: GameSystemConstructor<any>) {
-		this._ecsyWorld.unregisterSystem(GameSystem);
+		this[PRIVATE].ecsyWorld.unregisterSystem(GameSystem);
 	}
 
 	/** Resume execution of registered systems. */
 	play() {
-		this._ecsyWorld.play();
+		this[PRIVATE].ecsyWorld.play();
 	}
 
 	/** Pause execution of registered systems. */
 	stop() {
-		this._ecsyWorld.stop();
+		this[PRIVATE].ecsyWorld.stop();
 	}
 }

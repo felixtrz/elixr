@@ -1,0 +1,31 @@
+{
+	"root": true,
+	"parser": "@typescript-eslint/parser",
+	"plugins": ["@typescript-eslint", "prettier"],
+	"extends": [
+		"eslint:recommended",
+		"plugin:@typescript-eslint/eslint-recommended",
+		"plugin:@typescript-eslint/recommended",
+		"prettier"
+	],
+	"rules": {
+		"prettier/prettier": 2,
+		"sort-imports": [
+			"error",
+			{
+				"ignoreCase": false,
+				"ignoreDeclarationSort": false,
+				"ignoreMemberSort": false,
+				"memberSyntaxSortOrder": ["none", "all", "multiple", "single"],
+				"allowSeparatedGroups": false
+			}
+		],
+		"@typescript-eslint/no-unused-vars": [
+			"error",
+			{ "vars": "all", "args": "all", "argsIgnorePattern": "^_" }
+		],
+		"@typescript-eslint/no-explicit-any": "off",
+		"@typescript-eslint/lines-between-class-members": ["warn", "always"],
+		"semi-spacing": ["error", { "before": false, "after": true }]
+	}
+}

@@ -166,7 +166,7 @@ export {
 	WebGLRenderTarget,
 	WebGLRenderer,
 	WebGLUtils,
-	createCanvasElement
+	createCanvasElement,
 } from 'three';
 
 export * from 'three/src/geometries/Geometries.js';

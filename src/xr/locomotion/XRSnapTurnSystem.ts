@@ -1,4 +1,4 @@
-import { HANDEDNESS, JOYSTICK_STATES } from '../../core/enums';
+import { HANDEDNESS, JOYSTICK_STATES } from '../../constants';
 import { Quaternion, Vector3 } from 'three';
 
 import { BUTTONS } from 'gamepad-wrapper';
