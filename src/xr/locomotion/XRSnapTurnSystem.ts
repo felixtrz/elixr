@@ -1,7 +1,7 @@
-import { HANDEDNESS, JOYSTICK_STATES } from '../../constants';
 import { Quaternion, Vector3 } from 'three';
 
 import { BUTTONS } from 'gamepad-wrapper';
+import { JOYSTICK_STATES } from '../../constants';
 import { SystemConfig } from '../../core/GameComponent';
 import { Types } from 'ecsy';
 import { XRGameSystem } from '../../core/GameSystem';
@@ -11,7 +11,7 @@ export interface XRSnapTurnConfig extends XRSnapTurnComponent {
 	JOYSTICK_ANGLE_MAX: number;
 	JOYSTICK_DEADZONE: number;
 	SNAP_ANGLE: number;
-	CONTROLLER_HANDEDNESS: HANDEDNESS;
+	CONTROLLER_HANDEDNESS: XRHandedness;
 }
 
 class XRSnapTurnComponent extends SystemConfig {}
@@ -21,7 +21,7 @@ XRSnapTurnComponent.schema = {
 	JOYSTICK_ANGLE_MAX: { type: Types.Number, default: (Math.PI / 180) * 135 },
 	JOYSTICK_DEADZONE: { type: Types.Number, default: 0.95 },
 	SNAP_ANGLE: { type: Types.Number, default: (Math.PI / 180) * 45 },
-	CONTROLLER_HANDEDNESS: { type: Types.String, default: HANDEDNESS.RIGHT },
+	CONTROLLER_HANDEDNESS: { type: Types.String, default: 'right' },
 };
 
 export class XRSnapTurnSystem extends XRGameSystem {
@@ -36,9 +36,13 @@ export class XRSnapTurnSystem extends XRGameSystem {
 	}
 
 	update() {
-		if (!this.core.controllers[this._config.CONTROLLER_HANDEDNESS]) return;
+		if (
+			!this.core.player.controllers[this._config.CONTROLLER_HANDEDNESS]
+				.connected
+		)
+			return;
 		const gamepad =
-			this.core.controllers[this._config.CONTROLLER_HANDEDNESS].gamepad;
+			this.core.player.controllers[this._config.CONTROLLER_HANDEDNESS].gamepad;
 		const inputAngle = gamepad.get2DInputAngle(BUTTONS.XR_STANDARD.THUMBSTICK);
 		const inputValue = gamepad.get2DInputValue(BUTTONS.XR_STANDARD.THUMBSTICK);
 		let curState = JOYSTICK_STATES.DISENGAGED;
@@ -56,14 +60,14 @@ export class XRSnapTurnSystem extends XRGameSystem {
 		}
 		if (this._prevState == JOYSTICK_STATES.DISENGAGED) {
 			if (curState == JOYSTICK_STATES.RIGHT) {
-				this.core.playerSpace.quaternion.multiply(
+				this.core.player.quaternion.multiply(
 					new Quaternion().setFromAxisAngle(
 						new Vector3(0, 1, 0),
 						-this._config.SNAP_ANGLE,
 					),
 				);
 			} else if (curState == JOYSTICK_STATES.LEFT) {
-				this.core.playerSpace.quaternion.multiply(
+				this.core.player.quaternion.multiply(
 					new Quaternion().setFromAxisAngle(
 						new Vector3(0, 1, 0),
 						this._config.SNAP_ANGLE,

@@ -6,11 +6,6 @@ export enum JOYSTICK_STATES {
 	BACK = 4,
 }
 
-export enum HANDEDNESS {
-	LEFT = 'left',
-	RIGHT = 'right',
-}
-
 export enum SESSION_MODE {
 	INLINE = 'inline',
 	IMMERSIVE_VR = 'immersive-vr',

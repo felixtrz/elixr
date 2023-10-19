@@ -1,10 +1,10 @@
-import { HANDEDNESS, JOYSTICK_STATES } from '../../constants';
 import { MovementObstacle, MovementSurface } from './MovementComponents';
 
 import { BUTTONS } from 'gamepad-wrapper';
 import { CurveTubeGeometry } from '../../graphics/geometries/CurveTubeGeometry';
 import { CurvedRaycaster } from '../../graphics/CurvedRaycaster';
 import { GameObject } from '../../core/GameObject';
+import { JOYSTICK_STATES } from '../../constants';
 import { SystemConfig } from '../../core/GameComponent';
 import { THREE } from '../../graphics/CustomTHREE';
 import { Types } from 'ecsy';
@@ -17,7 +17,7 @@ export interface XRTeleportConfig extends XRTeleportComponent {
 	RAYCAST_SEGMENTS: number;
 	RAY_SPEED: number;
 	RAY_MIN_Y: number;
-	CONTROLLER_HANDEDNESS: HANDEDNESS;
+	CONTROLLER_HANDEDNESS: XRHandedness;
 }
 
 class XRTeleportComponent extends SystemConfig {
@@ -31,7 +31,7 @@ XRTeleportComponent.schema = {
 	RAYCAST_SEGMENTS: { type: Types.Number, default: 10 },
 	RAY_SPEED: { type: Types.Number, default: 7 },
 	RAY_MIN_Y: { type: Types.Number, default: -0.1 },
-	CONTROLLER_HANDEDNESS: { type: Types.String, default: HANDEDNESS.RIGHT },
+	CONTROLLER_HANDEDNESS: { type: Types.String, default: 'right' },
 };
 
 export class XRTeleportSystem extends XRGameSystem {
@@ -75,7 +75,8 @@ export class XRTeleportSystem extends XRGameSystem {
 	}
 
 	update() {
-		if (!this.core.controllers[this._config.CONTROLLER_HANDEDNESS]) return;
+		if (!this.core.player.controllers[this._config.CONTROLLER_HANDEDNESS])
+			return;
 		if (!this._rayMesh) {
 			this._rayMesh = new THREE.Mesh(
 				new CurveTubeGeometry(50, 8, 0.01, false),
@@ -100,13 +101,13 @@ export class XRTeleportSystem extends XRGameSystem {
 		this._updateTeleportConfig();
 
 		const controller =
-			this.core.controllers[this._config.CONTROLLER_HANDEDNESS];
+			this.core.player.controllers[this._config.CONTROLLER_HANDEDNESS];
 
 		this._raycaster.set(
-			controller.targetRaySpace.getWorldPosition(
+			controller.raySpace.getWorldPosition(
 				new THREE.Vector3(),
 			) as THREE.Vector3,
-			controller.targetRaySpace
+			controller.raySpace
 				.getWorldDirection(new THREE.Vector3())
 				.multiplyScalar(-1) as THREE.Vector3,
 		);
@@ -129,7 +130,7 @@ export class XRTeleportSystem extends XRGameSystem {
 			this._prevState === JOYSTICK_STATES.BACK
 		) {
 			if (this._teleportMarker.visible && this._teleportMarker.userData.valid) {
-				this.core.playerSpace.position.copy(this._teleportMarker.position);
+				this.core.player.position.copy(this._teleportMarker.position);
 			}
 		}
 

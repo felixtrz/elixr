@@ -4,14 +4,11 @@ import { GameSystem, GameSystemConstructor } from './GameSystem';
 import { PhysicsConfig, PhysicsSystem } from '../physics/PhysicsSystem';
 
 import { Collider } from '../physics/ColliderComponent';
-import { GLTFModelLoader } from '../graphics/GLTFModelLoader';
-import { GameObject } from './GameObject';
-import { GamepadWrapper } from 'gamepad-wrapper';
 import { MeshRenderer } from '../graphics/meshes/MeshRendererComponent';
+import { Player } from '../player/Player';
 import { RigidBody } from '../physics/RigidBodyComponent';
 import { SESSION_MODE } from '../constants';
 import { THREE } from '../graphics/CustomTHREE';
-import { XRControllerModelFactory } from 'three/examples/jsm/webxr/XRControllerModelFactory.js';
 
 export const PRIVATE = Symbol('@elixr/core/core');
 
@@ -33,12 +30,9 @@ export class Core {
 		rapierWorld: import('@dimforge/rapier3d/rapier').World;
 		threeScene: THREE.Scene;
 		onResize: () => void;
-		controllersActive: number;
-		handsActive: number;
 		renderer: THREE.WebGLRenderer;
 		camera: THREE.PerspectiveCamera;
-		player: GameObject;
-		playerHead: THREE.Group;
+		player: Player;
 	} = {
 		vec3: new THREE.Vector3(),
 		ecsyWorld: null,
@@ -46,12 +40,9 @@ export class Core {
 		rapierWorld: null,
 		threeScene: null,
 		onResize: () => {},
-		controllersActive: 0,
-		handsActive: 0,
 		renderer: null,
 		camera: null,
 		player: null,
-		playerHead: null,
 	};
 
 	private static _instance: Core;
@@ -69,14 +60,6 @@ export class Core {
 
 	get physicsWorld() {
 		return this[PRIVATE].rapierWorld;
-	}
-
-	get controllersActive() {
-		return this[PRIVATE].controllersActive || 0;
-	}
-
-	get handsActive() {
-		return this[PRIVATE].handsActive || 0;
 	}
 
 	/**
@@ -103,30 +86,9 @@ export class Core {
 		return this.camera;
 	}
 
-	/**
-	 * Accurate source for player head transform, can be used to attach game
-	 * objects / audio listeners.
-	 */
-	get playerHead() {
-		return this[PRIVATE].playerHead;
+	get player() {
+		return this[PRIVATE].player;
 	}
-
-	/**
-	 * Core registers up to 2 xr controllers, the handedness keys for the
-	 * controllers vary across devices, with the most typical handednesses being
-	 * "left" and "right".
-	 */
-	controllers: {
-		[handedness: string]: {
-			targetRaySpace: THREE.Object3D;
-			gripSpace: THREE.Object3D;
-			gamepad: GamepadWrapper;
-			model: THREE.Object3D;
-		};
-	};
-
-	/** Local space for the player, parent of camera and controllers. */
-	playerSpace: THREE.Group;
 
 	/** Global data store */
 	globals: Map<string, any> = new Map();
@@ -159,12 +121,12 @@ export class Core {
 		if (Core._instance) {
 			throw new Error('Core already initialized');
 		}
-		const coreInstance = new Core(sceneContainer, RAPIER, options);
-		return coreInstance;
+		const core = new Core(RAPIER, options);
+		sceneContainer.appendChild(core.renderer.domElement);
+		return core;
 	}
 
 	private constructor(
-		sceneContainer: HTMLElement,
 		RAPIER: typeof import('@dimforge/rapier3d'),
 		{
 			physics = true,
@@ -181,14 +143,6 @@ export class Core {
 		if (physics) {
 			this._initPhysics(RAPIER);
 		}
-
-		this._setupPlayerSpace();
-		this._setupControllers();
-
-		GLTFModelLoader.init(this.renderer);
-
-		sceneContainer.appendChild(this.renderer.domElement);
-		this._setupRenderLoop();
 	}
 
 	static getInstance() {
@@ -196,14 +150,6 @@ export class Core {
 			throw new Error('Core not initialized');
 		}
 		return Core._instance;
-	}
-
-	private _setupPlayerSpace() {
-		this.playerSpace = new THREE.Group();
-		this.playerSpace.add(this.camera);
-		this[PRIVATE].playerHead = new THREE.Group();
-		this.playerSpace.add(this.playerHead);
-		this.scene.add(this.playerSpace);
 	}
 
 	private _initECS() {
@@ -262,84 +208,6 @@ export class Core {
 		physicsConfig.gravity = new THREE.Vector3(0, 0, 0);
 		physicsConfig.world = new RAPIER.World(physicsConfig.gravity);
 		this[PRIVATE].rapierWorld = physicsConfig.world;
-	}
-
-	private _setupControllers() {
-		const controllerModelFactory = new XRControllerModelFactory();
-		const webxrManager = this.renderer.xr;
-		this.controllers = {};
-
-		for (let i = 0; i < 2; i++) {
-			const targetRaySpace = webxrManager.getController(i);
-			const gripSpace = webxrManager.getControllerGrip(i);
-			this.playerSpace.add(targetRaySpace);
-			this.playerSpace.add(gripSpace);
-
-			// based on controller connected event
-			const controllerModel =
-				controllerModelFactory.createControllerModel(gripSpace);
-			gripSpace.add(controllerModel);
-
-			gripSpace.addEventListener('connected', (event) => {
-				const handedness = event.data.handedness;
-				if (!event.data.gamepad) return;
-				this.controllers[handedness] = {
-					targetRaySpace,
-					gripSpace,
-					gamepad: new GamepadWrapper(event.data.gamepad),
-					model: controllerModel,
-				};
-			});
-
-			gripSpace.addEventListener('disconnected', (event) => {
-				if (event.data?.handedness)
-					delete this.controllers[event.data.handedness];
-			});
-		}
-	}
-
-	private _updatePlayerHead() {
-		const xrManager = this.renderer.xr;
-		const frame = xrManager.getFrame();
-		const pose = frame?.getViewerPose(xrManager.getReferenceSpace());
-		if (pose) {
-			const headsetMatrix = new THREE.Matrix4().fromArray(
-				pose.views[0].transform.matrix,
-			);
-			headsetMatrix.decompose(
-				this.playerHead.position,
-				this.playerHead.quaternion,
-				this[PRIVATE].vec3,
-			);
-		}
-	}
-
-	private _setupRenderLoop() {
-		const clock = new THREE.Clock();
-		const render = () => {
-			const delta = clock.getDelta();
-			const elapsedTime = clock.elapsedTime;
-			this[PRIVATE].handsActive = 0;
-			this[PRIVATE].controllersActive = 0;
-			if (this.isImmersive()) {
-				const session = this.renderer.xr.getSession();
-				session.inputSources.forEach((inputSource) => {
-					if (inputSource.hand) {
-						this[PRIVATE].handsActive += 1;
-					} else {
-						this[PRIVATE].controllersActive += 1;
-					}
-				});
-			}
-			Object.values(this.controllers).forEach((controller) => {
-				controller.gamepad.update();
-			});
-			this._updatePlayerHead();
-			this[PRIVATE].ecsyWorld.execute(delta, elapsedTime);
-			this.renderer.render(this.scene, this.inlineCamera);
-		};
-
-		this.renderer.setAnimationLoop(render);
 	}
 
 	/** Shortcut for getting the {@link PhysicsConfig} */

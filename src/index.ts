@@ -29,6 +29,9 @@ export {
 	SingleUseXRGameSystem,
 } from './core/GameSystem';
 export { Core } from './core/Core';
+export { Player } from './player/Player';
+export { XRController } from './player/XRController';
+export { initEngine } from './core/init';
 
 /* -------------------------------------------------------------------------- */
 /*                                Gamepad Utils                               */
@@ -84,7 +87,7 @@ export { XRSlideConfig, XRSlideSystem } from './xr/locomotion/XRSlideSystem';
 /* -------------------------------------------------------------------------- */
 /*                                    Enums                                   */
 /* -------------------------------------------------------------------------- */
-export { JOYSTICK_STATES, HANDEDNESS, SESSION_MODE } from './constants';
+export { JOYSTICK_STATES, SESSION_MODE } from './constants';
 
 /* -------------------------------------------------------------------------- */
 /*                                 Geometries                                 */

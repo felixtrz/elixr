@@ -1,23 +1,56 @@
 import { GameObject } from '../core/GameObject';
 import { GamepadWrapper } from 'gamepad-wrapper';
 import { Group } from 'three';
-import { HANDEDNESS } from '../constants';
+import { XRControllerModelFactory } from 'three/examples/jsm/webxr/XRControllerModelFactory.js';
 
 export const PRIVATE = Symbol('@elixr/player/xr-controller');
+const controllerModelFactory = new XRControllerModelFactory();
 
 export class XRController extends GameObject {
 	[PRIVATE]: {
-		handedness: HANDEDNESS;
+		handedness: XRHandedness;
+		connected: boolean;
 		raySpace: THREE.Object3D;
 		gamepad: GamepadWrapper;
 		model: THREE.Object3D;
+	} = {
+		handedness: null,
+		connected: false,
+		raySpace: new Group(),
+		gamepad: null,
+		model: null,
 	};
 
-	constructor(handedness: HANDEDNESS, player: GameObject) {
+	isGroup = true;
+
+	constructor(handedness: XRHandedness, player: GameObject) {
 		super(player);
 		this[PRIVATE].handedness = handedness;
-		this[PRIVATE].raySpace = new Group();
 		player.add(this[PRIVATE].raySpace);
+		this[PRIVATE].model = controllerModelFactory.createControllerModel(
+			this as Group,
+		);
+		this.add(this[PRIVATE].model);
+	}
+
+	get connected() {
+		return this[PRIVATE].connected;
+	}
+
+	get handedness() {
+		return this[PRIVATE].handedness;
+	}
+
+	get gamepad() {
+		return this[PRIVATE].gamepad;
+	}
+
+	get raySpace() {
+		return this[PRIVATE].raySpace;
+	}
+
+	get model() {
+		return this[PRIVATE].model;
 	}
 
 	update(
@@ -62,5 +95,30 @@ export class XRController extends GameObject {
 				this[PRIVATE].raySpace.visible = false;
 			}
 		}
+
+		if (this[PRIVATE].gamepad) {
+			this[PRIVATE].gamepad.update();
+		}
+	}
+
+	connect(inputSource: XRInputSource) {
+		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+		// @ts-ignore
+		this.dispatchEvent({ type: 'connected', data: inputSource });
+		this[PRIVATE].gamepad = new GamepadWrapper(inputSource.gamepad);
+	}
+
+	disconnect() {
+		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+		// @ts-ignore
+		this.dispatchEvent({ type: 'disconnected' });
+		this.visible = false;
+		this[PRIVATE].raySpace.visible = false;
+		this[PRIVATE].gamepad = null;
+	}
+
+	updateMatrixWorld(force?: boolean): void {
+		super.updateMatrixWorld(force);
+		this[PRIVATE].raySpace.updateMatrixWorld(force);
 	}
 }
