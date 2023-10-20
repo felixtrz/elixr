@@ -31,7 +31,7 @@ export {
 export { Core } from './core/Core';
 export { Player } from './player/Player';
 export { XRController } from './player/XRController';
-export { initEngine } from './core/init';
+export { initEngine, EngineInitOptions } from './core/init';
 
 /* -------------------------------------------------------------------------- */
 /*                                Gamepad Utils                               */
