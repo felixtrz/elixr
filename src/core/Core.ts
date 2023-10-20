@@ -16,14 +16,6 @@ import { SESSION_MODE } from '../constants';
 
 export const PRIVATE = Symbol('@elixr/core/core');
 
-export type CoreInitOptions = {
-	cameraFov?: number;
-	cameraNear?: number;
-	cameraFar?: number;
-	alpha?: boolean;
-	physics?: boolean;
-};
-
 export class Core {
 	/** @ignore */
 	[PRIVATE]: {
