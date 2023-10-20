@@ -100,11 +100,14 @@ export { CurveTubeGeometry } from './graphics/geometries/CurveTubeGeometry';
 export { VRButtonOptions, VRButton } from './xr/VRButton';
 export { ARButtonOptions, ARButton } from './xr/ARButton';
 
-console.log(FIGLET + ` v${ELIXR_VERSION}`);
-console.log(
+console.info(
+	FIGLET +
+		`\n\nEliXR Version (https://github.com/felixtrz/elixr): v${ELIXR_VERSION}`,
+);
+console.info(
 	`THREE Version (https://github.com/supermedium/three.js): r${THREE_VERSION}`,
 );
-console.log(
+console.info(
 	`Rapier Version (https://github.com/dimforge/rapier): v${RAPIER_VERSION()}`,
 );
 export { ELIXR_VERSION };
