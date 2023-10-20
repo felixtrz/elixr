@@ -1,105 +1,77 @@
+/**
+ * @file This file contains the Core class which is the main entry point for the elixr engine.
+ * It provides a scene, camera, renderer, physics world, and player object.
+ * @summary The Core class is responsible for initializing the ECSY world, graphics, and physics systems.
+ * @packageDocumentation
+ */
 import { Attributes, World as EcsyWorld, Entity } from 'ecsy';
 import { GameComponentConstructor, SystemConfig } from './GameComponent';
 import { GameSystem, GameSystemConstructor } from './GameSystem';
 import { PhysicsConfig, PhysicsSystem } from '../physics/PhysicsSystem';
+import { Scene, THREE } from '../graphics/CustomTHREE';
 
-import { Collider } from '../physics/ColliderComponent';
-import { GLTFModelLoader } from '../graphics/GLTFModelLoader';
-import { GamepadWrapper } from 'gamepad-wrapper';
 import { MeshRenderer } from '../graphics/meshes/MeshRendererComponent';
-import { RigidBody } from '../physics/RigidBodyComponent';
-import { SESSION_MODE } from './enums';
-import { THREE } from '../graphics/CustomTHREE';
-import { XRControllerModelFactory } from 'three/examples/jsm/webxr/XRControllerModelFactory.js';
+import { Player } from '../player/Player';
+import { SESSION_MODE } from '../constants';
 
-export type CoreInitOptions = {
-	physics?: boolean;
-};
+export const PRIVATE = Symbol('@elixr/core/core');
 
 export class Core {
-	private _tempVec3 = new THREE.Vector3();
+	/** @ignore */
+	[PRIVATE]: {
+		vec3: THREE.Vector3;
+		ecsyWorld: EcsyWorld;
+		gameManager: Entity;
+		rapierWorld: import('@dimforge/rapier3d/rapier').World;
+		scene: THREE.Scene;
+		renderer: THREE.WebGLRenderer;
+		camera: THREE.PerspectiveCamera;
+		player: Player;
+		RAPIER: typeof import('@dimforge/rapier3d');
+		globals: Map<string, any>;
+	} = {
+		vec3: new THREE.Vector3(),
+		ecsyWorld: new EcsyWorld(),
+		gameManager: null,
+		rapierWorld: null,
+		scene: new Scene(),
+		renderer: null,
+		camera: null,
+		player: null,
+		RAPIER: null,
+		globals: new Map(),
+	};
 
 	private static _instance: Core;
 
-	private _ecsyWorld: EcsyWorld;
-
-	private _gameManager: Entity;
-
-	private _rapierWorld: import('@dimforge/rapier3d/rapier').World;
-
-	private _threeScene: THREE.Scene;
-
-	private _controllersActive: number = 0;
-
-	private _handsActive: number = 0;
-
-	/**
-	 * Main scene for the experience which allows you to set up what and where is
-	 * to be rendered by three.js. This is where you place game objects, lights
-	 * and cameras.
-	 *
-	 * @see https://threejs.org/docs/index.html?q=Scene#api/en/scenes/Scene
-	 */
 	get scene() {
-		return this._threeScene;
-	}
-
-	get ecsWorld() {
-		return this._ecsyWorld;
+		return this[PRIVATE].scene;
 	}
 
 	get physicsWorld() {
-		return this._rapierWorld;
+		return this[PRIVATE].rapierWorld;
 	}
 
-	get controllersActive() {
-		return this._controllersActive;
+	get renderer() {
+		return this[PRIVATE].renderer;
 	}
 
-	get handsActive() {
-		return this._handsActive;
+	get camera() {
+		return this[PRIVATE].camera;
 	}
 
-	/**
-	 * WebGL renderer used to render the scene.
-	 *
-	 * @see https://threejs.org/docs/index.html?q=renderer#api/en/renderers/WebGLRenderer
-	 */
-	renderer: THREE.WebGLRenderer;
+	get player() {
+		return this[PRIVATE].player;
+	}
 
-	/**
-	 * Camera for inline mode, DO NOT USE for getting player head transform, use
-	 * {@link Core.playerHead} instead.
-	 */
-	inlineCamera: THREE.PerspectiveCamera;
-
-	/**
-	 * Accurate source for player head transform, can be used to attach game
-	 * objects / audio listeners.
-	 */
-	playerHead: THREE.Group;
-
-	/**
-	 * Core registers up to 2 xr controllers, the handedness keys for the
-	 * controllers vary across devices, with the most typical handednesses being
-	 * "left" and "right".
-	 */
-	controllers: {
-		[handedness: string]: {
-			targetRaySpace: THREE.Object3D;
-			gripSpace: THREE.Object3D;
-			gamepad: GamepadWrapper;
-			model: THREE.Object3D;
-		};
-	};
-
-	/** Local space for the player, parent of camera and controllers. */
-	playerSpace: THREE.Group;
+	get RAPIER() {
+		return this[PRIVATE].RAPIER;
+	}
 
 	/** Global data store */
-	globals: Map<string, any> = new Map();
-
-	RAPIER: typeof import('@dimforge/rapier3d');
+	get globals() {
+		return this[PRIVATE].globals;
+	}
 
 	get initialized() {
 		return Core._instance != null;
@@ -119,37 +91,12 @@ export class Core {
 		}
 	}
 
-	static async init(
-		sceneContainer: HTMLElement,
-		options: CoreInitOptions = {},
-	) {
-		const RAPIER = await import('@dimforge/rapier3d');
+	static init() {
 		if (Core._instance) {
 			throw new Error('Core already initialized');
 		}
-		const coreInstance = new Core(sceneContainer, RAPIER, options.physics);
-		return coreInstance;
-	}
-
-	private constructor(
-		sceneContainer: HTMLElement,
-		RAPIER: typeof import('@dimforge/rapier3d'),
-		usePhysics: boolean = true,
-	) {
-		Core._instance = this;
-		this._initECS();
-		this._initGraphics();
-		if (usePhysics) {
-			this._initPhysics(RAPIER);
-		}
-
-		this._setupPlayerSpace();
-		this._setupControllers();
-
-		GLTFModelLoader.init(this.renderer);
-
-		sceneContainer.appendChild(this.renderer.domElement);
-		this._setupRenderLoop();
+		const core = new Core();
+		return core;
 	}
 
 	static getInstance() {
@@ -159,140 +106,10 @@ export class Core {
 		return Core._instance;
 	}
 
-	private _setupPlayerSpace() {
-		this.playerSpace = new THREE.Group();
-		this.playerSpace.add(this.inlineCamera);
-		this.playerHead = new THREE.Group();
-		this.playerSpace.add(this.playerHead);
-		this.scene.add(this.playerSpace);
-	}
-
-	private _initECS() {
-		this._ecsyWorld = new EcsyWorld();
-		this._gameManager = this._ecsyWorld.createEntity();
-	}
-
-	private _initGraphics() {
-		this.inlineCamera = new THREE.PerspectiveCamera(
-			50,
-			window.innerWidth / window.innerHeight,
-			0.1,
-			100,
-		);
-		this.renderer = new THREE.WebGLRenderer({
-			antialias: true,
-			alpha: true,
-			multiviewStereo: true,
-		} as THREE.WebGLRendererParameters);
-		this.renderer.setPixelRatio(window.devicePixelRatio);
-		this.renderer.setSize(window.innerWidth, window.innerHeight);
-		this.renderer.outputColorSpace = THREE.SRGBColorSpace;
-		this.renderer.xr.enabled = true;
-
-		this.inlineCamera.position.set(0, 1.7, 0);
-
-		const onWindowResize = () => {
-			this.inlineCamera.aspect = window.innerWidth / window.innerHeight;
-			this.inlineCamera.updateProjectionMatrix();
-			this.renderer.setSize(window.innerWidth, window.innerHeight);
-		};
-
-		window.addEventListener('resize', onWindowResize, false);
-
-		this._threeScene = new THREE.Scene();
+	private constructor() {
+		Core._instance = this;
+		this[PRIVATE].gameManager = this[PRIVATE].ecsyWorld.createEntity();
 		this.registerGameComponent(MeshRenderer);
-	}
-
-	private _initPhysics(RAPIER: typeof import('@dimforge/rapier3d/rapier')) {
-		this.RAPIER = RAPIER;
-		this.registerGameComponent(RigidBody);
-		this.registerGameComponent(Collider);
-
-		this.registerGameSystem(PhysicsSystem, { priority: Infinity });
-		const physicsConfig = this._gameManager.getMutableComponent(
-			PhysicsSystem.systemConfig,
-		) as PhysicsConfig;
-		physicsConfig.gravity = new THREE.Vector3(0, 0, 0);
-		physicsConfig.world = new RAPIER.World(physicsConfig.gravity);
-		this._rapierWorld = physicsConfig.world;
-	}
-
-	private _setupControllers() {
-		const controllerModelFactory = new XRControllerModelFactory();
-		const webxrManager = this.renderer.xr;
-		this.controllers = {};
-
-		for (let i = 0; i < 2; i++) {
-			const targetRaySpace = webxrManager.getController(i);
-			const gripSpace = webxrManager.getControllerGrip(i);
-			this.playerSpace.add(targetRaySpace);
-			this.playerSpace.add(gripSpace);
-
-			// based on controller connected event
-			const controllerModel =
-				controllerModelFactory.createControllerModel(gripSpace);
-			gripSpace.add(controllerModel);
-
-			gripSpace.addEventListener('connected', (event) => {
-				const handedness = event.data.handedness;
-				if (!event.data.gamepad) return;
-				this.controllers[handedness] = {
-					targetRaySpace,
-					gripSpace,
-					gamepad: new GamepadWrapper(event.data.gamepad),
-					model: controllerModel,
-				};
-			});
-
-			gripSpace.addEventListener('disconnected', (event) => {
-				if (event.data?.handedness)
-					delete this.controllers[event.data.handedness];
-			});
-		}
-	}
-
-	private _updatePlayerHead() {
-		const xrManager = this.renderer.xr;
-		const frame = xrManager.getFrame();
-		const pose = frame?.getViewerPose(xrManager.getReferenceSpace());
-		if (pose) {
-			const headsetMatrix = new THREE.Matrix4().fromArray(
-				pose.views[0].transform.matrix,
-			);
-			headsetMatrix.decompose(
-				this.playerHead.position,
-				this.playerHead.quaternion,
-				this._tempVec3,
-			);
-		}
-	}
-
-	private _setupRenderLoop() {
-		const clock = new THREE.Clock();
-		const render = () => {
-			const delta = clock.getDelta();
-			const elapsedTime = clock.elapsedTime;
-			this._handsActive = 0;
-			this._controllersActive = 0;
-			if (this.isImmersive()) {
-				const session = this.renderer.xr.getSession();
-				session.inputSources.forEach((inputSource) => {
-					if (inputSource.hand) {
-						this._handsActive += 1;
-					} else {
-						this._controllersActive += 1;
-					}
-				});
-			}
-			Object.values(this.controllers).forEach((controller) => {
-				controller.gamepad.update();
-			});
-			this._updatePlayerHead();
-			this._ecsyWorld.execute(delta, elapsedTime);
-			this.renderer.render(this.scene, this.inlineCamera);
-		};
-
-		this.renderer.setAnimationLoop(render);
 	}
 
 	/** Shortcut for getting the {@link PhysicsConfig} */
@@ -311,18 +128,18 @@ export class Core {
 		attributes: Attributes = {},
 	) {
 		if (GameSystem.systemConfig) {
-			this._ecsyWorld.registerComponent(GameSystem.systemConfig);
-			this._gameManager.addComponent(GameSystem.systemConfig);
-			attributes.config = this._gameManager.getMutableComponent(
+			this[PRIVATE].ecsyWorld.registerComponent(GameSystem.systemConfig);
+			this[PRIVATE].gameManager.addComponent(GameSystem.systemConfig);
+			attributes.config = this[PRIVATE].gameManager.getMutableComponent(
 				GameSystem.systemConfig,
 			);
 		}
-		this._ecsyWorld.registerSystem(GameSystem, attributes);
+		this[PRIVATE].ecsyWorld.registerSystem(GameSystem, attributes);
 	}
 
 	/** Get a {@link GameSystem} registered in this world. */
 	getGameSystem(GameSystem: GameSystemConstructor<any>) {
-		return this._ecsyWorld.getSystem(GameSystem);
+		return this[PRIVATE].ecsyWorld.getSystem(GameSystem);
 	}
 
 	/**
@@ -337,12 +154,12 @@ export class Core {
 
 	/** Get a list of {@link GameSystem} registered in this world. */
 	getGameSystems() {
-		return this._ecsyWorld.getSystems();
+		return this[PRIVATE].ecsyWorld.getSystems();
 	}
 
 	/** Register a {@link GameComponent} */
 	registerGameComponent(GameComponent: GameComponentConstructor<any>) {
-		this._ecsyWorld.registerComponent(GameComponent);
+		this[PRIVATE].ecsyWorld.registerComponent(GameComponent);
 	}
 
 	/**
@@ -350,21 +167,21 @@ export class Core {
 	 * to Core or not.
 	 */
 	hasRegisteredGameComponent(GameComponent: GameComponentConstructor<any>) {
-		return this._ecsyWorld.hasRegisteredComponent(GameComponent);
+		return this[PRIVATE].ecsyWorld.hasRegisteredComponent(GameComponent);
 	}
 
 	/** Unregister a {@link GameSystem}. */
 	unregisterGameSystem(GameSystem: GameSystemConstructor<any>) {
-		this._ecsyWorld.unregisterSystem(GameSystem);
+		this[PRIVATE].ecsyWorld.unregisterSystem(GameSystem);
 	}
 
 	/** Resume execution of registered systems. */
 	play() {
-		this._ecsyWorld.play();
+		this[PRIVATE].ecsyWorld.play();
 	}
 
 	/** Pause execution of registered systems. */
 	stop() {
-		this._ecsyWorld.stop();
+		this[PRIVATE].ecsyWorld.stop();
 	}
 }

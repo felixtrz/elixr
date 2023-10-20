@@ -8,9 +8,9 @@
 !/.yarn/cache
 #/.pnp.*
 
-/dist/
+dist/
 /docs/
-/node_modules/
+node_modules/
 
 /.vscode/
 
@@ -18,5 +18,3 @@
 *.blend?
 
 .DS_Store
-
-*.raw.glb

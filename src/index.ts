@@ -3,12 +3,9 @@ import { version as RAPIER_VERSION } from '@dimforge/rapier3d';
 import { REVISION as THREE_VERSION } from 'three';
 
 const FIGLET = String.raw`
-___________ __   __ ____  _____________ 
-\_   _____/|  | |__|\   \/  /\______   \
- |    __)_ |  | |  | \     /  |       _/
- |        \|  |_|  | /     \  |    |   \
-/_______  /|____/__|/___/\  \ |___/|_  /
-        \/                \_/        \/ `;
+| __|| |(_)\ \/ /| _ \  
+| _| | || | >  < |   /  
+|___||_||_|/_/\_\|_|_\ `;
 
 /* -------------------------------------------------------------------------- */
 /*                                 3D Library                                 */
@@ -32,6 +29,9 @@ export {
 	SingleUseXRGameSystem,
 } from './core/GameSystem';
 export { Core } from './core/Core';
+export { Player } from './player/Player';
+export { XRController } from './player/XRController';
+export { initEngine } from './core/init';
 
 /* -------------------------------------------------------------------------- */
 /*                                Gamepad Utils                               */
@@ -87,7 +87,7 @@ export { XRSlideConfig, XRSlideSystem } from './xr/locomotion/XRSlideSystem';
 /* -------------------------------------------------------------------------- */
 /*                                    Enums                                   */
 /* -------------------------------------------------------------------------- */
-export { JOYSTICK_STATES, HANDEDNESS, SESSION_MODE } from './core/enums';
+export { JOYSTICK_STATES, SESSION_MODE } from './constants';
 
 /* -------------------------------------------------------------------------- */
 /*                                 Geometries                                 */
@@ -101,6 +101,10 @@ export { VRButtonOptions, VRButton } from './xr/VRButton';
 export { ARButtonOptions, ARButton } from './xr/ARButton';
 
 console.log(FIGLET + ` v${ELIXR_VERSION}`);
-console.log(`THREE Version (https://github.com/supermedium/three.js): r${THREE_VERSION}`);
-console.log(`Rapier Version (https://github.com/dimforge/rapier): v${RAPIER_VERSION()}`);
+console.log(
+	`THREE Version (https://github.com/supermedium/three.js): r${THREE_VERSION}`,
+);
+console.log(
+	`Rapier Version (https://github.com/dimforge/rapier): v${RAPIER_VERSION()}`,
+);
 export { ELIXR_VERSION };

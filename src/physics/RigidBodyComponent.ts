@@ -39,7 +39,7 @@ export class RigidBody extends RigidBodyComponent {
 
 	get quaternion() {
 		const rotation = this.body.rotation();
-		return new  THREE.Quaternion(rotation.x, rotation.y, rotation.z, rotation.w);
+		return new THREE.Quaternion(rotation.x, rotation.y, rotation.z, rotation.w);
 	}
 
 	setConstraints(constraints: RigidBodyConstraints) {

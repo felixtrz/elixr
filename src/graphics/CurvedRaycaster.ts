@@ -47,7 +47,12 @@ export class CurvedRaycaster extends THREE.Raycaster {
 		const a = new THREE.Vector3(0, g, 0);
 		const v0 = new THREE.Vector3();
 		v0.copy(this.ray.direction).multiplyScalar(this.shootingSpeed);
-		const max_t = calculateMaxTime(this.ray.origin as THREE.Vector3, v0, a, this.minY);
+		const max_t = calculateMaxTime(
+			this.ray.origin as THREE.Vector3,
+			v0,
+			a,
+			this.minY,
+		);
 		const dt = max_t / this._numSegments;
 		const newPos = new THREE.Vector3();
 		for (let i = 0; i < this._numSegments + 1; i++) {

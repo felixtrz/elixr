@@ -1,7 +1,6 @@
 import { AXES, BUTTONS } from 'gamepad-wrapper';
 import { MovementObstacle, MovementSurface } from './MovementComponents';
 
-import { HANDEDNESS } from '../../core/enums';
 import { SystemConfig } from '../../core/GameComponent';
 import { THREE } from '../../graphics/CustomTHREE';
 import { Types } from 'ecsy';
@@ -12,7 +11,7 @@ export interface XRSlideConfig extends XRSlideComponent {
 	MAX_MOVEMENT_SPEED: number;
 	DESCEND_ANGLE_THRESHOLD: number;
 	CLIMB_ANGLE_THRESHOLD: number;
-	CONTROLLER_HANDEDNESS: HANDEDNESS;
+	CONTROLLER_HANDEDNESS: XRHandedness;
 }
 
 class XRSlideComponent extends SystemConfig {}
@@ -22,7 +21,7 @@ XRSlideComponent.schema = {
 	MAX_MOVEMENT_SPEED: { type: Types.Number, default: 1 },
 	DESCEND_ANGLE_THRESHOLD: { type: Types.Number, default: -Math.PI / 4 },
 	CLIMB_ANGLE_THRESHOLD: { type: Types.Number, default: Math.PI / 4 },
-	CONTROLLER_HANDEDNESS: { type: Types.String, default: HANDEDNESS.LEFT },
+	CONTROLLER_HANDEDNESS: { type: Types.String, default: 'left' },
 };
 
 const DOWNWARD_VECTOR = new THREE.Vector3(0, -1, 0);
@@ -38,8 +37,12 @@ export class XRSlideSystem extends XRGameSystem {
 	}
 
 	update(delta: number) {
-		if (!this.core.controllers[this._config.CONTROLLER_HANDEDNESS]) return;
-		const gamepad = this.core.controllers['left'].gamepad;
+		if (
+			!this.core.player.controllers[this._config.CONTROLLER_HANDEDNESS]
+				.connected
+		)
+			return;
+		const gamepad = this.core.player.controllers['left'].gamepad;
 		const xValue = gamepad.getAxis(AXES.XR_STANDARD.THUMBSTICK_X);
 		const yValue = gamepad.getAxis(AXES.XR_STANDARD.THUMBSTICK_Y);
 		const inputValue = gamepad.get2DInputValue(BUTTONS.XR_STANDARD.THUMBSTICK);
@@ -53,7 +56,7 @@ export class XRSlideSystem extends XRGameSystem {
 		const expectedHorizontalDistance =
 			this._config.MAX_MOVEMENT_SPEED * delta * inputValue;
 		const expectedPosition = new THREE.Vector3().addVectors(
-			this.core.playerSpace.position,
+			this.core.player.position,
 			direction.normalize().multiplyScalar(expectedHorizontalDistance),
 		);
 		const cameraHeight = this.core.renderer.xr
@@ -73,7 +76,7 @@ export class XRSlideSystem extends XRGameSystem {
 			pitchAngle < this._config.CLIMB_ANGLE_THRESHOLD &&
 			pitchAngle > this._config.DESCEND_ANGLE_THRESHOLD
 		) {
-			this.core.playerSpace.position.copy(intersect.point);
+			this.core.player.position.copy(intersect.point);
 		}
 	}
 }

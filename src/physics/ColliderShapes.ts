@@ -20,7 +20,11 @@ export class CubeShape extends Cuboid {
 
 	constructor(width: number, height: number, depth: number) {
 		super(width / 2, height / 2, depth / 2);
-		this._initialHalfExtents = new THREE.Vector3(width / 2, height / 2, depth / 2);
+		this._initialHalfExtents = new THREE.Vector3(
+			width / 2,
+			height / 2,
+			depth / 2,
+		);
 		this._scale = new THREE.Vector3(1, 1, 1);
 	}
 
