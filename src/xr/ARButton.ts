@@ -18,7 +18,6 @@ export class ARButton {
 
 			async function onSessionStarted(session: XRSession) {
 				session.addEventListener('end', onSessionEnded);
-				renderer.xr.setReferenceSpaceType('local');
 				await renderer.xr.setSession(session);
 				currentSession = session;
 				if (options.onSessionStarted) options.onSessionStarted(currentSession);
