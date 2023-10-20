@@ -1,12 +1,27 @@
+import { Group, Object3DEventMap } from 'three';
+
 import { GameObject } from '../core/GameObject';
 import { GamepadWrapper } from 'gamepad-wrapper';
-import { Group } from 'three';
 import { XRControllerModelFactory } from 'three/examples/jsm/webxr/XRControllerModelFactory.js';
 
 export const PRIVATE = Symbol('@elixr/player/xr-controller');
 const controllerModelFactory = new XRControllerModelFactory();
 
-export class XRController extends GameObject {
+interface ConnectedEventData {
+	type: 'connected';
+	data: XRInputSource;
+}
+
+interface DisconnectedEventData {
+	type: 'disconnected';
+}
+
+type ExtendedEventMap = Object3DEventMap & {
+	connected: ConnectedEventData;
+	disconnected: DisconnectedEventData;
+};
+
+export class XRController extends GameObject<ExtendedEventMap> {
 	[PRIVATE]: {
 		handedness: XRHandedness;
 		connected: boolean;
@@ -102,16 +117,19 @@ export class XRController extends GameObject {
 	}
 
 	connect(inputSource: XRInputSource) {
-		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-		// @ts-ignore
-		this.dispatchEvent({ type: 'connected', data: inputSource });
+		const event: ConnectedEventData = {
+			type: 'connected',
+			data: inputSource,
+		};
+		this.dispatchEvent(event);
 		this[PRIVATE].gamepad = new GamepadWrapper(inputSource.gamepad);
 	}
 
 	disconnect() {
-		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-		// @ts-ignore
-		this.dispatchEvent({ type: 'disconnected' });
+		const event: DisconnectedEventData = {
+			type: 'disconnected',
+		};
+		this.dispatchEvent(event);
 		this.visible = false;
 		this[PRIVATE].raySpace.visible = false;
 		this[PRIVATE].gamepad = null;

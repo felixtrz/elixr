@@ -1,5 +1,6 @@
 import { PRIVATE as CORE_PRIVATE, Core } from './Core';
 import { GameComponent, GameComponentConstructor } from './GameComponent';
+import { Object3D, Object3DEventMap } from 'three';
 import {
 	createCapsulePrimitive,
 	createConePrimitive,
@@ -32,7 +33,9 @@ export enum PrimitiveType {
  *
  * @see https://threejs.org/docs/#api/en/core/Object3D
  */
-export class GameObject extends THREE.Object3D {
+export class GameObject<
+	TEventMap extends Object3DEventMap = Object3DEventMap,
+> extends Object3D<TEventMap> {
 	private _ecsyEntity: ExtendedEntity;
 
 	isGameObject: boolean = true;

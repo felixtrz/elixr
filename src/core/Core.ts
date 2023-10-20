@@ -1,14 +1,18 @@
+/**
+ * @file This file contains the Core class which is the main entry point for the elixr engine.
+ * It provides a scene, camera, renderer, physics world, and player object.
+ * @summary The Core class is responsible for initializing the ECSY world, graphics, and physics systems.
+ * @packageDocumentation
+ */
 import { Attributes, World as EcsyWorld, Entity } from 'ecsy';
 import { GameComponentConstructor, SystemConfig } from './GameComponent';
 import { GameSystem, GameSystemConstructor } from './GameSystem';
 import { PhysicsConfig, PhysicsSystem } from '../physics/PhysicsSystem';
+import { Scene, THREE } from '../graphics/CustomTHREE';
 
-import { Collider } from '../physics/ColliderComponent';
 import { MeshRenderer } from '../graphics/meshes/MeshRendererComponent';
 import { Player } from '../player/Player';
-import { RigidBody } from '../physics/RigidBodyComponent';
 import { SESSION_MODE } from '../constants';
-import { THREE } from '../graphics/CustomTHREE';
 
 export const PRIVATE = Symbol('@elixr/core/core');
 
@@ -17,7 +21,6 @@ export type CoreInitOptions = {
 	cameraNear?: number;
 	cameraFar?: number;
 	alpha?: boolean;
-	onResize?: () => void;
 	physics?: boolean;
 };
 
@@ -28,72 +31,55 @@ export class Core {
 		ecsyWorld: EcsyWorld;
 		gameManager: Entity;
 		rapierWorld: import('@dimforge/rapier3d/rapier').World;
-		threeScene: THREE.Scene;
-		onResize: () => void;
+		scene: THREE.Scene;
 		renderer: THREE.WebGLRenderer;
 		camera: THREE.PerspectiveCamera;
 		player: Player;
+		RAPIER: typeof import('@dimforge/rapier3d');
+		globals: Map<string, any>;
 	} = {
 		vec3: new THREE.Vector3(),
-		ecsyWorld: null,
+		ecsyWorld: new EcsyWorld(),
 		gameManager: null,
 		rapierWorld: null,
-		threeScene: null,
-		onResize: () => {},
+		scene: new Scene(),
 		renderer: null,
 		camera: null,
 		player: null,
+		RAPIER: null,
+		globals: new Map(),
 	};
 
 	private static _instance: Core;
 
-	/**
-	 * Main scene for the experience which allows you to set up what and where is
-	 * to be rendered by three.js. This is where you place game objects, lights
-	 * and cameras.
-	 *
-	 * @see https://threejs.org/docs/index.html?q=Scene#api/en/scenes/Scene
-	 */
 	get scene() {
-		return this[PRIVATE].threeScene;
+		return this[PRIVATE].scene;
 	}
 
 	get physicsWorld() {
 		return this[PRIVATE].rapierWorld;
 	}
 
-	/**
-	 * WebGL renderer used to render the scene.
-	 *
-	 * @see https://threejs.org/docs/index.html?q=renderer#api/en/renderers/WebGLRenderer
-	 */
 	get renderer() {
 		return this[PRIVATE].renderer;
 	}
 
-	/**
-	 * Camera for inline mode, DO NOT USE for getting player head transform, use
-	 * {@link Core.playerHead} instead.
-	 */
 	get camera() {
 		return this[PRIVATE].camera;
-	}
-
-	/**
-	 * @deprecated Use {@link Core.camera} instead.
-	 */
-	get inlineCamera() {
-		return this.camera;
 	}
 
 	get player() {
 		return this[PRIVATE].player;
 	}
 
-	/** Global data store */
-	globals: Map<string, any> = new Map();
+	get RAPIER() {
+		return this[PRIVATE].RAPIER;
+	}
 
-	RAPIER: typeof import('@dimforge/rapier3d');
+	/** Global data store */
+	get globals() {
+		return this[PRIVATE].globals;
+	}
 
 	get initialized() {
 		return Core._instance != null;
@@ -113,36 +99,12 @@ export class Core {
 		}
 	}
 
-	static async init(
-		sceneContainer: HTMLElement,
-		options: CoreInitOptions = {},
-	) {
-		const RAPIER = await import('@dimforge/rapier3d');
+	static init() {
 		if (Core._instance) {
 			throw new Error('Core already initialized');
 		}
-		const core = new Core(RAPIER, options);
-		sceneContainer.appendChild(core.renderer.domElement);
+		const core = new Core();
 		return core;
-	}
-
-	private constructor(
-		RAPIER: typeof import('@dimforge/rapier3d'),
-		{
-			physics = true,
-			cameraFov = 50,
-			cameraNear = 0.1,
-			cameraFar = 100,
-			alpha = true,
-			onResize = () => {},
-		}: CoreInitOptions,
-	) {
-		Core._instance = this;
-		this._initECS();
-		this._initGraphics(cameraFov, cameraNear, cameraFar, alpha, onResize);
-		if (physics) {
-			this._initPhysics(RAPIER);
-		}
 	}
 
 	static getInstance() {
@@ -152,62 +114,10 @@ export class Core {
 		return Core._instance;
 	}
 
-	private _initECS() {
-		this[PRIVATE].ecsyWorld = new EcsyWorld();
+	private constructor() {
+		Core._instance = this;
 		this[PRIVATE].gameManager = this[PRIVATE].ecsyWorld.createEntity();
-	}
-
-	private _initGraphics(
-		fov: number,
-		near: number,
-		far: number,
-		alpha: boolean,
-		onResize: () => void,
-	) {
-		this[PRIVATE].camera = new THREE.PerspectiveCamera(
-			fov,
-			window.innerWidth / window.innerHeight,
-			near,
-			far,
-		);
-		this[PRIVATE].renderer = new THREE.WebGLRenderer({
-			antialias: true,
-			alpha,
-			multiviewStereo: true,
-		} as THREE.WebGLRendererParameters);
-		this[PRIVATE].onResize = onResize;
-		this.renderer.setPixelRatio(window.devicePixelRatio);
-		this.renderer.setSize(window.innerWidth, window.innerHeight);
-		this.renderer.outputColorSpace = THREE.SRGBColorSpace;
-		this.renderer.xr.enabled = true;
-
-		this[PRIVATE].camera.position.set(0, 1.7, 0);
-
-		const onWindowResize = () => {
-			this[PRIVATE].camera.aspect = window.innerWidth / window.innerHeight;
-			this[PRIVATE].camera.updateProjectionMatrix();
-			this.renderer.setSize(window.innerWidth, window.innerHeight);
-			this[PRIVATE].onResize();
-		};
-
-		window.addEventListener('resize', onWindowResize, false);
-
-		this[PRIVATE].threeScene = new THREE.Scene();
 		this.registerGameComponent(MeshRenderer);
-	}
-
-	private _initPhysics(RAPIER: typeof import('@dimforge/rapier3d/rapier')) {
-		this.RAPIER = RAPIER;
-		this.registerGameComponent(RigidBody);
-		this.registerGameComponent(Collider);
-
-		this.registerGameSystem(PhysicsSystem, { priority: Infinity });
-		const physicsConfig = this[PRIVATE].gameManager.getMutableComponent(
-			PhysicsSystem.systemConfig,
-		) as PhysicsConfig;
-		physicsConfig.gravity = new THREE.Vector3(0, 0, 0);
-		physicsConfig.world = new RAPIER.World(physicsConfig.gravity);
-		this[PRIVATE].rapierWorld = physicsConfig.world;
 	}
 
 	/** Shortcut for getting the {@link PhysicsConfig} */
