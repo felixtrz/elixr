@@ -1,3 +1,4 @@
+import { AssetDescriptor, AssetManager } from './graphics/AssetManager';
 import {
 	Clock,
 	PerspectiveCamera,
@@ -18,11 +19,13 @@ export type EngineInitOptions = {
 	cameraFar?: number;
 	alpha?: boolean;
 	enablePhysics?: boolean;
+	waitForAssets?: boolean;
 };
 
 export const initEngine = async (
 	sceneContainer: HTMLElement,
 	options: EngineInitOptions = {},
+	initialAssets: Record<string, AssetDescriptor> = {},
 ) => {
 	const core = Core.init();
 
@@ -51,6 +54,10 @@ export const initEngine = async (
 	core[PRIVATE].renderer = renderer;
 	sceneContainer.appendChild(core.renderer.domElement);
 
+	// Load Initial Assets
+	const assetManager = AssetManager.init(renderer, initialAssets);
+	core[PRIVATE].assetManager = assetManager;
+
 	// Instantiate Player
 	const player = new Player();
 	core[PRIVATE].player = player;
@@ -73,12 +80,15 @@ export const initEngine = async (
 	}
 
 	// Render Loop
+	const { waitForAssets = true } = options;
 	const clock = new Clock();
 	const render = () => {
 		const delta = clock.getDelta();
 		const elapsedTime = clock.elapsedTime;
 		player.update(core.renderer.xr);
-		core[PRIVATE].ecsyWorld.execute(delta, elapsedTime);
+		if (!waitForAssets || assetManager.initialAssetsLoaded) {
+			core[PRIVATE].ecsyWorld.execute(delta, elapsedTime);
+		}
 		core.renderer.render(core.scene, core.camera);
 	};
 

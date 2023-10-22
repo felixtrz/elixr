@@ -5,20 +5,47 @@
 import { Attributes, System, SystemQueries, World } from 'ecsy';
 import { GameComponentConstructor, SystemConfig } from './GameComponent';
 
+import { AssetManager } from '../graphics/AssetManager';
 import { Core } from './Core';
 import { ExtendedEntity } from './GameObject';
 import { Player } from '../xr/Player';
+
+export const PRIVATE = Symbol('@elixr/ecs/game-system');
 
 /**
  * A base class for all game systems. A game system is a class that updates the
  * state of the game world on each frame.
  */
 export class GameSystem extends System {
+	/** @ignore */
+	[PRIVATE]: {
+		core: Core;
+		player: Player;
+		assetManager: AssetManager;
+		config?: SystemConfig;
+		isImmersive: boolean;
+	} = {
+		core: null,
+		player: null,
+		assetManager: null,
+		config: null,
+		isImmersive: false,
+	};
+
 	/** {@link Core} object that this system is registered to. */
-	core: Core;
+	get core() {
+		return this[PRIVATE].core;
+	}
 
 	/** {@link Player} object */
-	player: Player;
+	get player() {
+		return this[PRIVATE].player;
+	}
+
+	/** {@link AssetManager} instance */
+	get assetManager() {
+		return this[PRIVATE].assetManager;
+	}
 
 	/**
 	 * Mutable reference to the optional {@link SystemConfig} component associated
@@ -35,8 +62,6 @@ export class GameSystem extends System {
 	 */
 	static queries: SystemQueries;
 
-	protected _isImmersive = false;
-
 	/**
 	 * Creates a new instance of the {@link GameSystem} class.
 	 * @param world The {@link World} instance that this system will be added to.
@@ -44,8 +69,9 @@ export class GameSystem extends System {
 	 */
 	constructor(world: World, attributes?: Attributes) {
 		super(world, attributes);
-		this.core = Core.getInstance();
-		this.player = this.core.player;
+		this[PRIVATE].core = Core.getInstance();
+		this[PRIVATE].player = this.core.player;
+		this[PRIVATE].assetManager = this.core.assetManager;
 		this.config = attributes?.config as SystemConfig;
 	}
 
@@ -59,11 +85,11 @@ export class GameSystem extends System {
 	execute(delta: number, time: number) {
 		const isImmersive = this.core.isImmersive();
 		if (isImmersive) {
-			if (!this._isImmersive) this.initXR();
+			if (!this[PRIVATE].isImmersive) this.initXR();
 		} else {
-			if (this._isImmersive) this.exitXR();
+			if (this[PRIVATE].isImmersive) this.exitXR();
 		}
-		this._isImmersive = isImmersive;
+		this[PRIVATE].isImmersive = isImmersive;
 		this.update(delta, time);
 	}
 
@@ -138,12 +164,12 @@ export class XRGameSystem extends GameSystem {
 	execute(delta: number, time: number) {
 		const isImmersive = this.core.isImmersive();
 		if (isImmersive) {
-			if (!this._isImmersive) this.initXR();
+			if (!this[PRIVATE].isImmersive) this.initXR();
 			this.update(delta, time);
 		} else {
-			if (this._isImmersive) this.exitXR();
+			if (this[PRIVATE].isImmersive) this.exitXR();
 		}
-		this._isImmersive = isImmersive;
+		this[PRIVATE].isImmersive = isImmersive;
 	}
 }
 

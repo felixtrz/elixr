@@ -11,8 +11,12 @@ const FIGLET = String.raw`
 /*                                 3D Library                                 */
 /* -------------------------------------------------------------------------- */
 export * from './graphics/CustomTHREE';
-export { CurvedRaycaster } from './graphics/CurvedRaycaster';
-export { GLTFModelLoader } from './graphics/GLTFModelLoader';
+export { CurvedRaycaster } from './addons/CurvedRaycaster';
+export {
+	AssetManager,
+	AssetDescriptor,
+	ASSET_TYPE,
+} from './graphics/AssetManager';
 
 /* -------------------------------------------------------------------------- */
 /*                           Entity Component System                          */
@@ -94,7 +98,7 @@ export { JOYSTICK_STATES, SESSION_MODE } from './constants';
 /* -------------------------------------------------------------------------- */
 /*                                 Geometries                                 */
 /* -------------------------------------------------------------------------- */
-export { CurveTubeGeometry } from './graphics/geometries/CurveTubeGeometry';
+export { CurveTubeGeometry } from './addons/geometries/CurveTubeGeometry';
 
 /* -------------------------------------------------------------------------- */
 /*                                 XR Buttons                                 */

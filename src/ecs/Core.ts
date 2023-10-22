@@ -10,6 +10,7 @@ import { GameSystem, GameSystemConstructor } from './GameSystem';
 import { PhysicsConfig, PhysicsSystem } from '../physics/PhysicsSystem';
 import { Scene, THREE } from '../graphics/CustomTHREE';
 
+import { AssetManager } from '../graphics/AssetManager';
 import { Player } from '../xr/Player';
 import { SESSION_MODE } from '../constants';
 
@@ -21,6 +22,7 @@ export class Core {
 		vec3: THREE.Vector3;
 		ecsyWorld: EcsyWorld;
 		gameManager: Entity;
+		assetManager: AssetManager;
 		rapierWorld: import('@dimforge/rapier3d/rapier').World;
 		scene: THREE.Scene;
 		renderer: THREE.WebGLRenderer;
@@ -32,6 +34,7 @@ export class Core {
 		vec3: new THREE.Vector3(),
 		ecsyWorld: new EcsyWorld(),
 		gameManager: null,
+		assetManager: null,
 		rapierWorld: null,
 		scene: new Scene(),
 		renderer: null,
@@ -41,7 +44,7 @@ export class Core {
 		globals: new Map(),
 	};
 
-	private static _instance: Core;
+	private static instance: Core;
 
 	get scene() {
 		return this[PRIVATE].scene;
@@ -63,6 +66,10 @@ export class Core {
 		return this[PRIVATE].player;
 	}
 
+	get assetManager() {
+		return this[PRIVATE].assetManager;
+	}
+
 	get RAPIER() {
 		return this[PRIVATE].RAPIER;
 	}
@@ -73,7 +80,7 @@ export class Core {
 	}
 
 	get initialized() {
-		return Core._instance != null;
+		return Core.instance != null;
 	}
 
 	/** Enum value indicating the current XRSessionMode */
@@ -91,7 +98,7 @@ export class Core {
 	}
 
 	static init() {
-		if (Core._instance) {
+		if (Core.instance) {
 			throw new Error('Core already initialized');
 		}
 		const core = new Core();
@@ -99,14 +106,14 @@ export class Core {
 	}
 
 	static getInstance() {
-		if (!Core._instance) {
+		if (!Core.instance) {
 			throw new Error('Core not initialized');
 		}
-		return Core._instance;
+		return Core.instance;
 	}
 
 	private constructor() {
-		Core._instance = this;
+		Core.instance = this;
 		this[PRIVATE].gameManager = this[PRIVATE].ecsyWorld.createEntity();
 	}
 

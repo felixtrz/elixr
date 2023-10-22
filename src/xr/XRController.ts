@@ -22,6 +22,7 @@ type ExtendedEventMap = Object3DEventMap & {
 };
 
 export class XRController extends GameObject<ExtendedEventMap> {
+	/** @ignore */
 	[PRIVATE]: {
 		handedness: XRHandedness;
 		connected: boolean;

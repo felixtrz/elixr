@@ -1,8 +1,8 @@
 import { MovementObstacle, MovementSurface } from './MovementComponents';
 
 import { BUTTONS } from 'gamepad-wrapper';
-import { CurveTubeGeometry } from '../../graphics/geometries/CurveTubeGeometry';
-import { CurvedRaycaster } from '../../graphics/CurvedRaycaster';
+import { CurveTubeGeometry } from '../geometries/CurveTubeGeometry';
+import { CurvedRaycaster } from '../CurvedRaycaster';
 import { GameObject } from '../../ecs/GameObject';
 import { JOYSTICK_STATES } from '../../constants';
 import { SystemConfig } from '../../ecs/GameComponent';

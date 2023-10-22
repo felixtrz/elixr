@@ -6,6 +6,7 @@ import { GameObject } from '../ecs/GameObject';
 export const PRIVATE = Symbol('@elixr/xr/player');
 
 export class Player extends GameObject {
+	/** @ignore */
 	[PRIVATE]: {
 		head: GameObject;
 		controllers: Record<XRHandedness, XRController>;

@@ -1,4 +1,4 @@
-import { THREE } from './CustomTHREE';
+import { THREE } from '../graphics/CustomTHREE';
 
 export class CurvedRaycaster extends THREE.Raycaster {
 	private _numSegments: number;
