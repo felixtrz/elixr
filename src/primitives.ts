@@ -16,12 +16,12 @@ import {
 	PlaneShape,
 	QuadShape,
 	SphereShape,
-} from '../physics/ColliderShapes';
+} from './physics/ColliderShapes';
 
-import { Collider } from '../physics/ColliderComponent';
-import { GameObject } from './GameObject';
-import { MeshRenderer } from '../graphics/meshes/MeshRendererComponent';
-import { RigidBody } from '../physics/RigidBodyComponent';
+import { Collider } from './physics/ColliderComponent';
+import { GameObject } from './ecs/GameObject';
+import { MeshRenderer } from './graphics/meshes/MeshRendererComponent';
+import { RigidBody } from './physics/RigidBodyComponent';
 
 const PRIMITIVE_MATERIAL = new MeshStandardMaterial({ color: 0xffffff });
 const DEFAULT_PLANE_SIZE = 10;

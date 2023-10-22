@@ -19,19 +19,19 @@ export { MeshRenderer } from './graphics/meshes/MeshRendererComponent';
 /*                           Entity Component System                          */
 /* -------------------------------------------------------------------------- */
 export { Not, Types } from 'ecsy';
-export { GameObject, PrimitiveType } from './core/GameObject';
-export { GameComponent } from './core/GameComponent';
-export { SystemConfig } from './core/GameComponent';
+export { GameObject, PrimitiveType } from './ecs/GameObject';
+export { GameComponent } from './ecs/GameComponent';
+export { SystemConfig } from './ecs/GameComponent';
 export {
 	GameSystem,
 	XRGameSystem,
 	SingleUseGameSystem,
 	SingleUseXRGameSystem,
-} from './core/GameSystem';
-export { Core } from './core/Core';
-export { Player } from './player/Player';
-export { XRController } from './player/XRController';
-export { initEngine, EngineInitOptions } from './core/init';
+} from './ecs/GameSystem';
+export { Core } from './ecs/Core';
+export { Player } from './xr/Player';
+export { XRController } from './xr/XRController';
+export { initEngine, EngineInitOptions } from './init';
 
 /* -------------------------------------------------------------------------- */
 /*                                Gamepad Utils                               */
@@ -69,20 +69,23 @@ export {
 export {
 	MovementSurface,
 	MovementObstacle,
-} from './xr/locomotion/MovementComponents';
+} from './addons/locomotion/MovementComponents';
 export {
 	XRSnapTurnConfig,
 	XRSnapTurnSystem,
-} from './xr/locomotion/XRSnapTurnSystem';
+} from './addons/locomotion/XRSnapTurnSystem';
 export {
 	XRSmoothTurnConfig,
 	XRSmoothTurnSystem,
-} from './xr/locomotion/XRSmoothTurnSystem';
+} from './addons/locomotion/XRSmoothTurnSystem';
 export {
 	XRTeleportConfig,
 	XRTeleportSystem,
-} from './xr/locomotion/XRTeleportSystem';
-export { XRSlideConfig, XRSlideSystem } from './xr/locomotion/XRSlideSystem';
+} from './addons/locomotion/XRTeleportSystem';
+export {
+	XRSlideConfig,
+	XRSlideSystem,
+} from './addons/locomotion/XRSlideSystem';
 
 /* -------------------------------------------------------------------------- */
 /*                                    Enums                                   */

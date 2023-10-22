@@ -1,7 +1,7 @@
 import { CollisionDetectionMode, RigidBodyConstraints } from './PhysicsHelper';
 
-import { Core } from '../core/Core';
-import { GameComponent } from '../core/GameComponent';
+import { Core } from '../ecs/Core';
+import { GameComponent } from '../ecs/GameComponent';
 import { RigidBodyType } from '@dimforge/rapier3d';
 import { THREE } from '../graphics/CustomTHREE';
 import { Types } from 'ecsy';

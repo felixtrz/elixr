@@ -1,9 +1,9 @@
 import { Matrix4, WebXRManager } from 'three';
 import { PRIVATE as XRCONTROLLER_PRIVATE, XRController } from './XRController';
 
-import { GameObject } from '../core/GameObject';
+import { GameObject } from '../ecs/GameObject';
 
-export const PRIVATE = Symbol('@elixr/player/player');
+export const PRIVATE = Symbol('@elixr/xr/player');
 
 export class Player extends GameObject {
 	[PRIVATE]: {

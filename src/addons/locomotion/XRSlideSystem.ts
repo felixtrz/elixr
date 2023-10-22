@@ -1,10 +1,10 @@
 import { AXES, BUTTONS } from 'gamepad-wrapper';
 import { MovementObstacle, MovementSurface } from './MovementComponents';
 
-import { SystemConfig } from '../../core/GameComponent';
+import { SystemConfig } from '../../ecs/GameComponent';
 import { THREE } from '../../graphics/CustomTHREE';
 import { Types } from 'ecsy';
-import { XRGameSystem } from '../../core/GameSystem';
+import { XRGameSystem } from '../../ecs/GameSystem';
 
 export interface XRSlideConfig extends XRSlideComponent {
 	JOYSTICK_DEADZONE: number;

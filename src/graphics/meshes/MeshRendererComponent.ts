@@ -1,4 +1,4 @@
-import { GameComponent } from '../../core/GameComponent';
+import { GameComponent } from '../../ecs/GameComponent';
 import { Types } from 'ecsy';
 
 export class MeshRenderer extends GameComponent<any> {

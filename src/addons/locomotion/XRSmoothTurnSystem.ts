@@ -1,7 +1,7 @@
 import { AXES } from 'gamepad-wrapper';
-import { SystemConfig } from '../../core/GameComponent';
+import { SystemConfig } from '../../ecs/GameComponent';
 import { Types } from 'ecsy';
-import { XRGameSystem } from '../../core/GameSystem';
+import { XRGameSystem } from '../../ecs/GameSystem';
 
 export interface XRSmoothTurnConfig extends XRSmoothTurnComponent {
 	JOYSTICK_DEADZONE: number;

@@ -2,9 +2,9 @@ import { Quaternion, Vector3 } from 'three';
 
 import { BUTTONS } from 'gamepad-wrapper';
 import { JOYSTICK_STATES } from '../../constants';
-import { SystemConfig } from '../../core/GameComponent';
+import { SystemConfig } from '../../ecs/GameComponent';
 import { Types } from 'ecsy';
-import { XRGameSystem } from '../../core/GameSystem';
+import { XRGameSystem } from '../../ecs/GameSystem';
 
 export interface XRSnapTurnConfig extends XRSnapTurnComponent {
 	JOYSTICK_ANGLE_MIN: number;

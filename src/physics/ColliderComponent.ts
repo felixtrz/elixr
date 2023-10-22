@@ -1,6 +1,6 @@
 import { ActiveCollisionTypes } from '@dimforge/rapier3d/geometry';
-import { Core } from '../core/Core';
-import { GameComponent } from '../core/GameComponent';
+import { Core } from '../ecs/Core';
+import { GameComponent } from '../ecs/GameComponent';
 import { PhysicsMaterial } from './PhysicsMaterial';
 import { PrimitiveShape } from './ColliderShapes';
 import { RigidBody } from './RigidBodyComponent';

@@ -1,10 +1,10 @@
 import { Collider } from './ColliderComponent';
-import { Core } from '../core/Core';
-import { GameSystem } from '../core/GameSystem';
+import { Core } from '../ecs/Core';
+import { GameSystem } from '../ecs/GameSystem';
 import { PrimitiveShape } from './ColliderShapes';
 import { RigidBody } from './RigidBodyComponent';
 import { RigidBodyType } from '@dimforge/rapier3d';
-import { SystemConfig } from '../core/GameComponent';
+import { SystemConfig } from '../ecs/GameComponent';
 import { THREE } from '../graphics/CustomTHREE';
 import { Types } from 'ecsy';
 

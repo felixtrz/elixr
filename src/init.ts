@@ -5,12 +5,12 @@ import {
 	Vector3,
 	WebGLRenderer,
 } from 'three';
-import { Core, PRIVATE } from './Core';
-import { PhysicsConfig, PhysicsSystem } from '../physics/PhysicsSystem';
+import { Core, PRIVATE } from './ecs/Core';
+import { PhysicsConfig, PhysicsSystem } from './physics/PhysicsSystem';
 
-import { Collider } from '../physics/ColliderComponent';
-import { Player } from '../player/Player';
-import { RigidBody } from '../physics/RigidBodyComponent';
+import { Collider } from './physics/ColliderComponent';
+import { Player } from './xr/Player';
+import { RigidBody } from './physics/RigidBodyComponent';
 
 export type EngineInitOptions = {
 	cameraFov?: number;

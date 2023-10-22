@@ -7,7 +7,7 @@ import { GameComponentConstructor, SystemConfig } from './GameComponent';
 
 import { Core } from './Core';
 import { ExtendedEntity } from './GameObject';
-import { Player } from '../player/Player';
+import { Player } from '../xr/Player';
 
 /**
  * A base class for all game systems. A game system is a class that updates the

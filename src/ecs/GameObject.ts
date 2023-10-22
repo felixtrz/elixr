@@ -9,7 +9,7 @@ import {
 	createPlanePrimitive,
 	createQuadPrimitive,
 	createSpherePrimitive,
-} from './primitives';
+} from '../primitives';
 
 import { Entity } from 'ecsy';
 import { THREE } from '../graphics/CustomTHREE';

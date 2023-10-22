@@ -1,10 +1,10 @@
 import { Group, Object3DEventMap } from 'three';
 
-import { GameObject } from '../core/GameObject';
+import { GameObject } from '../ecs/GameObject';
 import { GamepadWrapper } from 'gamepad-wrapper';
 import { XRControllerModelFactory } from 'three/examples/jsm/webxr/XRControllerModelFactory.js';
 
-export const PRIVATE = Symbol('@elixr/player/xr-controller');
+export const PRIVATE = Symbol('@elixr/xr/xr-controller');
 const controllerModelFactory = new XRControllerModelFactory();
 
 interface ConnectedEventData {

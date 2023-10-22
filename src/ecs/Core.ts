@@ -11,10 +11,10 @@ import { PhysicsConfig, PhysicsSystem } from '../physics/PhysicsSystem';
 import { Scene, THREE } from '../graphics/CustomTHREE';
 
 import { MeshRenderer } from '../graphics/meshes/MeshRendererComponent';
-import { Player } from '../player/Player';
+import { Player } from '../xr/Player';
 import { SESSION_MODE } from '../constants';
 
-export const PRIVATE = Symbol('@elixr/core/core');
+export const PRIVATE = Symbol('@elixr/ecs/core');
 
 export class Core {
 	/** @ignore */

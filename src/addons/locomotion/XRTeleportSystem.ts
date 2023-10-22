@@ -3,12 +3,12 @@ import { MovementObstacle, MovementSurface } from './MovementComponents';
 import { BUTTONS } from 'gamepad-wrapper';
 import { CurveTubeGeometry } from '../../graphics/geometries/CurveTubeGeometry';
 import { CurvedRaycaster } from '../../graphics/CurvedRaycaster';
-import { GameObject } from '../../core/GameObject';
+import { GameObject } from '../../ecs/GameObject';
 import { JOYSTICK_STATES } from '../../constants';
-import { SystemConfig } from '../../core/GameComponent';
+import { SystemConfig } from '../../ecs/GameComponent';
 import { THREE } from '../../graphics/CustomTHREE';
 import { Types } from 'ecsy';
-import { XRGameSystem } from '../../core/GameSystem';
+import { XRGameSystem } from '../../ecs/GameSystem';
 
 export interface XRTeleportConfig extends XRTeleportComponent {
 	JOYSTICK_ANGLE_MIN: number;
