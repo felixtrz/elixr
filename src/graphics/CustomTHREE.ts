@@ -9,9 +9,15 @@ BufferGeometry.prototype.computeBoundsTree = computeBoundsTree;
 BufferGeometry.prototype.disposeBoundsTree = disposeBoundsTree;
 Mesh.prototype.raycast = acceleratedRaycast;
 
+// extract exports from three using the following snippet:
+// const threeExports = '<exports go here>';
+// const regex = /export\s*{\s*([^}]+)\s*}\s*from/g;
+// const matches = [...threeExports.matchAll(regex)];
+// const extractedParts = matches.map((match) => match[1].trim());
+// const combinedExport = `export { ${extractedParts.join(', ')} } from 'three';`;
+// console.log(combinedExport);
 export {
 	AmbientLight,
-	AmbientLightProbe,
 	AnimationAction,
 	AnimationClip,
 	AnimationLoader,
@@ -43,7 +49,6 @@ export {
 	ColorKeyframeTrack,
 	ColorManagement,
 	CompressedArrayTexture,
-	// CompressedCubeTexture,
 	CompressedTexture,
 	CompressedTextureLoader,
 	CubeCamera,
@@ -75,7 +80,6 @@ export {
 	Group,
 	HemisphereLight,
 	HemisphereLightHelper,
-	HemisphereLightProbe,
 	ImageBitmapLoader,
 	ImageLoader,
 	ImageUtils,
@@ -123,7 +127,6 @@ export {
 	Quaternion,
 	QuaternionKeyframeTrack,
 	QuaternionLinearInterpolant,
-	REVISION,
 	Ray,
 	Raycaster,
 	RectAreaLight,
