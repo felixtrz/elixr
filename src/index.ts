@@ -13,7 +13,6 @@ const FIGLET = String.raw`
 export * from './graphics/CustomTHREE';
 export { CurvedRaycaster } from './graphics/CurvedRaycaster';
 export { GLTFModelLoader } from './graphics/GLTFModelLoader';
-export { MeshRenderer } from './graphics/meshes/MeshRendererComponent';
 
 /* -------------------------------------------------------------------------- */
 /*                           Entity Component System                          */

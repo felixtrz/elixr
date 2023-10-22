@@ -10,7 +10,6 @@ import { GameSystem, GameSystemConstructor } from './GameSystem';
 import { PhysicsConfig, PhysicsSystem } from '../physics/PhysicsSystem';
 import { Scene, THREE } from '../graphics/CustomTHREE';
 
-import { MeshRenderer } from '../graphics/meshes/MeshRendererComponent';
 import { Player } from '../xr/Player';
 import { SESSION_MODE } from '../constants';
 
@@ -109,7 +108,6 @@ export class Core {
 	private constructor() {
 		Core._instance = this;
 		this[PRIVATE].gameManager = this[PRIVATE].ecsyWorld.createEntity();
-		this.registerGameComponent(MeshRenderer);
 	}
 
 	/** Shortcut for getting the {@link PhysicsConfig} */

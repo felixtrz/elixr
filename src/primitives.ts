@@ -20,7 +20,6 @@ import {
 
 import { Collider } from './physics/ColliderComponent';
 import { GameObject } from './ecs/GameObject';
-import { MeshRenderer } from './graphics/meshes/MeshRendererComponent';
 import { RigidBody } from './physics/RigidBodyComponent';
 
 const PRIMITIVE_MATERIAL = new MeshStandardMaterial({ color: 0xffffff });
@@ -36,13 +35,12 @@ const DEFAULT_CONE_HEIGHT = 1;
 const DEFAULT_QUAD_SIZE = 1;
 
 export const createPlanePrimitive = () => {
-	const gameObject = new GameObject();
 	const mesh = new Mesh(
 		new PlaneGeometry(DEFAULT_PLANE_SIZE, DEFAULT_PLANE_SIZE),
 		PRIMITIVE_MATERIAL,
 	);
 	mesh.rotateX(-Math.PI / 2);
-	gameObject.addComponent(MeshRenderer, { meshRef: mesh });
+	const gameObject = new GameObject().add(mesh);
 	gameObject.addComponent(RigidBody, { initConfig: {} });
 	const shape = new PlaneShape(DEFAULT_PLANE_SIZE, DEFAULT_PLANE_SIZE);
 	gameObject.addComponent(Collider, { shape: shape });
@@ -50,12 +48,11 @@ export const createPlanePrimitive = () => {
 };
 
 export const createCubePrimitive = () => {
-	const gameObject = new GameObject();
 	const mesh = new Mesh(
 		new BoxGeometry(DEFAULT_CUBE_SIZE, DEFAULT_CUBE_SIZE, DEFAULT_CUBE_SIZE),
 		PRIMITIVE_MATERIAL,
 	);
-	gameObject.addComponent(MeshRenderer, { meshRef: mesh });
+	const gameObject = new GameObject().add(mesh);
 	gameObject.addComponent(RigidBody, { initConfig: {} });
 	const shape = new CubeShape(
 		DEFAULT_CUBE_SIZE,
@@ -67,12 +64,11 @@ export const createCubePrimitive = () => {
 };
 
 export const createSpherePrimitive = () => {
-	const gameObject = new GameObject();
 	const mesh = new Mesh(
 		new SphereGeometry(DEFAULT_SPHERE_RADIUS, 32, 32),
 		PRIMITIVE_MATERIAL,
 	);
-	gameObject.addComponent(MeshRenderer, { meshRef: mesh });
+	const gameObject = new GameObject().add(mesh);
 	gameObject.addComponent(RigidBody, { initConfig: {} });
 	const shape = new SphereShape(DEFAULT_SPHERE_RADIUS);
 	gameObject.addComponent(Collider, { shape: shape });
@@ -80,7 +76,6 @@ export const createSpherePrimitive = () => {
 };
 
 export const createCylinderPrimitive = () => {
-	const gameObject = new GameObject();
 	const mesh = new Mesh(
 		new CylinderGeometry(
 			DEFAULT_CYLINDER_RADIUS,
@@ -90,7 +85,7 @@ export const createCylinderPrimitive = () => {
 		),
 		PRIMITIVE_MATERIAL,
 	);
-	gameObject.addComponent(MeshRenderer, { meshRef: mesh });
+	const gameObject = new GameObject().add(mesh);
 	gameObject.addComponent(RigidBody, { initConfig: {} });
 	const shape = new CylinderShape(
 		DEFAULT_CYLINDER_RADIUS,
@@ -101,12 +96,11 @@ export const createCylinderPrimitive = () => {
 };
 
 export const createCapsulePrimitive = () => {
-	const gameObject = new GameObject();
 	const mesh = new Mesh(
 		new CapsuleGeometry(DEFAULT_CAPSULE_RADIUS, DEFAULT_CAPSULE_HEIGHT, 32),
 		PRIMITIVE_MATERIAL,
 	);
-	gameObject.addComponent(MeshRenderer, { meshRef: mesh });
+	const gameObject = new GameObject().add(mesh);
 	gameObject.addComponent(RigidBody, { initConfig: {} });
 	const shape = new CapsuleShape(
 		DEFAULT_CAPSULE_RADIUS,
@@ -117,13 +111,12 @@ export const createCapsulePrimitive = () => {
 };
 
 export const createConePrimitive = () => {
-	const gameObject = new GameObject();
 	const mesh = new Mesh(
 		new ConeGeometry(DEFAULT_CONE_RADIUS, DEFAULT_CONE_HEIGHT, 32),
 		PRIMITIVE_MATERIAL,
 	);
 	mesh.rotateX(Math.PI / 2);
-	gameObject.addComponent(MeshRenderer, { meshRef: mesh });
+	const gameObject = new GameObject().add(mesh);
 	gameObject.addComponent(RigidBody, { initConfig: {} });
 	const shape = new ConeShape(DEFAULT_CONE_RADIUS, DEFAULT_CONE_HEIGHT);
 	gameObject.addComponent(Collider, { shape: shape });
@@ -131,12 +124,11 @@ export const createConePrimitive = () => {
 };
 
 export const createQuadPrimitive = () => {
-	const gameObject = new GameObject();
 	const mesh = new Mesh(
 		new PlaneGeometry(DEFAULT_QUAD_SIZE, DEFAULT_QUAD_SIZE),
 		PRIMITIVE_MATERIAL,
 	);
-	gameObject.addComponent(MeshRenderer, { meshRef: mesh });
+	const gameObject = new GameObject().add(mesh);
 	gameObject.addComponent(RigidBody, { initConfig: {} });
 	const shape = new QuadShape(DEFAULT_QUAD_SIZE, DEFAULT_QUAD_SIZE);
 	gameObject.addComponent(Collider, { shape: shape });
