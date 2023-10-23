@@ -1,6 +1,6 @@
 import { Ball, Cuboid, Cylinder } from '@dimforge/rapier3d';
 
-import { THREE } from '../graphics/CustomTHREE';
+import { THREE } from '../graphics/Three';
 
 export type PrimitiveShape =
 	| CubeShape

@@ -73,7 +73,7 @@ export const initEngine = async (
 		const physicsConfig = core[PRIVATE].gameManager.getMutableComponent(
 			PhysicsSystem.systemConfig,
 		) as PhysicsConfig;
-		physicsConfig.gravity = new Vector3(0, 0, 0);
+		physicsConfig.gravity = new Vector3(0, -9.8, 0);
 		physicsConfig.world = new RAPIER.World(physicsConfig.gravity);
 		core[PRIVATE].rapierWorld = physicsConfig.world;
 		core[PRIVATE].RAPIER = RAPIER;

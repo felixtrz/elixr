@@ -3,7 +3,7 @@ import { CollisionDetectionMode, RigidBodyConstraints } from './PhysicsHelper';
 import { Core } from '../ecs/Core';
 import { GameComponent } from '../ecs/GameComponent';
 import { RigidBodyType } from '@dimforge/rapier3d';
-import { THREE } from '../graphics/CustomTHREE';
+import { THREE } from '../graphics/Three';
 import { Types } from 'ecsy';
 
 export type RigidBodyInitConfig = {
@@ -207,10 +207,5 @@ export class RigidBody extends RigidBodyComponent {
 
 		this.body.setTranslation(this.gameObject.position, true);
 		this.body.setRotation(this.gameObject.quaternion, true);
-	}
-
-	onRemove(): void {
-		const rapierWorld = Core.getInstance().physicsWorld;
-		rapierWorld.removeRigidBody(this.body);
 	}
 }

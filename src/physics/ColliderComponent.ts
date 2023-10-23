@@ -4,7 +4,7 @@ import { GameComponent } from '../ecs/GameComponent';
 import { PhysicsMaterial } from './PhysicsMaterial';
 import { PrimitiveShape } from './ColliderShapes';
 import { RigidBody } from './RigidBodyComponent';
-import { THREE } from '../graphics/CustomTHREE';
+import { THREE } from '../graphics/Three';
 import { Types } from 'ecsy';
 
 class ColliderComponent extends GameComponent<any> {
@@ -62,11 +62,6 @@ export class Collider extends ColliderComponent {
 		this._collider.setRestitutionCombineRule(
 			this.material.restitutionCombine as any,
 		);
-	}
-
-	onRemove(): void {
-		const rapierWorld = Core.getInstance().physicsWorld;
-		rapierWorld.removeCollider(this._collider, true);
 	}
 
 	get scale() {

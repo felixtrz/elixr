@@ -1,12 +1,21 @@
 import {
 	AmbientLight,
+	BUTTONS,
 	BoxGeometry,
+	Collider,
 	Color,
+	CubeShape,
 	DirectionalLight,
 	GameObject,
 	GameSystem,
 	Mesh,
 	MeshBasicMaterial,
+	MeshStandardMaterial,
+	PlaneGeometry,
+	PlaneShape,
+	PrimitiveType,
+	RigidBody,
+	RigidBodyType,
 	VRButton,
 	Vector3,
 	initEngine,
@@ -31,6 +40,16 @@ class ExampleSystem extends GameSystem {
 			),
 		);
 		this.cube.position.z = -3;
+		this.cube.addComponent(RigidBody, {
+			initConfig: { bodyType: RigidBodyType.KinematicPositionBased },
+		});
+		const shape = new CubeShape(1, 1, 1);
+		this.cube.addComponent(Collider, { shape: shape });
+		this.rotationAxis = new Vector3(
+			Math.random(),
+			Math.random(),
+			Math.random(),
+		).normalize();
 	}
 
 	initXR() {
@@ -38,19 +57,36 @@ class ExampleSystem extends GameSystem {
 	}
 
 	update(delta) {
-		this.cube.rotateOnAxis(
-			new Vector3(Math.random(), Math.random(), Math.random()).normalize(),
-			delta,
-		);
+		this.cube.rotateOnAxis(this.rotationAxis, delta * 5);
+		const gamepad = this.player.controllers.right.gamepad;
+		if (gamepad && gamepad.getButtonClick(BUTTONS.XR_STANDARD.TRIGGER)) {
+			if (this.dropCube) {
+				this.dropCube.destroy();
+			}
+			this.dropCube = GameObject.createPrimitive(PrimitiveType.Cube);
+			this.dropCube.position.set(0, 2, -3);
+		}
 	}
 }
 
 initEngine(
 	document.getElementById('scene-container'),
-	{ enablePhysics: false },
+	{ enablePhysics: true },
 	assets,
 ).then((core) => {
 	core.registerGameSystem(ExampleSystem);
+
+	const material = new MeshStandardMaterial({ color: 0xffffff });
+
+	const mesh = new Mesh(new PlaneGeometry(5, 5), material);
+	mesh.rotateX(-Math.PI / 2);
+	const gameObject = new GameObject().add(mesh);
+	gameObject.addComponent(RigidBody, {
+		initConfig: { bodyType: RigidBodyType.Fixed },
+	});
+	const shape = new PlaneShape(5, 5);
+	gameObject.addComponent(Collider, { shape: shape });
+	gameObject.position.set(0, -1, -3);
 
 	// Add ambient light
 	const ambientLight = new AmbientLight(new Color(0xffffff), 1);

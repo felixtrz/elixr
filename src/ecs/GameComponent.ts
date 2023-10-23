@@ -11,11 +11,6 @@ export class GameComponent<C> extends Component<C> {
 	gameObject: GameObject;
 
 	/**
-	 * Called when the component is removed from an entity.
-	 */
-	onRemove() {}
-
-	/**
 	 * Called when the component is added to an entity.
 	 */
 	onAdd() {}

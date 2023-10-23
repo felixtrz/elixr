@@ -1,11 +1,12 @@
+import { RigidBody, RigidBodyType } from '@dimforge/rapier3d';
+
 import { Collider } from './ColliderComponent';
 import { Core } from '../ecs/Core';
 import { GameSystem } from '../ecs/GameSystem';
 import { PrimitiveShape } from './ColliderShapes';
-import { RigidBody } from './RigidBodyComponent';
-import { RigidBodyType } from '@dimforge/rapier3d';
+import { RigidBody as RigidBodyComponent } from './RigidBodyComponent';
 import { SystemConfig } from '../ecs/GameComponent';
-import { THREE } from '../graphics/CustomTHREE';
+import { THREE } from '../graphics/Three';
 import { Types } from 'ecsy';
 
 class PhysicsComponent extends SystemConfig {}
@@ -31,13 +32,15 @@ export class PhysicsSystem extends GameSystem {
 		this._config = this.config as PhysicsConfig;
 	}
 
-	update(_delta: number, _time: number): void {
+	update(delta: number, _time: number): void {
 		if (!this._config.world) return;
 		// let world = new this.RAPIER.World(gravity);
 		setRapierVector3(this._config.gravity, this._config.world.gravity);
 
 		this.queryAddedGameObjects('rigidBodies').forEach((gameObject) => {
-			const rigidBody = gameObject.getMutableComponent(RigidBody) as RigidBody;
+			const rigidBody = gameObject.getMutableComponent(
+				RigidBodyComponent,
+			) as RigidBodyComponent;
 			gameObject.getWorldPosition(this._vec3);
 			gameObject.getWorldQuaternion(this._quat);
 			rigidBody.body.setTranslation(this._vec3, true);
@@ -45,13 +48,17 @@ export class PhysicsSystem extends GameSystem {
 		});
 
 		this._preStep();
+		this._config.world.timestep = delta;
 		this._config.world.step();
 		this._postStep();
 	}
 
 	_preStep() {
+		const activeBodies: RigidBody[] = [];
 		this.queryGameObjects('rigidBodies').forEach((gameObject) => {
-			const rigidBody = gameObject.getMutableComponent(RigidBody) as RigidBody;
+			const rigidBody = gameObject.getMutableComponent(
+				RigidBodyComponent,
+			) as RigidBodyComponent;
 			if (rigidBody.bodyType == RigidBodyType.KinematicPositionBased) {
 				gameObject.getWorldPosition(this._vec3);
 				gameObject.getWorldQuaternion(this._quat);
@@ -65,12 +72,25 @@ export class PhysicsSystem extends GameSystem {
 					collider.setScale(gameObject.scale);
 				}
 			}
+
+			activeBodies.push(rigidBody.body);
 		});
+
+		this._config.world.bodies
+			.getAll()
+			.filter((body) => {
+				return !activeBodies.includes(body);
+			})
+			.forEach((body) => {
+				this._config.world.removeRigidBody(body);
+			});
 	}
 
 	_postStep() {
 		this.queryGameObjects('rigidBodies').forEach((gameObject) => {
-			const rigidBody = gameObject.getMutableComponent(RigidBody) as RigidBody;
+			const rigidBody = gameObject.getMutableComponent(
+				RigidBodyComponent,
+			) as RigidBodyComponent;
 			const parent = gameObject.parent;
 			Core.getInstance().scene.attach(gameObject);
 			gameObject.position.copy(rigidBody.position);
@@ -82,7 +102,7 @@ export class PhysicsSystem extends GameSystem {
 
 PhysicsSystem.queries = {
 	rigidBodies: {
-		components: [RigidBody],
+		components: [RigidBodyComponent],
 		listen: {
 			added: true,
 		},

@@ -10,7 +10,7 @@ const FIGLET = String.raw`
 /* -------------------------------------------------------------------------- */
 /*                                 3D Library                                 */
 /* -------------------------------------------------------------------------- */
-export * from './graphics/CustomTHREE';
+export * from './graphics/Three';
 export { CurvedRaycaster } from './addons/CurvedRaycaster';
 export {
 	AssetManager,
@@ -32,8 +32,6 @@ export {
 	SingleUseXRGameSystem,
 } from './ecs/GameSystem';
 export { Core } from './ecs/Core';
-export { Player } from './xr/Player';
-export { XRController } from './xr/XRController';
 export { initEngine, EngineInitOptions } from './init';
 
 /* -------------------------------------------------------------------------- */
@@ -105,6 +103,8 @@ export { CurveTubeGeometry } from './addons/geometries/CurveTubeGeometry';
 /* -------------------------------------------------------------------------- */
 export { VRButtonOptions, VRButton } from './xr/VRButton';
 export { ARButtonOptions, ARButton } from './xr/ARButton';
+export { Player } from './xr/Player';
+export { XRController } from './xr/XRController';
 
 console.info(
 	FIGLET +

@@ -6,7 +6,7 @@ import { CurvedRaycaster } from '../CurvedRaycaster';
 import { GameObject } from '../../ecs/GameObject';
 import { JOYSTICK_STATES } from '../../constants';
 import { SystemConfig } from '../../ecs/GameComponent';
-import { THREE } from '../../graphics/CustomTHREE';
+import { THREE } from '../../graphics/Three';
 import { Types } from 'ecsy';
 import { XRGameSystem } from '../../ecs/GameSystem';
 

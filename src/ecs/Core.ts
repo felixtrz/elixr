@@ -8,7 +8,7 @@ import { Attributes, World as EcsyWorld, Entity } from 'ecsy';
 import { GameComponentConstructor, SystemConfig } from './GameComponent';
 import { GameSystem, GameSystemConstructor } from './GameSystem';
 import { PhysicsConfig, PhysicsSystem } from '../physics/PhysicsSystem';
-import { Scene, THREE } from '../graphics/CustomTHREE';
+import { Scene, THREE } from '../graphics/Three';
 
 import { AssetManager } from '../graphics/AssetManager';
 import { Player } from '../xr/Player';

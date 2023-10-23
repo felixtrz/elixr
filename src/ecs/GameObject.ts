@@ -12,7 +12,7 @@ import {
 } from '../primitives';
 
 import { Entity } from 'ecsy';
-import { THREE } from '../graphics/CustomTHREE';
+import { THREE } from '../graphics/Three';
 
 export type ExtendedEntity = Entity & {
 	gameObject: GameObject;
@@ -154,16 +154,15 @@ export class GameObject<
 		GameComponent: GameComponentConstructor<any>,
 		forceImmediate: boolean,
 	): void {
-		const component = this._ecsyEntity.getMutableComponent(GameComponent);
-		if (component?.onRemove) component.onRemove();
 		this._ecsyEntity.removeComponent(GameComponent, forceImmediate);
 	}
 
 	/** Destroy this GameObject */
-	destroy(forceImmediate?: boolean) {
+	destroy(forceImmediate = false) {
 		this.parent?.remove(this);
 		try {
-			this._ecsyEntity.remove(forceImmediate ?? false);
+			this._ecsyEntity.removeAllComponents(forceImmediate);
+			this._ecsyEntity.remove(forceImmediate);
 		} catch (e) {
 			console.warn(e);
 		}

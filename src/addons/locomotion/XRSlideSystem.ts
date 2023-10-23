@@ -2,7 +2,7 @@ import { AXES, BUTTONS } from 'gamepad-wrapper';
 import { MovementObstacle, MovementSurface } from './MovementComponents';
 
 import { SystemConfig } from '../../ecs/GameComponent';
-import { THREE } from '../../graphics/CustomTHREE';
+import { THREE } from '../../graphics/Three';
 import { Types } from 'ecsy';
 import { XRGameSystem } from '../../ecs/GameSystem';
 
