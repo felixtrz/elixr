@@ -1,25 +1,21 @@
 import {
 	AmbientLight,
-	BUTTONS,
-	BoxGeometry,
-	Collider,
 	Color,
-	CubeShape,
 	DirectionalLight,
 	GameObject,
 	GameSystem,
 	Mesh,
-	MeshBasicMaterial,
 	MeshStandardMaterial,
+	PlaneCollider,
 	PlaneGeometry,
-	PlaneShape,
-	PrimitiveType,
-	RigidBody,
-	RigidBodyType,
+	Rigidbody,
+	SphereCollider,
+	SphereGeometry,
 	VRButton,
-	Vector3,
 	initEngine,
 } from 'elixr';
+
+import { RigidbodyType } from 'elixr/dist/physics/Rigidbody';
 
 const assets = {
 	props: {
@@ -33,23 +29,30 @@ const assets = {
 
 class ExampleSystem extends GameSystem {
 	init() {
-		this.cube = new GameObject().add(
+		const sphere = new GameObject().add(
 			new Mesh(
-				new BoxGeometry(1, 1, 1),
-				new MeshBasicMaterial({ color: 0x00ff00 }),
+				new SphereGeometry(1, 32, 32),
+				new MeshStandardMaterial({ color: 0xff0000 }),
 			),
 		);
-		this.cube.position.z = -3;
-		this.cube.addComponent(RigidBody, {
-			initConfig: { bodyType: RigidBodyType.KinematicPositionBased },
-		});
-		const shape = new CubeShape(1, 1, 1);
-		this.cube.addComponent(Collider, { shape: shape });
-		this.rotationAxis = new Vector3(
-			Math.random(),
-			Math.random(),
-			Math.random(),
-		).normalize();
+		sphere.position.set(0, 5, 0);
+		const sphereRigidBody = new Rigidbody().add(new SphereCollider(1));
+		sphere.add(sphereRigidBody);
+		this.sphereRigidBody = sphereRigidBody;
+
+		const floor = new GameObject().add(
+			new Mesh(
+				new PlaneGeometry(10, 10),
+				new MeshStandardMaterial({ color: 0x00ff00 }),
+			),
+		);
+		floor.position.set(0, -1, 0);
+		floor.rotateX(-Math.PI / 2);
+		const floorRigidBody = new Rigidbody({ type: RigidbodyType.Kinematic }).add(
+			new PlaneCollider(10, 10),
+		);
+		floor.add(floorRigidBody);
+		this.floor = floor;
 	}
 
 	initXR() {
@@ -57,15 +60,12 @@ class ExampleSystem extends GameSystem {
 	}
 
 	update(delta) {
-		this.cube.rotateOnAxis(this.rotationAxis, delta * 5);
-		const gamepad = this.player.controllers.right.gamepad;
-		if (gamepad && gamepad.getButtonClick(BUTTONS.XR_STANDARD.TRIGGER)) {
-			if (this.dropCube) {
-				this.dropCube.destroy();
-			}
-			this.dropCube = GameObject.createPrimitive(PrimitiveType.Cube);
-			this.dropCube.position.set(0, 2, -3);
+		this.floor.position.y += delta;
+
+		if (this.floor.position.y > 1) {
+			this.floor.position.y = -1;
 		}
+		// console.log(this.sphereRigidBody.parent.position.toArray());
 	}
 }
 
@@ -75,18 +75,13 @@ initEngine(
 	assets,
 ).then((core) => {
 	core.registerGameSystem(ExampleSystem);
+	core.scene.background = new Color(0x000000);
 
 	const material = new MeshStandardMaterial({ color: 0xffffff });
 
 	const mesh = new Mesh(new PlaneGeometry(5, 5), material);
 	mesh.rotateX(-Math.PI / 2);
-	const gameObject = new GameObject().add(mesh);
-	gameObject.addComponent(RigidBody, {
-		initConfig: { bodyType: RigidBodyType.Fixed },
-	});
-	const shape = new PlaneShape(5, 5);
-	gameObject.addComponent(Collider, { shape: shape });
-	gameObject.position.set(0, -1, -3);
+	new GameObject().add(mesh);
 
 	// Add ambient light
 	const ambientLight = new AmbientLight(new Color(0xffffff), 1);

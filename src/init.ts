@@ -1,17 +1,9 @@
 import { AssetDescriptor, AssetManager } from './graphics/AssetManager';
-import {
-	Clock,
-	PerspectiveCamera,
-	SRGBColorSpace,
-	Vector3,
-	WebGLRenderer,
-} from 'three';
+import { Clock, PerspectiveCamera, SRGBColorSpace, WebGLRenderer } from 'three';
 import { Core, PRIVATE } from './ecs/Core';
-import { PhysicsConfig, PhysicsSystem } from './physics/PhysicsSystem';
 
-import { Collider } from './physics/ColliderComponent';
+import { Physics } from './physics/Physics';
 import { Player } from './xr/Player';
-import { RigidBody } from './physics/RigidBodyComponent';
 
 export type EngineInitOptions = {
 	cameraFov?: number;
@@ -65,18 +57,9 @@ export const initEngine = async (
 
 	// Physics Setup
 	const { enablePhysics = false } = options;
+	let physics: Physics;
 	if (enablePhysics) {
-		const RAPIER = await import('@dimforge/rapier3d');
-		core.registerGameComponent(RigidBody);
-		core.registerGameComponent(Collider);
-		core.registerGameSystem(PhysicsSystem, { priority: Infinity });
-		const physicsConfig = core[PRIVATE].gameManager.getMutableComponent(
-			PhysicsSystem.systemConfig,
-		) as PhysicsConfig;
-		physicsConfig.gravity = new Vector3(0, -9.8, 0);
-		physicsConfig.world = new RAPIER.World(physicsConfig.gravity);
-		core[PRIVATE].rapierWorld = physicsConfig.world;
-		core[PRIVATE].RAPIER = RAPIER;
+		physics = await Physics.init();
 	}
 
 	// Render Loop
@@ -88,6 +71,9 @@ export const initEngine = async (
 		player.update(core.renderer.xr);
 		if (!waitForAssets || assetManager.initialAssetsLoaded) {
 			core[PRIVATE].ecsyWorld.execute(delta, elapsedTime);
+		}
+		if (enablePhysics) {
+			physics.update(delta);
 		}
 		core.renderer.render(core.scene, core.camera);
 	};

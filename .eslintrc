@@ -13,7 +13,6 @@
 		"prettier"
 	],
 	"rules": {
-		"prettier/prettier": 2,
 		"sort-imports": [
 			"error",
 			{

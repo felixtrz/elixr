@@ -7,7 +7,6 @@
 import { Attributes, World as EcsyWorld, Entity } from 'ecsy';
 import { GameComponentConstructor, SystemConfig } from './GameComponent';
 import { GameSystem, GameSystemConstructor } from './GameSystem';
-import { PhysicsConfig, PhysicsSystem } from '../physics/PhysicsSystem';
 import { Scene, THREE } from '../graphics/Three';
 
 import { AssetManager } from '../graphics/AssetManager';
@@ -23,7 +22,6 @@ export class Core {
 		ecsyWorld: EcsyWorld;
 		gameManager: Entity;
 		assetManager: AssetManager;
-		rapierWorld: import('@dimforge/rapier3d/rapier').World;
 		scene: THREE.Scene;
 		renderer: THREE.WebGLRenderer;
 		camera: THREE.PerspectiveCamera;
@@ -35,7 +33,6 @@ export class Core {
 		ecsyWorld: new EcsyWorld(),
 		gameManager: null,
 		assetManager: null,
-		rapierWorld: null,
 		scene: new Scene(),
 		renderer: null,
 		camera: null,
@@ -48,10 +45,6 @@ export class Core {
 
 	get scene() {
 		return this[PRIVATE].scene;
-	}
-
-	get physicsWorld() {
-		return this[PRIVATE].rapierWorld;
 	}
 
 	get renderer() {
@@ -115,11 +108,6 @@ export class Core {
 	private constructor() {
 		Core.instance = this;
 		this[PRIVATE].gameManager = this[PRIVATE].ecsyWorld.createEntity();
-	}
-
-	/** Shortcut for getting the {@link PhysicsConfig} */
-	get physics(): PhysicsConfig {
-		return this.getGameSystemConfig(PhysicsSystem) as PhysicsConfig;
 	}
 
 	/** Boolean value for whether player is in immersive mode. */

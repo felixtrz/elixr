@@ -42,27 +42,22 @@ export { BUTTONS, AXES, GamepadWrapper } from 'gamepad-wrapper';
 /* -------------------------------------------------------------------------- */
 /*                               Physics Engine                               */
 /* -------------------------------------------------------------------------- */
-export { RigidBody } from './physics/RigidBodyComponent';
-export { Collider } from './physics/ColliderComponent';
-export { PhysicsMaterial } from './physics/PhysicsMaterial';
-export { PhysicsSystem, PhysicsConfig } from './physics/PhysicsSystem';
 export { ActiveCollisionTypes } from '@dimforge/rapier3d/geometry';
 export { RigidBodyType, CoefficientCombineRule } from '@dimforge/rapier3d';
-export {
-	PrimitiveShape,
-	PlaneShape,
-	CubeShape,
-	SphereShape,
-	CylinderShape,
-	CapsuleShape,
-	ConeShape,
-	QuadShape,
-} from './physics/ColliderShapes';
 export {
 	CollisionDetectionMode,
 	RigidBodyConstraints,
 	convexHullShape,
 } from './physics/PhysicsHelper';
+export { Collider } from './physics/Collider';
+export { BoxCollider } from './physics/colliders/BoxCollider';
+export { CapsuleCollider } from './physics/colliders/CapsuleCollider';
+export { ConeCollider } from './physics/colliders/ConeCollider';
+export { CylinderCollider } from './physics/colliders/CylinderCollider';
+export { PlaneCollider } from './physics/colliders/PlaneCollider';
+export { SphereCollider } from './physics/colliders/SphereCollider';
+export { Physics } from './physics/Physics';
+export { Rigidbody } from './physics/Rigidbody';
 
 /* -------------------------------------------------------------------------- */
 /*                                Locomotion                                  */
