@@ -7,6 +7,7 @@ import {
 } from 'three';
 
 import { Collider } from './Collider';
+import { GameObject } from '../ecs/GameObject';
 import { Physics } from './Physics';
 import { RigidBody } from '@dimforge/rapier3d';
 
@@ -31,12 +32,13 @@ export enum RigidbodyConstraints {
 	FreezeAll = FreezePosition | FreezeRotation,
 }
 
-export class Rigidbody extends Object3D {
+export class Rigidbody extends GameObject {
 	/** @ignore */
 	[PRIVATE]: {
 		rigidbody: RigidBody;
 		canSleep: boolean;
 		constraints: RigidbodyConstraints;
+		colliderVisible: boolean;
 		vec3: Vector3;
 		quat: Quaternion;
 		mat4: Matrix4;
@@ -68,19 +70,12 @@ export class Rigidbody extends Object3D {
 			rigidbody: physics.world.createRigidBody(rigidbodyDesc),
 			canSleep,
 			constraints: RigidbodyConstraints.None,
+			colliderVisible: false,
 			vec3: new Vector3(),
 			quat: new Quaternion(),
 			mat4: new Matrix4(),
 		};
 		physics.associateRigidBody(this[PRIVATE].rigidbody, this);
-		this.addEventListener('added', () => {
-			this.syncTransformFromRenderedObject();
-			this[PRIVATE].rigidbody.setEnabled(true);
-		});
-		this.addEventListener('removed', () => {
-			this[PRIVATE].rigidbody.setEnabled(false);
-		});
-		this.visible = true;
 	}
 
 	get isDynamic(): boolean {
@@ -100,9 +95,7 @@ export class Rigidbody extends Object3D {
 	}
 
 	set enabled(value: boolean) {
-		if (this.parent) {
-			this[PRIVATE].rigidbody.setEnabled(value);
-		}
+		this[PRIVATE].rigidbody.setEnabled(value);
 	}
 
 	setBodyType(type: RigidbodyType): void {
@@ -232,8 +225,6 @@ export class Rigidbody extends Object3D {
 		object.forEach((obj) => {
 			if (obj instanceof Collider) {
 				obj.attachToRigidbody(this[PRIVATE].rigidbody);
-			} else {
-				throw new Error('Only Colliders can be added to a Rigidbody');
 			}
 		});
 		return this;
@@ -244,55 +235,57 @@ export class Rigidbody extends Object3D {
 		object.forEach((obj) => {
 			if (obj instanceof Collider) {
 				obj.detachFromRigidbody();
-			} else {
-				throw new Error('Only Colliders can be removed from a Rigidbody');
 			}
 		});
 		return this;
 	}
 
-	syncTransformFromRenderedObject(): void {
-		const rendereredObject = this.parent;
-		if (rendereredObject) {
-			this[PRIVATE].rigidbody.setTranslation(
-				rendereredObject.getWorldPosition(this[PRIVATE].vec3),
-				true,
-			);
-			this[PRIVATE].rigidbody.setRotation(
-				rendereredObject.getWorldQuaternion(this[PRIVATE].quat),
-				true,
-			);
-		}
+	get colliders(): Collider[] {
+		return this.children.filter((obj) => obj instanceof Collider) as Collider[];
 	}
 
-	syncTransformToRenderedObject(): void {
-		const rendereredObject = this.parent;
+	get colliderVisible(): boolean {
+		return this[PRIVATE].colliderVisible;
+	}
+
+	set colliderVisible(value: boolean) {
+		this[PRIVATE].colliderVisible = value;
+		this.colliders.forEach((collider) => {
+			collider.visible = value;
+		});
+	}
+
+	updateTransform(): void {
+		this[PRIVATE].rigidbody.setTranslation(
+			this.getWorldPosition(this[PRIVATE].vec3),
+			true,
+		);
+		this[PRIVATE].rigidbody.setRotation(
+			this.getWorldQuaternion(this[PRIVATE].quat),
+			true,
+		);
+	}
+
+	syncTransform(): void {
 		const rbPosition = this[PRIVATE].rigidbody.translation();
 		const rbQuaternion = this[PRIVATE].rigidbody.rotation();
-		if (rendereredObject) {
-			this.setWorldTransform(
-				rendereredObject,
-				new Vector3(rbPosition.x, rbPosition.y, rbPosition.z),
-				new Quaternion(
-					rbQuaternion.x,
-					rbQuaternion.y,
-					rbQuaternion.z,
-					rbQuaternion.w,
-				),
-			);
-		}
+		this.setWorldTransform(
+			new Vector3(rbPosition.x, rbPosition.y, rbPosition.z),
+			new Quaternion(
+				rbQuaternion.x,
+				rbQuaternion.y,
+				rbQuaternion.z,
+				rbQuaternion.w,
+			),
+		);
 	}
 
-	setWorldTransform = (
-		object3D: Object3D,
-		worldPosition: Vector3,
-		worldQuaternion: Quaternion,
-	) => {
-		if (object3D.parent) {
+	setWorldTransform = (worldPosition: Vector3, worldQuaternion: Quaternion) => {
+		if (this.parent) {
 			// Get the parent's world matrix
 			const parentWorldMatrix = this[PRIVATE].mat4;
-			object3D.parent.updateMatrixWorld(true);
-			parentWorldMatrix.copy(object3D.parent.matrixWorld).invert();
+			this.parent.updateMatrixWorld(true);
+			parentWorldMatrix.copy(this.parent.matrixWorld).invert();
 
 			// Compute the local position
 			const localPosition = worldPosition
@@ -301,18 +294,18 @@ export class Rigidbody extends Object3D {
 
 			// Compute the local quaternion
 			const parentWorldQuaternion = this[PRIVATE].quat;
-			object3D.parent.getWorldQuaternion(parentWorldQuaternion);
+			this.parent.getWorldQuaternion(parentWorldQuaternion);
 			const localQuaternion = worldQuaternion
 				.clone()
 				.multiply(parentWorldQuaternion.conjugate());
 
 			// Set the Object3D's local position and local quaternion
-			object3D.position.copy(localPosition);
-			object3D.quaternion.copy(localQuaternion);
+			this.position.copy(localPosition);
+			this.quaternion.copy(localQuaternion);
 		} else {
 			// If there's no parent, the world transform is the local transform
-			object3D.position.copy(worldPosition);
-			object3D.quaternion.copy(worldQuaternion);
+			this.position.copy(worldPosition);
+			this.quaternion.copy(worldQuaternion);
 		}
 	};
 

@@ -1,8 +1,8 @@
 import { Collider, PRIVATE } from '../Collider';
 
 import { BoxGeometry } from 'three';
-import { PhysicMaterial } from '../Material';
 import { Physics } from '../Physics';
+import { PhysicsMaterial } from '../Material';
 
 export class BoxCollider extends Collider {
 	constructor(
@@ -10,7 +10,7 @@ export class BoxCollider extends Collider {
 		height: number,
 		depth: number,
 		trigger = false,
-		material = new PhysicMaterial(),
+		material = new PhysicsMaterial(),
 	) {
 		super(material);
 		const RAPIER = Physics.getInstance().module;
@@ -19,6 +19,7 @@ export class BoxCollider extends Collider {
 			height / 2,
 			depth / 2,
 		).setSensor(trigger);
+		this.syncProperties();
 		this.geometry = new BoxGeometry(width, height, depth);
 	}
 }

@@ -57,7 +57,12 @@ export { CylinderCollider } from './physics/colliders/CylinderCollider';
 export { PlaneCollider } from './physics/colliders/PlaneCollider';
 export { SphereCollider } from './physics/colliders/SphereCollider';
 export { Physics } from './physics/Physics';
-export { Rigidbody } from './physics/Rigidbody';
+export {
+	Rigidbody,
+	RigidbodyType,
+	RigidbodyConstraints,
+} from './physics/Rigidbody';
+export { PhysicsMaterial } from './physics/Material';
 
 /* -------------------------------------------------------------------------- */
 /*                                Locomotion                                  */

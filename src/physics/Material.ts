@@ -2,7 +2,7 @@ import { CoefficientCombineRule } from '@dimforge/rapier3d';
 
 export const PRIVATE = Symbol('@elixr/physics/material');
 
-export class PhysicMaterial {
+export class PhysicsMaterial {
 	/** @ignore */
 	[PRIVATE]: {
 		density: number;

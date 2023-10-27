@@ -6,16 +6,16 @@ import {
 	GameSystem,
 	Mesh,
 	MeshStandardMaterial,
+	PhysicsMaterial,
 	PlaneCollider,
 	PlaneGeometry,
 	Rigidbody,
+	RigidbodyType,
 	SphereCollider,
 	SphereGeometry,
 	VRButton,
 	initEngine,
 } from 'elixr';
-
-import { RigidbodyType } from 'elixr/dist/physics/Rigidbody';
 
 const assets = {
 	props: {
@@ -29,30 +29,30 @@ const assets = {
 
 class ExampleSystem extends GameSystem {
 	init() {
-		const sphere = new GameObject().add(
-			new Mesh(
-				new SphereGeometry(1, 32, 32),
-				new MeshStandardMaterial({ color: 0xff0000 }),
-			),
-		);
+		const pmat = new PhysicsMaterial({ friction: 1, restitution: 1 });
+		const sphere = new Rigidbody()
+			.add(new SphereCollider(1, false, pmat))
+			.add(
+				new Mesh(
+					new SphereGeometry(1, 32, 32),
+					new MeshStandardMaterial({ color: 0xff0000 }),
+				),
+			);
 		sphere.position.set(0, 5, 0);
-		const sphereRigidBody = new Rigidbody().add(new SphereCollider(1));
-		sphere.add(sphereRigidBody);
-		this.sphereRigidBody = sphereRigidBody;
+		sphere.updateTransform();
+		sphere.colliderVisible = true;
 
-		const floor = new GameObject().add(
-			new Mesh(
-				new PlaneGeometry(10, 10),
-				new MeshStandardMaterial({ color: 0x00ff00 }),
-			),
-		);
-		floor.position.set(0, -1, 0);
-		floor.rotateX(-Math.PI / 2);
-		const floorRigidBody = new Rigidbody({ type: RigidbodyType.Kinematic }).add(
-			new PlaneCollider(10, 10),
-		);
-		floor.add(floorRigidBody);
-		this.floor = floor;
+		this.floor = new Rigidbody({ type: RigidbodyType.Kinematic })
+			.add(new PlaneCollider(10, 10, false, pmat))
+			.add(
+				new Mesh(
+					new PlaneGeometry(10, 10),
+					new MeshStandardMaterial({ color: 0x00ff00 }),
+				),
+			);
+		this.floor.position.set(0, -1, 0);
+		this.floor.rotateX(-Math.PI / 2);
+		this.floor.colliderVisible = true;
 	}
 
 	initXR() {
@@ -93,7 +93,7 @@ initEngine(
 	core.scene.add(directionalLight);
 
 	// Set camera position
-	core.camera.position.set(0, 0, 5);
+	core.camera.position.set(0, 0, 10);
 
 	const vrButton = document.getElementById('vr-button');
 	VRButton.convertToVRButton(vrButton, core.renderer);

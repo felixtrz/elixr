@@ -73,8 +73,13 @@ export class Physics {
 
 		for (const rigidbody of this[PRIVATE].rigidBodyMap.values()) {
 			if (rigidbody.enabled && rigidbody.isKinematic) {
-				rigidbody.syncTransformFromRenderedObject();
+				rigidbody.updateTransform();
 			}
+			rigidbody.colliders.forEach((collider) => {
+				if (collider.needsUpdate) {
+					collider.syncProperties();
+				}
+			});
 		}
 
 		this.world.timestep = delta;
@@ -82,7 +87,7 @@ export class Physics {
 
 		for (const rigidbody of this[PRIVATE].rigidBodyMap.values()) {
 			if (rigidbody.enabled && !rigidbody.isKinematic) {
-				rigidbody.syncTransformToRenderedObject();
+				rigidbody.syncTransform();
 			}
 		}
 	}

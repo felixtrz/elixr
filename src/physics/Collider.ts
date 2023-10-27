@@ -5,8 +5,8 @@ import {
 } from '@dimforge/rapier3d';
 import { Mesh, MeshBasicMaterial, Quaternion, Vector3 } from 'three';
 
-import { PhysicMaterial } from './Material';
 import { Physics } from './Physics';
+import { PhysicsMaterial } from './Material';
 
 export const PRIVATE = Symbol('@elixr/physics/collider');
 
@@ -40,13 +40,13 @@ function createProxy<T extends object>(obj: T, onChange: () => void): T {
 export abstract class Collider extends Mesh {
 	/** @ignore */
 	[PRIVATE]: {
-		physicMaterial: PhysicMaterial;
+		physicMaterial: PhysicsMaterial;
 		needsUpdate: boolean;
 		colliderDesc: ColliderDesc;
 		collider: RCollider;
 	};
 
-	constructor(physicMaterial: PhysicMaterial) {
+	constructor(physicMaterial: PhysicsMaterial) {
 		super(undefined, WIREFRAME_MATERIAL);
 		this[PRIVATE] = {
 			physicMaterial,
@@ -89,6 +89,7 @@ export abstract class Collider extends Mesh {
 					}),
 			},
 		});
+		this.visible = false;
 	}
 
 	get trigger(): boolean {
@@ -136,13 +137,35 @@ export abstract class Collider extends Mesh {
 		this[PRIVATE].colliderDesc.setCollisionGroups(value);
 	}
 
-	get physicMaterial(): PhysicMaterial {
+	get physicMaterial(): PhysicsMaterial {
 		return this[PRIVATE].physicMaterial;
 	}
 
-	set physicMaterial(value: PhysicMaterial) {
+	set physicMaterial(value: PhysicsMaterial) {
 		this[PRIVATE].physicMaterial = value;
 		this[PRIVATE].needsUpdate = true;
+	}
+
+	syncProperties(): void {
+		if (this[PRIVATE].collider) {
+			this[PRIVATE].collider.setDensity(this.physicMaterial.density);
+			this[PRIVATE].collider.setFriction(this.physicMaterial.friction);
+			this[PRIVATE].collider.setRestitution(this.physicMaterial.bounciness);
+			this[PRIVATE].collider.setFrictionCombineRule(
+				this.physicMaterial.frictionCombine,
+			);
+			this[PRIVATE].collider.setRestitutionCombineRule(
+				this.physicMaterial.bouncinessCombine,
+			);
+		}
+		this[PRIVATE].colliderDesc.density = this.physicMaterial.density;
+		this[PRIVATE].colliderDesc.friction = this.physicMaterial.friction;
+		this[PRIVATE].colliderDesc.restitution = this.physicMaterial.bounciness;
+		this[PRIVATE].colliderDesc.frictionCombineRule =
+			this.physicMaterial.frictionCombine;
+		this[PRIVATE].colliderDesc.restitutionCombineRule =
+			this.physicMaterial.bouncinessCombine;
+		this[PRIVATE].needsUpdate = false;
 	}
 
 	attachToRigidbody(rigidbody: RigidBody): void {

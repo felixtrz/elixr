@@ -1,7 +1,7 @@
 import { Collider, PRIVATE } from '../Collider';
 
-import { PhysicMaterial } from '../Material';
 import { Physics } from '../Physics';
+import { PhysicsMaterial } from '../Material';
 import { PlaneGeometry } from 'three';
 
 export class PlaneCollider extends Collider {
@@ -9,7 +9,7 @@ export class PlaneCollider extends Collider {
 		width: number,
 		height: number,
 		trigger = false,
-		material = new PhysicMaterial(),
+		material = new PhysicsMaterial(),
 	) {
 		super(material);
 		const RAPIER = Physics.getInstance().module;
@@ -18,6 +18,7 @@ export class PlaneCollider extends Collider {
 			height / 2,
 			0,
 		).setSensor(trigger);
+		this.syncProperties();
 		this.geometry = new PlaneGeometry(width, height);
 	}
 }
