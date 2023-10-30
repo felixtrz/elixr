@@ -10,8 +10,8 @@ import { GameSystem, GameSystemConstructor } from './GameSystem';
 import { Scene, THREE } from '../graphics/Three';
 
 import { AssetManager } from '../graphics/AssetManager';
+import { AudioManager } from '../audio/AudioManager';
 import { Player } from '../xr/Player';
-import { SESSION_MODE } from '../constants';
 
 export const PRIVATE = Symbol('@elixr/ecs/core');
 
@@ -22,6 +22,7 @@ export class Core {
 		ecsyWorld: EcsyWorld;
 		gameManager: Entity;
 		assetManager: AssetManager;
+		audioManager: AudioManager;
 		scene: THREE.Scene;
 		renderer: THREE.WebGLRenderer;
 		camera: THREE.PerspectiveCamera;
@@ -33,6 +34,7 @@ export class Core {
 		ecsyWorld: new EcsyWorld(),
 		gameManager: null,
 		assetManager: null,
+		audioManager: null,
 		scene: new Scene(),
 		renderer: null,
 		camera: null,
@@ -79,13 +81,13 @@ export class Core {
 	/** Enum value indicating the current XRSessionMode */
 	get sessionMode() {
 		if (!this.renderer.xr.isPresenting) {
-			return SESSION_MODE.INLINE;
+			return 'inline';
 		} else {
 			const session = this.renderer.xr.getSession();
 			if (session.environmentBlendMode === 'opaque') {
-				return SESSION_MODE.IMMERSIVE_VR;
+				return 'immersive-vr';
 			} else {
-				return SESSION_MODE.IMMERSIVE_AR;
+				return 'immersive-ar';
 			}
 		}
 	}

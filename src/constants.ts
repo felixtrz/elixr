@@ -6,17 +6,18 @@ export enum JOYSTICK_STATES {
 	BACK = 4,
 }
 
-export enum SESSION_MODE {
-	INLINE = 'inline',
-	IMMERSIVE_VR = 'immersive-vr',
-	IMMERSIVE_AR = 'immersive-ar',
+export enum ASSET_TYPE {
+	GLTF = 'GLTF',
+	OBJ = 'OBJ',
+	TEXTURE = 'TEXTURE',
+	IMAGE = 'IMAGE',
+	RGBE = 'RGBE',
+	KTX2 = 'KTX2',
+	AUDIO = 'AUDIO',
 }
 
-export enum PRIMITIVE_TYPE {
-	Sphere = 'sphere',
-	Capsule = 'capsule',
-	Cylinder = 'cylinder',
-	Cube = 'cube',
-	Plane = 'plane',
-	Quad = 'quad',
+export interface AssetDescriptor {
+	url: string;
+	type: ASSET_TYPE;
+	callback: (asset: any) => void;
 }

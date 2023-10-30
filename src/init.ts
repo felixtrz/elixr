@@ -1,7 +1,9 @@
-import { AssetDescriptor, AssetManager } from './graphics/AssetManager';
+import { ASSET_TYPE, AssetDescriptor } from './constants';
 import { Clock, PerspectiveCamera, SRGBColorSpace, WebGLRenderer } from 'three';
 import { Core, PRIVATE } from './ecs/Core';
 
+import { AssetManager } from './graphics/AssetManager';
+import { AudioManager } from './audio/AudioManager';
 import { Physics } from './physics/Physics';
 import { Player } from './xr/Player';
 
@@ -20,6 +22,16 @@ export const initEngine = async (
 	initialAssets: Record<string, AssetDescriptor> = {},
 ) => {
 	const core = Core.init();
+	const audioAssets = Object.fromEntries(
+		Object.entries(initialAssets).filter(
+			([_, assetDescriptor]) => assetDescriptor.type === ASSET_TYPE.AUDIO,
+		),
+	);
+	const visualAssets = Object.fromEntries(
+		Object.entries(initialAssets).filter(
+			([_, assetDescriptor]) => assetDescriptor.type !== ASSET_TYPE.AUDIO,
+		),
+	);
 
 	// Camera Setup
 	const { cameraFov = 50, cameraNear = 0.1, cameraFar = 100 } = options;
@@ -47,7 +59,7 @@ export const initEngine = async (
 	sceneContainer.appendChild(core.renderer.domElement);
 
 	// Load Initial Assets
-	const assetManager = AssetManager.init(renderer, initialAssets);
+	const assetManager = AssetManager.init(renderer, visualAssets);
 	core[PRIVATE].assetManager = assetManager;
 
 	// Instantiate Player
@@ -61,6 +73,10 @@ export const initEngine = async (
 	if (enablePhysics) {
 		physics = await Physics.init();
 	}
+
+	// Audio Setup
+	const audioManager = AudioManager.init(audioAssets);
+	core[PRIVATE].audioManager = audioManager;
 
 	// Render Loop
 	const { waitForAssets = true } = options;

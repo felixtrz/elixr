@@ -12,11 +12,7 @@ const FIGLET = String.raw`
 /* -------------------------------------------------------------------------- */
 export * from './graphics/Three';
 export { CurvedRaycaster } from './addons/CurvedRaycaster';
-export {
-	AssetManager,
-	AssetDescriptor,
-	ASSET_TYPE,
-} from './graphics/AssetManager';
+export { AssetManager } from './graphics/AssetManager';
 
 /* -------------------------------------------------------------------------- */
 /*                           Entity Component System                          */
@@ -65,6 +61,12 @@ export {
 export { PhysicsMaterial } from './physics/Material';
 
 /* -------------------------------------------------------------------------- */
+/*                                Audio Engine                                */
+/* -------------------------------------------------------------------------- */
+export { AudioManager } from './audio/AudioManager';
+export { AudioSource, AudioOptions } from './audio/AudioSource';
+
+/* -------------------------------------------------------------------------- */
 /*                                Locomotion                                  */
 /* -------------------------------------------------------------------------- */
 export {
@@ -91,7 +93,7 @@ export {
 /* -------------------------------------------------------------------------- */
 /*                                    Enums                                   */
 /* -------------------------------------------------------------------------- */
-export { JOYSTICK_STATES, SESSION_MODE } from './constants';
+export { JOYSTICK_STATES, ASSET_TYPE, AssetDescriptor } from './constants';
 
 /* -------------------------------------------------------------------------- */
 /*                                 Geometries                                 */

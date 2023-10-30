@@ -1,3 +1,4 @@
+import { ASSET_TYPE, AssetDescriptor } from '../constants';
 import {
 	CompressedTexture,
 	DataTexture,
@@ -16,21 +17,6 @@ import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
 import { KTX2Loader } from 'three/examples/jsm/loaders/KTX2Loader.js';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
 import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader.js';
-
-export enum ASSET_TYPE {
-	GLTF = 'GLTF',
-	OBJ = 'OBJ',
-	TEXTURE = 'TEXTURE',
-	IMAGE = 'IMAGE',
-	RGBE = 'RGBE',
-	KTX2 = 'KTX2',
-}
-
-export interface AssetDescriptor {
-	url: string;
-	type: ASSET_TYPE;
-	callback: (asset: any) => void;
-}
 
 interface LoadEventData {
 	type: 'load';

@@ -35,10 +35,12 @@
 		"@dimforge/rapier3d": "^0.11.1",
 		"ecsy": "github:felixtrz/felicsy",
 		"gamepad-wrapper": "^1.2.0",
+		"howler": "^2.2.4",
 		"three": "npm:super-three@0.157.1",
 		"three-mesh-bvh": "^0.5.17"
 	},
 	"devDependencies": {
+		"@types/howler": "^2.2.10",
 		"@types/node": "^18.14.0",
 		"@types/three": "^0.157.0",
 		"@typescript-eslint/eslint-plugin": "^6.7.5",
