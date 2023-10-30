@@ -1,6 +1,8 @@
 import { AudioManager } from './AudioManager';
+import { Core } from '../ecs/Core';
 import { GameObject } from '../ecs/GameObject';
 import { Howl } from 'howler';
+import { Vector3 } from 'three';
 
 export const PRIVATE = Symbol('@elixr/audio/audio-source');
 
@@ -10,6 +12,7 @@ export type AudioOptions = {
 	positional?: boolean;
 	volume?: number;
 	rate?: number;
+	autoPositionUpdate?: boolean;
 };
 
 export class AudioSource extends GameObject {
@@ -21,6 +24,8 @@ export class AudioSource extends GameObject {
 		loop: boolean;
 		volume: number;
 		rate: number;
+		vec3: Vector3;
+		autoPositionUpdate: boolean;
 	};
 
 	constructor(
@@ -31,6 +36,7 @@ export class AudioSource extends GameObject {
 			autoPlay: false,
 			volume: 1,
 			rate: 1,
+			autoPositionUpdate: false,
 		},
 	) {
 		super();
@@ -47,10 +53,16 @@ export class AudioSource extends GameObject {
 			loop: options.loop,
 			volume: options.volume,
 			rate: options.rate,
+			vec3: new Vector3(),
+			autoPositionUpdate: options.autoPositionUpdate,
 		};
 
 		if (options.autoPlay) {
 			this.play();
+		}
+
+		if (options.positional && !options.autoPositionUpdate) {
+			this.updatePosition();
 		}
 	}
 
@@ -124,20 +136,27 @@ export class AudioSource extends GameObject {
 		return this[PRIVATE].loop;
 	}
 
+	private updatePosition(): void {
+		const playerHead = Core.getInstance().player.head;
+		const worldPosition = this.getWorldPosition(this[PRIVATE].vec3);
+		const localPosition = playerHead.worldToLocal(worldPosition);
+		this[PRIVATE].sound.pos(
+			localPosition.x,
+			localPosition.y,
+			localPosition.z,
+			this[PRIVATE].soundInstance,
+		);
+	}
+
 	updateMatrixWorld(force?: boolean): void {
 		super.updateMatrixWorld(force);
 		if (
 			this[PRIVATE].soundInstance !== undefined &&
 			this[PRIVATE].positional &&
+			this[PRIVATE].autoPositionUpdate &&
 			this[PRIVATE].sound.playing(this[PRIVATE].soundInstance)
 		) {
-			const position = this.position;
-			this[PRIVATE].sound.pos(
-				position.x,
-				position.y,
-				position.z,
-				this[PRIVATE].soundInstance,
-			);
+			this.updatePosition();
 		}
 	}
 }
