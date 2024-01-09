@@ -2,6 +2,7 @@ import { Matrix4, WebXRManager } from 'three';
 import { PRIVATE as XRCONTROLLER_PRIVATE, XRController } from './XRController';
 
 import { GameObject } from '../ecs/GameObject';
+import { World } from '../ecs/World';
 
 export const PRIVATE = Symbol('@elixr/xr/player');
 
@@ -15,13 +16,13 @@ export class Player extends GameObject {
 		controllers: null,
 	};
 
-	constructor() {
-		super();
-		this[PRIVATE].head = new GameObject(this);
+	constructor(world: World) {
+		super(world);
+		this[PRIVATE].head = world.createGameObject();
 		this[PRIVATE].controllers = {
-			none: new XRController('none', this),
-			left: new XRController('left', this),
-			right: new XRController('right', this),
+			none: new XRController(world, 'none', this),
+			left: new XRController(world, 'left', this),
+			right: new XRController(world, 'right', this),
 		};
 	}
 

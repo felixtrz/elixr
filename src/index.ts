@@ -11,23 +11,15 @@ const FIGLET = String.raw`
 /*                                 3D Library                                 */
 /* -------------------------------------------------------------------------- */
 export * from './graphics/Three';
-export { CurvedRaycaster } from './addons/CurvedRaycaster';
 export { AssetManager } from './graphics/AssetManager';
 
 /* -------------------------------------------------------------------------- */
 /*                           Entity Component System                          */
 /* -------------------------------------------------------------------------- */
-export { Not, Types } from 'ecsy';
-export { GameObject, PrimitiveType } from './ecs/GameObject';
-export { GameComponent } from './ecs/GameComponent';
-export { SystemConfig } from './ecs/GameComponent';
-export {
-	GameSystem,
-	XRGameSystem,
-	SingleUseGameSystem,
-	SingleUseXRGameSystem,
-} from './ecs/GameSystem';
-export { Core } from './ecs/Core';
+
+export { GameObject } from './ecs/GameObject';
+export { GameSystem, XRGameSystem } from './ecs/GameSystem';
+export { World } from './ecs/World';
 export { initEngine, EngineInitOptions } from './init';
 
 /* -------------------------------------------------------------------------- */
@@ -69,36 +61,11 @@ export { AudioSource, AudioOptions } from './audio/AudioSource';
 /* -------------------------------------------------------------------------- */
 /*                                Locomotion                                  */
 /* -------------------------------------------------------------------------- */
-export {
-	MovementSurface,
-	MovementObstacle,
-} from './addons/locomotion/MovementComponents';
-export {
-	XRSnapTurnConfig,
-	XRSnapTurnSystem,
-} from './addons/locomotion/XRSnapTurnSystem';
-export {
-	XRSmoothTurnConfig,
-	XRSmoothTurnSystem,
-} from './addons/locomotion/XRSmoothTurnSystem';
-export {
-	XRTeleportConfig,
-	XRTeleportSystem,
-} from './addons/locomotion/XRTeleportSystem';
-export {
-	XRSlideConfig,
-	XRSlideSystem,
-} from './addons/locomotion/XRSlideSystem';
 
 /* -------------------------------------------------------------------------- */
 /*                                    Enums                                   */
 /* -------------------------------------------------------------------------- */
 export { JOYSTICK_STATES, ASSET_TYPE, AssetDescriptor } from './constants';
-
-/* -------------------------------------------------------------------------- */
-/*                                 Geometries                                 */
-/* -------------------------------------------------------------------------- */
-export { CurveTubeGeometry } from './addons/geometries/CurveTubeGeometry';
 
 /* -------------------------------------------------------------------------- */
 /*                                 XR Buttons                                 */

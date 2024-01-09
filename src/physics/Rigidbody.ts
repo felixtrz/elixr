@@ -7,9 +7,11 @@ import {
 } from 'three';
 
 import { Collider } from './Collider';
+import { World as ElicsWorld } from 'elics';
 import { GameObject } from '../ecs/GameObject';
 import { Physics } from './Physics';
 import { RigidBody } from '@dimforge/rapier3d';
+import { World } from '../ecs/World';
 
 export const PRIVATE = Symbol('@elixr/physics/rigidbody');
 
@@ -32,6 +34,15 @@ export enum RigidbodyConstraints {
 	FreezeAll = FreezePosition | FreezeRotation,
 }
 
+export type RigidbodyOptions = {
+	type?: RigidbodyType;
+	gravityScale?: number;
+	drag?: number;
+	angularDrag?: number;
+	canSleep?: boolean;
+	ccdEnabled?: boolean;
+};
+
 export class Rigidbody extends GameObject {
 	/** @ignore */
 	[PRIVATE]: {
@@ -44,22 +55,25 @@ export class Rigidbody extends GameObject {
 		mat4: Matrix4;
 	};
 
-	constructor({
-		type = RigidbodyType.Dynamic,
-		gravityScale = 1,
-		drag = 0,
-		angularDrag = 0,
-		canSleep = true,
-		ccdEnabled = false,
-	} = {}) {
-		super();
-		const physics = Physics.getInstance();
+	constructor(
+		world: ElicsWorld,
+		{
+			type = RigidbodyType.Dynamic,
+			gravityScale = 1,
+			drag = 0,
+			angularDrag = 0,
+			canSleep = true,
+			ccdEnabled = false,
+		}: RigidbodyOptions = {},
+	) {
+		super(world);
+		const physics = (world as World).physics!;
 		const rigidbodyDesc = (
 			type === RigidbodyType.Dynamic
-				? physics.module.RigidBodyDesc.dynamic()
+				? Physics.module.RigidBodyDesc.dynamic()
 				: type === RigidbodyType.Kinematic
-				? physics.module.RigidBodyDesc.kinematicPositionBased()
-				: physics.module.RigidBodyDesc.fixed()
+				? Physics.module.RigidBodyDesc.kinematicPositionBased()
+				: Physics.module.RigidBodyDesc.fixed()
 		)
 			.setGravityScale(gravityScale)
 			.setLinearDamping(drag)
@@ -99,7 +113,7 @@ export class Rigidbody extends GameObject {
 	}
 
 	setBodyType(type: RigidbodyType): void {
-		const RAPIER = Physics.getInstance().module;
+		const RAPIER = Physics.module;
 		this[PRIVATE].rigidbody.setBodyType(
 			type === RigidbodyType.Dynamic
 				? RAPIER.RigidBodyType.Dynamic

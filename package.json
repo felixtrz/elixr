@@ -33,7 +33,7 @@
 	"homepage": "https://github.com/felixtrz/elixr#readme",
 	"dependencies": {
 		"@dimforge/rapier3d": "^0.11.1",
-		"ecsy": "github:felixtrz/felicsy",
+		"elics": "^0.1.4",
 		"gamepad-wrapper": "^1.2.0",
 		"howler": "^2.2.4",
 		"three": "npm:super-three@0.160.0",
@@ -42,7 +42,7 @@
 	"devDependencies": {
 		"@types/howler": "^2.2.10",
 		"@types/node": "^18.14.0",
-		"@types/three": "^0.157.0",
+		"@types/three": "^0.160.0",
 		"@typescript-eslint/eslint-plugin": "^6.7.5",
 		"@typescript-eslint/parser": "^6.7.5",
 		"cpy-cli": "^4.2.0",

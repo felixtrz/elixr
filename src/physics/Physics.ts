@@ -1,56 +1,38 @@
 import { RigidBody, World } from '@dimforge/rapier3d';
+import { Rigidbody, RigidbodyOptions } from './Rigidbody'; // Adjust the import path accordingly
 
-import { Rigidbody } from './Rigidbody'; // Adjust the import path accordingly
+import { World as ECSWorld } from '../ecs/World';
 import { Vector3 } from 'three';
 
 export const PRIVATE = Symbol('@elixr/physics/rapier-physics');
 
 export class Physics {
-	private static instance: Physics;
+	public static module: typeof import('@dimforge/rapier3d');
 
 	[PRIVATE]: {
-		module: typeof import('@dimforge/rapier3d');
 		world: World;
+		ecsWorld: ECSWorld;
 		rigidBodyMap: Map<RigidBody, Rigidbody>;
 	};
 
-	private constructor() {
+	constructor(ecsWorld: ECSWorld, gravity: Vector3) {
 		this[PRIVATE] = {
-			module: null,
-			world: null,
+			world: new World({
+				x: gravity.x,
+				y: gravity.y,
+				z: gravity.z,
+			}),
+			ecsWorld,
 			rigidBodyMap: new Map(),
 		};
 	}
 
-	public static getInstance(): Physics {
-		if (!Physics.instance) {
-			throw new Error('Rapier not initialized');
-		}
-		return Physics.instance;
-	}
-
-	public static async init(
-		gravity: Vector3 = new Vector3(0, -9.81, 0),
-	): Promise<Physics> {
-		if (Physics.instance) {
-			throw new Error('Rapier already initialized');
-		}
-		Physics.instance = new Physics();
-		Physics.instance[PRIVATE].module = await import('@dimforge/rapier3d');
-		Physics.instance[PRIVATE].world = new World({
-			x: gravity.x,
-			y: gravity.y,
-			z: gravity.z,
-		});
-		return Physics.instance;
-	}
-
-	get module() {
-		return this[PRIVATE].module;
-	}
-
 	get world() {
 		return this[PRIVATE].world;
+	}
+
+	createRigidBody(options: RigidbodyOptions): Rigidbody {
+		return new Rigidbody(this[PRIVATE].ecsWorld, options);
 	}
 
 	public associateRigidBody(

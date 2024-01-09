@@ -6,14 +6,15 @@ import { PhysicsMaterial } from '../Material';
 
 export class BoxCollider extends Collider {
 	constructor(
+		physics: Physics,
 		width: number,
 		height: number,
 		depth: number,
 		trigger = false,
 		material = new PhysicsMaterial(),
 	) {
-		super(material);
-		const RAPIER = Physics.getInstance().module;
+		super(physics, material);
+		const RAPIER = Physics.module;
 		this[PRIVATE].colliderDesc = RAPIER.ColliderDesc.cuboid(
 			width / 2,
 			height / 2,

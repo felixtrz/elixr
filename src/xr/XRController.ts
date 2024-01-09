@@ -2,6 +2,7 @@ import { Group, Object3DEventMap } from 'three';
 
 import { GameObject } from '../ecs/GameObject';
 import { GamepadWrapper } from 'gamepad-wrapper';
+import { World } from '../ecs/World';
 import { XRControllerModelFactory } from 'three/examples/jsm/webxr/XRControllerModelFactory.js';
 
 export const PRIVATE = Symbol('@elixr/xr/xr-controller');
@@ -39,8 +40,9 @@ export class XRController extends GameObject<ExtendedEventMap> {
 
 	isGroup = true;
 
-	constructor(handedness: XRHandedness, player: GameObject) {
-		super(player);
+	constructor(world: World, handedness: XRHandedness, player: GameObject) {
+		super(world);
+		player.add(this);
 		this[PRIVATE].handedness = handedness;
 		player.add(this[PRIVATE].raySpace);
 		this[PRIVATE].model = controllerModelFactory.createControllerModel(

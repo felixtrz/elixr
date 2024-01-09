@@ -70,9 +70,7 @@ export class AssetManager extends EventDispatcher<AssetManagerEventMap> {
 		assetMap: new Map(),
 	};
 
-	private static instance: AssetManager | null = null;
-
-	private constructor(
+	constructor(
 		renderer: WebGLRenderer,
 		initialAssets: Record<string, AssetDescriptor>,
 	) {
@@ -127,23 +125,6 @@ export class AssetManager extends EventDispatcher<AssetManagerEventMap> {
 			};
 			this.dispatchEvent(event);
 		};
-	}
-
-	public static init(
-		renderer: WebGLRenderer,
-		initialAssets: Record<string, AssetDescriptor>,
-	): AssetManager {
-		if (this.instance === null) {
-			this.instance = new AssetManager(renderer, initialAssets);
-		}
-		return this.instance;
-	}
-
-	public static getInstance(): AssetManager {
-		if (this.instance === null) {
-			throw new Error('AssetManager not initialized');
-		}
-		return this.instance;
 	}
 
 	public loadAsset(id: string, descriptor: AssetDescriptor): any {

@@ -2,6 +2,7 @@ import {
 	ColliderDesc,
 	Collider as RCollider,
 	RigidBody,
+	World,
 } from '@dimforge/rapier3d';
 import { Mesh, MeshBasicMaterial, Quaternion, Vector3 } from 'three';
 
@@ -40,15 +41,17 @@ function createProxy<T extends object>(obj: T, onChange: () => void): T {
 export abstract class Collider extends Mesh {
 	/** @ignore */
 	[PRIVATE]: {
+		physicsWorld: World;
 		physicMaterial: PhysicsMaterial;
 		needsUpdate: boolean;
 		colliderDesc: ColliderDesc;
 		collider: RCollider;
 	};
 
-	constructor(physicMaterial: PhysicsMaterial) {
+	constructor(physics: Physics, physicMaterial: PhysicsMaterial) {
 		super(undefined, WIREFRAME_MATERIAL);
 		this[PRIVATE] = {
+			physicsWorld: physics.world,
 			physicMaterial,
 			needsUpdate: true,
 			colliderDesc: null,
@@ -169,7 +172,7 @@ export abstract class Collider extends Mesh {
 	}
 
 	attachToRigidbody(rigidbody: RigidBody): void {
-		this[PRIVATE].collider = Physics.getInstance().world.createCollider(
+		this[PRIVATE].collider = this[PRIVATE].physicsWorld.createCollider(
 			this[PRIVATE].colliderDesc,
 			rigidbody,
 		);
@@ -177,7 +180,7 @@ export abstract class Collider extends Mesh {
 	}
 
 	detachFromRigidbody(): void {
-		Physics.getInstance().world.removeCollider(this[PRIVATE].collider, true);
+		this[PRIVATE].physicsWorld.removeCollider(this[PRIVATE].collider, true);
 		this[PRIVATE].collider = null;
 	}
 

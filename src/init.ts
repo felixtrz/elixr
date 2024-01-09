@@ -1,6 +1,13 @@
 import { ASSET_TYPE, AssetDescriptor } from './constants';
-import { Clock, PerspectiveCamera, SRGBColorSpace, WebGLRenderer } from 'three';
-import { Core, PRIVATE } from './ecs/Core';
+import {
+	Clock,
+	PerspectiveCamera,
+	SRGBColorSpace,
+	Scene,
+	Vector3,
+	WebGLRenderer,
+} from 'three';
+import { PRIVATE as WORLD_PRIVATE, World } from './ecs/World';
 
 import { AssetManager } from './graphics/AssetManager';
 import { AudioManager } from './audio/AudioManager';
@@ -13,6 +20,7 @@ export type EngineInitOptions = {
 	cameraFar?: number;
 	alpha?: boolean;
 	enablePhysics?: boolean;
+	gravity?: Vector3;
 	waitForAssets?: boolean;
 };
 
@@ -21,7 +29,9 @@ export const initEngine = async (
 	options: EngineInitOptions = {},
 	initialAssets: Record<string, AssetDescriptor> = {},
 ) => {
-	const core = Core.init();
+	// ECS Setup
+	const world = new World();
+
 	const audioAssets = Object.fromEntries(
 		Object.entries(initialAssets).filter(
 			([_, assetDescriptor]) => assetDescriptor.type === ASSET_TYPE.AUDIO,
@@ -42,7 +52,6 @@ export const initEngine = async (
 		cameraFar,
 	);
 	camera.position.set(0, 1.7, 0);
-	core[PRIVATE].camera = camera;
 
 	// Renderer Setup
 	const { alpha = true } = options;
@@ -55,28 +64,35 @@ export const initEngine = async (
 	renderer.setSize(window.innerWidth, window.innerHeight);
 	renderer.outputColorSpace = SRGBColorSpace;
 	renderer.xr.enabled = true;
-	core[PRIVATE].renderer = renderer;
-	sceneContainer.appendChild(core.renderer.domElement);
+	sceneContainer.appendChild(renderer.domElement);
+	const scene = new Scene();
+	world[WORLD_PRIVATE].scene = scene;
+	world[WORLD_PRIVATE].camera = camera;
+	world[WORLD_PRIVATE].renderer = renderer;
 
 	// Load Initial Assets
-	const assetManager = AssetManager.init(renderer, visualAssets);
-	core[PRIVATE].assetManager = assetManager;
+	const assetManager = new AssetManager(renderer, visualAssets);
+	world[WORLD_PRIVATE].assetManager = assetManager;
 
 	// Instantiate Player
-	const player = new Player();
-	core[PRIVATE].player = player;
-	player.add(core.camera);
-
-	// Physics Setup
-	const { enablePhysics = false } = options;
-	let physics: Physics;
-	if (enablePhysics) {
-		physics = await Physics.init();
-	}
+	const player = new Player(world);
+	player.add(camera);
+	world[WORLD_PRIVATE].player = player;
 
 	// Audio Setup
-	const audioManager = AudioManager.init(audioAssets);
-	core[PRIVATE].audioManager = audioManager;
+	const audioManager = new AudioManager(player, audioAssets);
+	world[WORLD_PRIVATE].audioManager = audioManager;
+
+	// Physics Setup
+	const { enablePhysics = false, gravity = new Vector3(0, -9.81, 0) } = options;
+	let physics: Physics;
+	if (enablePhysics) {
+		if (!Physics.module) {
+			Physics.module = await import('@dimforge/rapier3d');
+		}
+		physics = new Physics(world, gravity);
+		world[WORLD_PRIVATE].physics = physics;
+	}
 
 	// Render Loop
 	const { waitForAssets = true } = options;
@@ -84,26 +100,27 @@ export const initEngine = async (
 	const render = () => {
 		const delta = clock.getDelta();
 		const elapsedTime = clock.elapsedTime;
-		player.update(core.renderer.xr);
+		player.update(renderer.xr);
 		if (!waitForAssets || assetManager.initialAssetsLoaded) {
-			core[PRIVATE].ecsyWorld.execute(delta, elapsedTime);
+			world.update(delta, elapsedTime);
 		}
 		if (enablePhysics) {
 			physics.update(delta);
 		}
-		core.renderer.render(core.scene, core.camera);
+		audioManager.update();
+		renderer.render(scene, camera);
 	};
 
-	core.renderer.setAnimationLoop(render);
+	renderer.setAnimationLoop(render);
 
 	// Resize Handler
 	const onWindowResize = () => {
-		core[PRIVATE].camera.aspect = window.innerWidth / window.innerHeight;
-		core[PRIVATE].camera.updateProjectionMatrix();
-		core.renderer.setSize(window.innerWidth, window.innerHeight);
+		camera.aspect = window.innerWidth / window.innerHeight;
+		camera.updateProjectionMatrix();
+		renderer.setSize(window.innerWidth, window.innerHeight);
 	};
 
 	window.addEventListener('resize', onWindowResize, false);
 
-	return core;
+	return world;
 };

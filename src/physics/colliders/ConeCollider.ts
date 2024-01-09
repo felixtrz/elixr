@@ -6,13 +6,14 @@ import { PhysicsMaterial } from '../Material';
 
 export class ConeCollider extends Collider {
 	constructor(
+		physics: Physics,
 		radius = 0.5,
 		height = 1,
 		trigger = false,
 		material = new PhysicsMaterial(),
 	) {
-		super(material);
-		const RAPIER = Physics.getInstance().module;
+		super(physics, material);
+		const RAPIER = Physics.module;
 		this[PRIVATE].colliderDesc = RAPIER.ColliderDesc.cone(
 			height / 2,
 			radius,

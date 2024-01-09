@@ -1,8 +1,6 @@
-import { AudioManager } from './AudioManager';
-import { Core } from '../ecs/Core';
-import { GameObject } from '../ecs/GameObject';
+import { Object3D, Object3DEventMap, Vector3 } from 'three';
+
 import { Howl } from 'howler';
-import { Vector3 } from 'three';
 
 export const PRIVATE = Symbol('@elixr/audio/audio-source');
 
@@ -15,7 +13,9 @@ export type AudioOptions = {
 	autoPositionUpdate?: boolean;
 };
 
-export class AudioSource extends GameObject {
+export class AudioSource<
+	TEventMap extends Object3DEventMap = Object3DEventMap,
+> extends Object3D<TEventMap> {
 	/** @ignore */
 	[PRIVATE]: {
 		sound: Howl;
@@ -26,10 +26,11 @@ export class AudioSource extends GameObject {
 		rate: number;
 		vec3: Vector3;
 		autoPositionUpdate: boolean;
+		pendingDestroy: boolean;
 	};
 
 	constructor(
-		soundId: string,
+		howl: Howl,
 		options: AudioOptions = {
 			positional: false,
 			loop: false,
@@ -40,11 +41,6 @@ export class AudioSource extends GameObject {
 		},
 	) {
 		super();
-		const audioManager = AudioManager.getInstance();
-		const howl = audioManager.getSound(soundId);
-		if (!howl) {
-			throw new Error(`Sound with ID ${soundId} not found.`);
-		}
 
 		this[PRIVATE] = {
 			sound: howl,
@@ -55,14 +51,11 @@ export class AudioSource extends GameObject {
 			rate: options.rate,
 			vec3: new Vector3(),
 			autoPositionUpdate: options.autoPositionUpdate,
+			pendingDestroy: false,
 		};
 
 		if (options.autoPlay) {
 			this.play();
-		}
-
-		if (options.positional && !options.autoPositionUpdate) {
-			this.updatePosition();
 		}
 	}
 
@@ -136,8 +129,7 @@ export class AudioSource extends GameObject {
 		return this[PRIVATE].loop;
 	}
 
-	private updatePosition(): void {
-		const playerHead = Core.getInstance().player.head;
+	updatePosition(playerHead: Object3D): void {
 		const worldPosition = this.getWorldPosition(this[PRIVATE].vec3);
 		const localPosition = playerHead.worldToLocal(worldPosition);
 		this[PRIVATE].sound.pos(
@@ -150,13 +142,11 @@ export class AudioSource extends GameObject {
 
 	updateMatrixWorld(force?: boolean): void {
 		super.updateMatrixWorld(force);
-		if (
-			this[PRIVATE].soundInstance !== undefined &&
-			this[PRIVATE].positional &&
-			this[PRIVATE].autoPositionUpdate &&
-			this[PRIVATE].sound.playing(this[PRIVATE].soundInstance)
-		) {
-			this.updatePosition();
-		}
+	}
+
+	destroy(): void {
+		this.stop();
+		this.removeFromParent();
+		this[PRIVATE].pendingDestroy = true;
 	}
 }
