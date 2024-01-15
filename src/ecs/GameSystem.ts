@@ -3,7 +3,9 @@
  * state of the game world on each frame.
  */
 
+import { Object3D } from 'three';
 import { QueryManager } from 'elics/lib/QueryManager';
+import { RigidbodyOptions } from '../physics/Rigidbody';
 import { System } from 'elics';
 import { World } from './World';
 
@@ -56,6 +58,10 @@ export class GameSystem extends System {
 		return (this.world as World).globals;
 	}
 
+	get physics() {
+		return (this.world as World).physics;
+	}
+
 	get assetManager() {
 		return (this.world as World).assetManager;
 	}
@@ -72,8 +78,12 @@ export class GameSystem extends System {
 		return this[PRIVATE].justExitedXR;
 	}
 
-	createGameObject() {
-		return (this.world as World).createGameObject();
+	createGameObject(parent?: Object3D) {
+		return (this.world as World).createGameObject(parent);
+	}
+
+	createRigidbody(options: RigidbodyOptions, parent?: Object3D) {
+		return (this.world as World).createRigidbody(options, parent);
 	}
 }
 

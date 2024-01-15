@@ -6,13 +6,12 @@ import { PlaneGeometry } from 'three';
 
 export class PlaneCollider extends Collider {
 	constructor(
-		physics: Physics,
 		width: number,
 		height: number,
 		trigger = false,
 		material = new PhysicsMaterial(),
 	) {
-		super(physics, material);
+		super(material);
 		const RAPIER = Physics.module;
 		this[PRIVATE].colliderDesc = RAPIER.ColliderDesc.cuboid(
 			width / 2,

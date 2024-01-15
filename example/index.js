@@ -2,14 +2,12 @@ import {
 	AmbientLight,
 	Color,
 	DirectionalLight,
-	GameObject,
 	GameSystem,
 	Mesh,
 	MeshStandardMaterial,
 	PhysicsMaterial,
 	PlaneCollider,
 	PlaneGeometry,
-	Rigidbody,
 	RigidbodyType,
 	SphereCollider,
 	SphereGeometry,
@@ -30,7 +28,7 @@ const assets = {
 class ExampleSystem extends GameSystem {
 	init() {
 		const pmat = new PhysicsMaterial({ friction: 1, restitution: 1 });
-		const sphere = new Rigidbody()
+		const sphere = this.createRigidbody()
 			.add(new SphereCollider(1, false, pmat))
 			.add(
 				new Mesh(
@@ -41,8 +39,8 @@ class ExampleSystem extends GameSystem {
 		sphere.position.set(0, 5, 0);
 		sphere.updateTransform();
 		sphere.colliderVisible = true;
-
-		this.floor = new Rigidbody({ type: RigidbodyType.Kinematic })
+		this.scene.add(sphere);
+		this.floor = this.createRigidbody({ type: RigidbodyType.Kinematic })
 			.add(new PlaneCollider(10, 10, false, pmat))
 			.add(
 				new Mesh(
@@ -55,13 +53,8 @@ class ExampleSystem extends GameSystem {
 		this.floor.colliderVisible = true;
 	}
 
-	initXR() {
-		console.log('initXR');
-	}
-
 	update(delta) {
 		this.floor.position.y += delta;
-
 		if (this.floor.position.y > 1) {
 			this.floor.position.y = -1;
 		}
@@ -73,28 +66,24 @@ initEngine(
 	document.getElementById('scene-container'),
 	{ enablePhysics: true },
 	assets,
-).then((core) => {
-	core.registerGameSystem(ExampleSystem);
-	core.scene.background = new Color(0x000000);
-
-	const material = new MeshStandardMaterial({ color: 0xffffff });
-
-	const mesh = new Mesh(new PlaneGeometry(5, 5), material);
-	mesh.rotateX(-Math.PI / 2);
-	new GameObject().add(mesh);
+).then((world) => {
+	world.registerSystem(ExampleSystem);
+	world.scene.background = new Color(0x000000);
 
 	// Add ambient light
 	const ambientLight = new AmbientLight(new Color(0xffffff), 1);
-	core.scene.add(ambientLight);
+	world.scene.add(ambientLight);
 
 	// Add directional light
 	const directionalLight = new DirectionalLight(new Color(0xffffff), 0.5);
 	directionalLight.position.set(0, 1, 0);
-	core.scene.add(directionalLight);
+	world.scene.add(directionalLight);
 
 	// Set camera position
-	core.camera.position.set(0, 0, 10);
+	world.camera.position.set(0, 0, 10);
+	console.log(world.camera.position);
+	globalThis.world = world;
 
 	const vrButton = document.getElementById('vr-button');
-	VRButton.convertToVRButton(vrButton, core.renderer);
+	VRButton.convertToVRButton(vrButton, world.renderer);
 });

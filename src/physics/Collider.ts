@@ -1,12 +1,6 @@
-import {
-	ColliderDesc,
-	Collider as RCollider,
-	RigidBody,
-	World,
-} from '@dimforge/rapier3d';
+import { ColliderDesc, Collider as RCollider } from '@dimforge/rapier3d';
 import { Mesh, MeshBasicMaterial, Quaternion, Vector3 } from 'three';
 
-import { Physics } from './Physics';
 import { PhysicsMaterial } from './Material';
 
 export const PRIVATE = Symbol('@elixr/physics/collider');
@@ -41,17 +35,15 @@ function createProxy<T extends object>(obj: T, onChange: () => void): T {
 export abstract class Collider extends Mesh {
 	/** @ignore */
 	[PRIVATE]: {
-		physicsWorld: World;
 		physicMaterial: PhysicsMaterial;
 		needsUpdate: boolean;
 		colliderDesc: ColliderDesc;
 		collider: RCollider;
 	};
 
-	constructor(physics: Physics, physicMaterial: PhysicsMaterial) {
+	constructor(physicMaterial: PhysicsMaterial) {
 		super(undefined, WIREFRAME_MATERIAL);
 		this[PRIVATE] = {
-			physicsWorld: physics.world,
 			physicMaterial,
 			needsUpdate: true,
 			colliderDesc: null,
@@ -169,19 +161,6 @@ export abstract class Collider extends Mesh {
 		this[PRIVATE].colliderDesc.restitutionCombineRule =
 			this.physicMaterial.bouncinessCombine;
 		this[PRIVATE].needsUpdate = false;
-	}
-
-	attachToRigidbody(rigidbody: RigidBody): void {
-		this[PRIVATE].collider = this[PRIVATE].physicsWorld.createCollider(
-			this[PRIVATE].colliderDesc,
-			rigidbody,
-		);
-		this[PRIVATE].needsUpdate = true;
-	}
-
-	detachFromRigidbody(): void {
-		this[PRIVATE].physicsWorld.removeCollider(this[PRIVATE].collider, true);
-		this[PRIVATE].collider = null;
 	}
 
 	/** @ignore */

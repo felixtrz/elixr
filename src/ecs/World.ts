@@ -1,6 +1,7 @@
 import { Camera, Object3D, Scene, WebGLRenderer } from 'three';
 import { World as ElicsWorld, PRIVATE as WORLD_PRIVATE } from 'elics/lib/World';
 import { PRIVATE as GAME_SYSTEM_PRIVATE, GameSystem } from './GameSystem';
+import { Rigidbody, RigidbodyOptions } from '../physics/Rigidbody';
 
 import { AssetManager } from '../graphics/AssetManager';
 import { AudioManager } from '../audio/AudioManager';
@@ -76,6 +77,17 @@ export class World extends ElicsWorld {
 			this.scene.add(gameObject);
 		}
 		return gameObject;
+	}
+
+	createRigidbody(options: RigidbodyOptions, parent?: Object3D): Rigidbody {
+		if (!this.physics) throw new Error('Physics not enabled');
+		const rigidbody = new Rigidbody(this, options);
+		if (parent) {
+			parent.add(rigidbody);
+		} else {
+			this.scene.add(rigidbody);
+		}
+		return rigidbody;
 	}
 
 	update(delta: number, time: number): void {

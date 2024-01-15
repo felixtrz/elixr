@@ -46,6 +46,7 @@ export type RigidbodyOptions = {
 export class Rigidbody extends GameObject {
 	/** @ignore */
 	[PRIVATE]: {
+		physics: Physics;
 		rigidbody: RigidBody;
 		canSleep: boolean;
 		constraints: RigidbodyConstraints;
@@ -81,6 +82,7 @@ export class Rigidbody extends GameObject {
 			.setCanSleep(canSleep)
 			.setCcdEnabled(ccdEnabled);
 		this[PRIVATE] = {
+			physics,
 			rigidbody: physics.world.createRigidBody(rigidbodyDesc),
 			canSleep,
 			constraints: RigidbodyConstraints.None,
@@ -238,7 +240,7 @@ export class Rigidbody extends GameObject {
 		super.add(...object);
 		object.forEach((obj) => {
 			if (obj instanceof Collider) {
-				obj.attachToRigidbody(this[PRIVATE].rigidbody);
+				this[PRIVATE].physics.attachColliderToRigidbody(obj, this);
 			}
 		});
 		return this;
@@ -248,7 +250,7 @@ export class Rigidbody extends GameObject {
 		super.remove(...object);
 		object.forEach((obj) => {
 			if (obj instanceof Collider) {
-				obj.detachFromRigidbody();
+				this[PRIVATE].physics.detachColliderFromRigidbody(obj);
 			}
 		});
 		return this;

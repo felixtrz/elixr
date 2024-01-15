@@ -1,7 +1,7 @@
+import { PRIVATE as COLLIDER_PRIVATE, Collider } from './Collider';
+import { PRIVATE as RIGIDBODY_PRIVATE, Rigidbody } from './Rigidbody';
 import { RigidBody, World } from '@dimforge/rapier3d';
-import { Rigidbody, RigidbodyOptions } from './Rigidbody'; // Adjust the import path accordingly
 
-import { World as ECSWorld } from '../ecs/World';
 import { Vector3 } from 'three';
 
 export const PRIVATE = Symbol('@elixr/physics/rapier-physics');
@@ -11,28 +11,22 @@ export class Physics {
 
 	[PRIVATE]: {
 		world: World;
-		ecsWorld: ECSWorld;
 		rigidBodyMap: Map<RigidBody, Rigidbody>;
 	};
 
-	constructor(ecsWorld: ECSWorld, gravity: Vector3) {
+	constructor(gravity: Vector3) {
 		this[PRIVATE] = {
 			world: new World({
 				x: gravity.x,
 				y: gravity.y,
 				z: gravity.z,
 			}),
-			ecsWorld,
 			rigidBodyMap: new Map(),
 		};
 	}
 
 	get world() {
 		return this[PRIVATE].world;
-	}
-
-	createRigidBody(options: RigidbodyOptions): Rigidbody {
-		return new Rigidbody(this[PRIVATE].ecsWorld, options);
 	}
 
 	public associateRigidBody(
@@ -48,6 +42,25 @@ export class Physics {
 
 	public dissociateRigidBody(rapierBody: RigidBody): void {
 		this[PRIVATE].rigidBodyMap.delete(rapierBody);
+	}
+
+	public attachColliderToRigidbody(
+		collider: Collider,
+		rigidbody: Rigidbody,
+	): void {
+		collider[COLLIDER_PRIVATE].collider = this[PRIVATE].world.createCollider(
+			collider[COLLIDER_PRIVATE].colliderDesc,
+			rigidbody[RIGIDBODY_PRIVATE].rigidbody,
+		);
+		collider[COLLIDER_PRIVATE].needsUpdate = true;
+	}
+
+	public detachColliderFromRigidbody(collider: Collider): void {
+		this[PRIVATE].world.removeCollider(
+			collider[COLLIDER_PRIVATE].collider,
+			true,
+		);
+		collider[COLLIDER_PRIVATE].collider = null;
 	}
 
 	public update(delta: number): void {

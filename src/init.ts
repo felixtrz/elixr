@@ -76,6 +76,7 @@ export const initEngine = async (
 
 	// Instantiate Player
 	const player = new Player(world);
+	scene.add(player);
 	player.add(camera);
 	world[WORLD_PRIVATE].player = player;
 
@@ -90,7 +91,7 @@ export const initEngine = async (
 		if (!Physics.module) {
 			Physics.module = await import('@dimforge/rapier3d');
 		}
-		physics = new Physics(world, gravity);
+		physics = new Physics(gravity);
 		world[WORLD_PRIVATE].physics = physics;
 	}
 
