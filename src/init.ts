@@ -1,4 +1,8 @@
-import { ASSET_TYPE, AssetDescriptor } from './constants';
+import {
+	ASSET_TYPE,
+	AssetDescriptor,
+	AssetManager,
+} from './graphics/AssetManager';
 import {
 	Clock,
 	PerspectiveCamera,
@@ -9,7 +13,6 @@ import {
 } from 'three';
 import { PRIVATE as WORLD_PRIVATE, World } from './ecs/World';
 
-import { AssetManager } from './graphics/AssetManager';
 import { AudioManager } from './audio/AudioManager';
 import { Physics } from './physics/Physics';
 import { Player } from './xr/Player';

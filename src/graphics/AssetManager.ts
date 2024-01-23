@@ -1,4 +1,3 @@
-import { ASSET_TYPE, AssetDescriptor } from '../constants';
 import {
 	CompressedTexture,
 	DataTexture,
@@ -14,9 +13,27 @@ import {
 import { GLTF, GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
+import { EXRLoader } from 'three/examples/jsm/loaders/EXRLoader';
 import { KTX2Loader } from 'three/examples/jsm/loaders/KTX2Loader.js';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
 import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader.js';
+
+export enum ASSET_TYPE {
+	GLTF = 'GLTF',
+	OBJ = 'OBJ',
+	TEXTURE = 'TEXTURE',
+	IMAGE = 'IMAGE',
+	RGBE = 'RGBE',
+	EXR = 'EXR',
+	KTX2 = 'KTX2',
+	AUDIO = 'AUDIO',
+}
+
+export interface AssetDescriptor {
+	url: string;
+	type: ASSET_TYPE;
+	callback: (asset: any) => void;
+}
 
 interface LoadEventData {
 	type: 'load';
@@ -51,6 +68,7 @@ export class AssetManager extends EventDispatcher<AssetManagerEventMap> {
 		dracoLoader: DRACOLoader;
 		ktx2Loader: KTX2Loader;
 		rgbEloader: RGBELoader;
+		exrLoader: EXRLoader;
 		gtlfLoader: GLTFLoader;
 		objLoader: OBJLoader;
 		textureLoader: TextureLoader;
@@ -66,6 +84,7 @@ export class AssetManager extends EventDispatcher<AssetManagerEventMap> {
 		textureLoader: null,
 		imageLoader: null,
 		rgbEloader: null,
+		exrLoader: null,
 		initialAssetIds: null,
 		assetMap: new Map(),
 	};
@@ -91,18 +110,12 @@ export class AssetManager extends EventDispatcher<AssetManagerEventMap> {
 		);
 		this[PRIVATE].imageLoader = new ImageLoader(this[PRIVATE].loadingManager);
 		this[PRIVATE].rgbEloader = new RGBELoader(this[PRIVATE].loadingManager);
+		this[PRIVATE].exrLoader = new EXRLoader(this[PRIVATE].loadingManager);
 
 		this[PRIVATE].initialAssetIds = Object.keys(initialAssets);
 		for (const [id, descriptor] of Object.entries(initialAssets)) {
 			this.loadAsset(id, descriptor);
 		}
-
-		this[PRIVATE].loadingManager.onLoad = () => {
-			const event: LoadEventData = {
-				type: 'load',
-			};
-			this.dispatchEvent(event);
-		};
 
 		this[PRIVATE].loadingManager.onProgress = (
 			url: string,
@@ -144,6 +157,9 @@ export class AssetManager extends EventDispatcher<AssetManagerEventMap> {
 			case ASSET_TYPE.RGBE:
 				this.loadRGBE(id, descriptor.url, descriptor.callback);
 				break;
+			case ASSET_TYPE.EXR:
+				this.loadEXR(id, descriptor.url, descriptor.callback);
+				break;
 			case ASSET_TYPE.KTX2:
 				this.loadKTX2(id, descriptor.url, descriptor.callback);
 				break;
@@ -164,63 +180,83 @@ export class AssetManager extends EventDispatcher<AssetManagerEventMap> {
 		return loaded;
 	}
 
+	private setAsset(id: string, asset: any) {
+		this[PRIVATE].assetMap.set(id, asset);
+		if (
+			this[PRIVATE].initialAssetIds.includes(id) &&
+			this.initialAssetsLoaded
+		) {
+			this.dispatchEvent({ type: 'load' });
+		}
+	}
+
 	private async loadGLTF(
 		id: string,
 		url: string,
-		callback: (gltf: GLTF) => void,
+		callback: (gltf: GLTF) => void = () => {},
 	) {
 		const gltf = await this[PRIVATE].gtlfLoader.loadAsync(url);
 		callback(gltf);
-		this[PRIVATE].assetMap.set(id, gltf);
+		this.setAsset(id, gltf);
 	}
 
 	private async loadOBJ(
 		id: string,
 		url: string,
-		callback: (obj: Group) => void,
+		callback: (obj: Group) => void = () => {},
 	) {
 		const obj = await this[PRIVATE].objLoader.loadAsync(url);
 		callback(obj);
-		this[PRIVATE].assetMap.set(id, obj);
+		this.setAsset(id, obj);
 	}
 
 	private async loadTexture(
 		id: string,
 		url: string,
-		callback: (texture: Texture) => void,
+		callback: (texture: Texture) => void = () => {},
 	) {
 		const texture = await this[PRIVATE].textureLoader.loadAsync(url);
 		callback(texture);
-		this[PRIVATE].assetMap.set(id, texture);
+		this.setAsset(id, texture);
 	}
 
 	private async loadImage(
 		id: string,
 		url: string,
-		callback: (image: HTMLImageElement) => void,
+		callback: (image: HTMLImageElement) => void = () => {},
 	) {
 		const image = await this[PRIVATE].imageLoader.loadAsync(url);
 		callback(image);
-		this[PRIVATE].assetMap.set(id, image);
+		this.setAsset(id, image);
 	}
 
 	private async loadRGBE(
 		id: string,
 		url: string,
-		callback: (rgbe: DataTexture) => void,
+		callback: (rgbe: DataTexture) => void = () => {},
 	) {
 		const rgbe = await this[PRIVATE].rgbEloader.loadAsync(url);
 		callback(rgbe);
-		this[PRIVATE].assetMap.set(id, rgbe);
+		this.setAsset(id, rgbe);
+	}
+
+	private async loadEXR(
+		id: string,
+		url: string,
+		callback: (exr: DataTexture) => void = () => {},
+	) {
+		const exr = await this[PRIVATE].exrLoader.loadAsync(url);
+		callback(exr);
+		this.setAsset(id, exr);
 	}
 
 	private async loadKTX2(
 		id: string,
 		url: string,
-		callback: (ktx2: CompressedTexture) => void,
+		callback: (ktx2: CompressedTexture) => void = () => {},
 	) {
 		const ktx2 = await this[PRIVATE].ktx2Loader.loadAsync(url);
 		callback(ktx2);
-		this[PRIVATE].assetMap.set(id, ktx2);
+		this.setAsset(id, ktx2);
 	}
 }

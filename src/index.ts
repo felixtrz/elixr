@@ -11,7 +11,11 @@ const FIGLET = String.raw`
 /*                                 3D Library                                 */
 /* -------------------------------------------------------------------------- */
 export * from './graphics/Three';
-export { AssetManager } from './graphics/AssetManager';
+export {
+	AssetManager,
+	ASSET_TYPE,
+	AssetDescriptor,
+} from './graphics/AssetManager';
 
 /* -------------------------------------------------------------------------- */
 /*                           Entity Component System                          */
@@ -57,15 +61,6 @@ export { PhysicsMaterial } from './physics/Material';
 /* -------------------------------------------------------------------------- */
 export { AudioManager } from './audio/AudioManager';
 export { AudioSource, AudioOptions } from './audio/AudioSource';
-
-/* -------------------------------------------------------------------------- */
-/*                                Locomotion                                  */
-/* -------------------------------------------------------------------------- */
-
-/* -------------------------------------------------------------------------- */
-/*                                    Enums                                   */
-/* -------------------------------------------------------------------------- */
-export { JOYSTICK_STATES, ASSET_TYPE, AssetDescriptor } from './constants';
 
 /* -------------------------------------------------------------------------- */
 /*                                 XR Buttons                                 */

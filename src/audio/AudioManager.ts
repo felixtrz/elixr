@@ -4,7 +4,7 @@ import {
 	AudioSource,
 } from './AudioSource';
 
-import { AssetDescriptor } from '../constants';
+import { AssetDescriptor } from '../graphics/AssetManager';
 import { Howl } from 'howler';
 import { Player } from '../xr/Player';
 import { Vector3 } from 'three';
