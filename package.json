@@ -36,13 +36,13 @@
 		"elics": "0.1.5",
 		"gamepad-wrapper": "1.2.0",
 		"howler": "2.2.4",
-		"three": "npm:super-three@0.161.0",
+		"three": "npm:super-three@0.160.0",
 		"three-mesh-bvh": "0.5.17"
 	},
 	"devDependencies": {
 		"@types/howler": "^2.2.10",
 		"@types/node": "^18.14.0",
-		"@types/three": "0.161.0",
+		"@types/three": "0.160.0",
 		"@typescript-eslint/eslint-plugin": "^6.7.5",
 		"@typescript-eslint/parser": "^6.7.5",
 		"cpy-cli": "^4.2.0",
